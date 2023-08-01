@@ -122,8 +122,13 @@
                     <div class="collapse" id="master-data-collapse">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}">
+                                <a class="nav-link" href="{{ route('user') }}">
                                     <i class="ni ni-single-02 text-yellow"></i> {{ __('User') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('user') }}">
+                                    <i class="ni ni-single-02 text-yellow"></i> {{ __('Role') }}
                                 </a>
                             </li>
                         </ul>
