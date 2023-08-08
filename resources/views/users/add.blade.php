@@ -45,8 +45,9 @@
                         <div class="form-group">
                             <label for="role">Role <span class="text-danger">*</span></label>
                             <select class="form-control" id="role" name="role" required>
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
+                                <option value="" selected disabled>Pilih Role</option>
+                                <option value="admin">Admin Kas</option>
+                                <option value="user">Admin Penjualan</option>
                             </select>
                         </div>
                         <!-- Form Footer -->

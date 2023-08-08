@@ -65,3 +65,17 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('pages.penjualan');
 	})->name('penjualan');
 });
+
+// Route::middleware('auth')->group(function() {
+// 	Route::middleware('hakakses:Owner')->prefix('owner')->group(function() {
+
+// 	});
+
+// 	Route::middleware('hakakses:Admin Kas')->prefix('admin_kas')->group(function() {
+
+// 	});
+
+// 	Route::middleware('hakakses:Admin')->prefix('owner')->group(function() {
+
+// 	});
+// });
