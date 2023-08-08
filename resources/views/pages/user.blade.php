@@ -1,12 +1,12 @@
 @extends('layouts.app') 
 @section('content') 
 @php 
-    $pageTitle = "Jurnal"; 
+    $pageTitle = "User"; 
     $breadcrumbs = [ 
         // ['label' => 'Home', 'url' => '#'], 
         // ['label' => 'Maps', 'url' => '#'], 
     ]; 
-        $activePage = "Jurnal"; 
+        $activePage = "User"; 
 
     // Sample dynamic data (replace this with data from your controller)
     $totalPemasukan = 350897;
@@ -19,13 +19,8 @@
     <div class="header-body">
         <!-- Card stats -->
         <div class="row">
-          <div class="col-xl-8 col-lg-6">
+          <div class="col-xl-10 col-lg-6">
           </div>
-          <div class="col-xl-2 col-lg-6" style="padding-bottom: 20px">
-            <a href="{{ route('jurnal.create') }}" class="btn btn-primary btn-block">
-              Buat Jurnal (Modal)
-          </a>
-        </div>
         <div class="modal fade" id="createJournalModal" tabindex="-1" role="dialog" aria-labelledby="createJournalModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -76,7 +71,7 @@
       </div>
         <div class="col-xl-2 col-lg-6" style="padding-bottom: 20px">
             <button class="btn btn-primary btn-block " data-toggle="modal" data-target="#createJournalModal" >
-              <i class="fas fa-book-open"></i> Cetak Laporan Jurnal
+              Buat User
             </button>
         </div>
         </div>

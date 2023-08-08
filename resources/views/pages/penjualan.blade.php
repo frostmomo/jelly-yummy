@@ -5,8 +5,8 @@
     // Define dynamic data
     $pageTitle = "Penjualan";
     $breadcrumbs = [
-        ['label' => 'Home', 'url' => '#'],
-        ['label' => 'Maps', 'url' => '#'],
+        // ['label' => 'Home', 'url' => '#'],
+        // ['label' => 'Maps', 'url' => '#'],
     ];
     $activePage = "Penjualan";
 @endphp
