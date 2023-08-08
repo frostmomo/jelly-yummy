@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user', function () {
 		return view('pages.user');
 	})->name('user');
+
+	Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
 
 	Route::get('penjualan', function () {
 		return view('pages.penjualan');

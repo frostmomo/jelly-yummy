@@ -23,8 +23,8 @@
           </div>
           <div class="col-xl-2 col-lg-6" style="padding-bottom: 20px">
             <a href="{{ route('jurnal.create') }}" class="btn btn-primary btn-block">
-              Buat Jurnal (Modal)
-          </a>
+              Buat Jurnal
+            </a>
         </div>
         <div class="modal fade" id="createJournalModal" tabindex="-1" role="dialog" aria-labelledby="createJournalModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -194,16 +194,18 @@
                     <td>1000</td>
                     <td>12/02/2020 11:00</td>
                     <td>Detailnya gatau gmn</td>
-                    <td class="text-right">
-                      <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Edit</a>
-                        </div>
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                              <i class="ni ni-ruler-pencil mr-2"></i>
+                              Edit
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
+                              <i class="ni ni-fat-remove mr-2"></i>
+                              Delete
+                          </button>
                       </div>
-                    </td>
+                  </td>
                   </tr>
                   <tr>
                     <td>J-01</td>
@@ -212,16 +214,18 @@
                     <td>1000</td>
                     <td>12/02/2020 11:00</td>
                     <td>Detailnya gatau gmn</td>
-                    <td class="text-right">
-                      <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Edit</a>
-                        </div>
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                              <i class="ni ni-ruler-pencil mr-2"></i>
+                              Edit
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
+                              <i class="ni ni-fat-remove mr-2"></i>
+                              Delete
+                          </button>
                       </div>
-                    </td>
+                  </td>
                   </tr>
                 </tbody>
               </table>

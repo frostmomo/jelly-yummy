@@ -14,8 +14,19 @@ class UserController extends Controller
      * @param  \App\Models\User  $model
      * @return \Illuminate\View\View
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(User $model)
     {
         return view('users.index');
+    }
+
+    public function create()
+    {
+        return view('users.add');
     }
 }

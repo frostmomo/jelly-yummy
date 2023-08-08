@@ -8,10 +8,6 @@
     ]; 
         $activePage = "User"; 
 
-    // Sample dynamic data (replace this with data from your controller)
-    $totalPemasukan = 350897;
-    $totalPengeluaran = 2356;
-    $saldoKas = 924;
 @endphp 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
 <br>
@@ -21,59 +17,12 @@
         <div class="row">
           <div class="col-xl-10 col-lg-6">
           </div>
-        <div class="modal fade" id="createJournalModal" tabindex="-1" role="dialog" aria-labelledby="createJournalModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Journal Entry Form</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Journal Entry Form -->
-                    <form action="{{ route('jurnal.create') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="bulan">Bulan</label>
-                            <select class="form-control" id="bulan" name="bulan" required>
-                                @php
-                                    $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                                @endphp
-                                @foreach($months as $index => $month)
-                                    <option value="{{ $index + 1 }}">{{ $month }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tahun">Tahun</label>
-                            <select class="form-control" id="tahun" name="tahun" required>
-                                @php
-                                    $currentYear = date('Y');
-                                    $startYear = $currentYear - 10;
-                                @endphp
-                                @for($year = $currentYear; $year >= $startYear; $year--)
-                                    <option value="{{ $year }}">{{ $year }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <!-- Add more form fields if needed -->
-    
-                        <!-- Modal Footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-      </div>
-        <div class="col-xl-2 col-lg-6" style="padding-bottom: 20px">
-            <button class="btn btn-primary btn-block " data-toggle="modal" data-target="#createJournalModal" >
+          <div class="col-xl-2 col-lg-6" style="padding-bottom: 20px">
+            <a href="{{ route('user.create') }}" class="btn btn-primary btn-block">
               Buat User
-            </button>
-        </div>
+            </a>
+          </div>
+      </div>
         </div>
       </div>
       <br>
@@ -85,6 +34,18 @@
                 <div class="col-10">
                   <h3 class="mb-0">User</h3>
                 </div>
+                <div class="col-2">
+                  <form action="{{ route('home') }}" method="GET" class="form-inline">
+                      <div class="input-group input-group-rounded input-group-merge">
+                          <input type="search" name="query" class="form-control form-control-rounded" placeholder="Search">
+                          <div class="input-group-prepend">
+                              <button type="submit" class="input-group-text">
+                                  <i class="fa fa-search"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
               </div>
             </div>
             <div class="table-responsive">
@@ -103,43 +64,35 @@
                     <td>Jajang Spakbor</td>
                     <td>jspro@mail.com</td>
                     <td>Developer</td>
-                    <td class="text-right">
-                      <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Detail</a>
-                        </div>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Edit</a>
-                        </div>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Delete</a>
-                        </div>
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                              <i class="ni ni-ruler-pencil mr-2"></i>
+                              Edit
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
+                              <i class="ni ni-fat-remove mr-2"></i>
+                              Delete
+                          </button>
                       </div>
-                    </td>
+                  </td>
                   </tr>
                   <tr>
                     <td>Jajang Spakbor</td>
                     <td>jspro@mail.com</td>
                     <td>Developer</td>
-                    <td class="text-right">
-                      <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Detail</a>
-                        </div>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Edit</a>
-                        </div>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="">Delete</a>
-                        </div>
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                              <i class="ni ni-ruler-pencil mr-2"></i>
+                              Edit
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
+                              <i class="ni ni-fat-remove mr-2"></i>
+                              Delete
+                          </button>
                       </div>
-                    </td>
+                  </td>
                   </tr>
                 </tbody>
               </table>
