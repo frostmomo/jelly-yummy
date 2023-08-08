@@ -68,3 +68,17 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
 });
+
+// Route::middleware('auth')->group(function() {
+// 	Route::middleware('hakakses:Owner')->prefix('owner')->group(function() {
+
+// 	});
+
+// 	Route::middleware('hakakses:Admin Kas')->prefix('admin_kas')->group(function() {
+
+// 	});
+
+// 	Route::middleware('hakakses:Admin')->prefix('owner')->group(function() {
+
+// 	});
+// });
