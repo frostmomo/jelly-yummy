@@ -2,9 +2,9 @@
 
 @section('content') 
 @php 
-    $pageTitle = "Buat User"; 
+    $pageTitle = "Buat Penjualan"; 
     $breadcrumbs = [ 
-        ['label' => 'User', 'url' => '#'], 
+        ['label' => 'Penjualan', 'url' => '#'], 
         // ['label' => 'Add', 'url' => '#'], 
     ]; 
     $activePage = "Add"; 
@@ -19,40 +19,40 @@
         <div class="col-lg-8">
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat User</div>
+                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Penjualan</div>
                 </div>
                 <div class="card-body">
                     <!-- User Registration Form -->
-                    <form action="{{ route('register') }}" method="POST" id="registrationForm">
+                    <form action="{{ route('register') }}" method="POST" id="penjualanForm">
                         @csrf
                         <div class="form-group">
-                            <label for="name">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <label for="idUser">ID User <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="idUser" name="idUser" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label for="idCustomer">ID Customer <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="idCustomer" name="idCustomer" required>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <label for="idSalesman">ID Salesman <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="idSalesman" name="idSalesman" required>
                         </div>
                         <div class="form-group">
-                            <label for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                            <small id="passwordMismatch" class="text-danger d-none">Passwords do not match.</small>
+                            <label for="totalItem">Total Item <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="totalItem" name="totalItem" required>
                         </div>
                         <div class="form-group">
-                            <label for="role">Role <span class="text-danger">*</span></label>
-                            <select class="form-control" id="role" name="role" required>
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
-                            </select>
+                            <label for="diskon">Diskon <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="diskon" name="diskon" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subtotal">Subtotal <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="subtotal" name="subtotal" required>
                         </div>
                         <!-- Form Footer -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary">Save</button>
-                            <a href="{{ route('user') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('penjualan') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

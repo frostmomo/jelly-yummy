@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -64,4 +65,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('penjualan', function () {
 		return view('pages.penjualan');
 	})->name('penjualan');
+
+	Route::get('/penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
 });

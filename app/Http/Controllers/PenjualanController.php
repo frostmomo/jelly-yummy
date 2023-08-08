@@ -25,4 +25,9 @@ class PenjualanController extends Controller
     {
         return view('pages.penjualan');
     }
+
+    public function create()
+    {
+        return view('pages.penjualan.add');
+    }
 }
