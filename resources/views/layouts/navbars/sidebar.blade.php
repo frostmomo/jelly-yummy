@@ -100,13 +100,13 @@
                     <div class="collapse" id="inventory-collapse">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}">
-                                    <i class="fa fa-boxes text-yellow"></i></i> {{ __('Kategori Produk') }}
+                                <a class="nav-link" href="{{ route('produk-beli') }}">
+                                    <i class="fa fa-cart-plus text-yellow"></i></i> {{ __('Produk Beli') }}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}">
-                                    <i class="fa fa-box text-yellow"></i></i> {{ __('Produk') }}
+                                <a class="nav-link" href="{{ route('produk-jual') }}">
+                                    <i class="fa fa-cart-arrow-down text-yellow"></i></i> {{ __('Produk Jual') }}
                                 </a>
                             </li>
                         </ul>
@@ -124,11 +124,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('user') }}">
                                     <i class="ni ni-single-02 text-yellow"></i> {{ __('User') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user') }}">
-                                    <i class="ni ni-single-02 text-yellow"></i> {{ __('Role') }}
                                 </a>
                             </li>
                         </ul>

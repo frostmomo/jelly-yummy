@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\KategoriProdukBeliController;
+use App\Http\Controllers\KategoriProdukJualController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\ProdukBeliController;
+use App\Http\Controllers\ProdukJualController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -36,18 +40,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
-	Route::get('upgrade', function () {
-		return view('pages.upgrade');
-	})->name('upgrade');
-	Route::get('map', function () {
-		return view('pages.maps');
-	})->name('map');
-	Route::get('icons', function () {
-		return view('pages.icons');
-	})->name('icons');
-	Route::get('table-list', function () {
-		return view('pages.tables');
-	})->name('table');
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
 
 	Route::get('jurnal', function () {
@@ -67,6 +59,21 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('penjualan');
 
 	Route::get('/penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
+
+	Route::get('produk-beli', function () {
+		return view('pages.produk_beli');
+	})->name('produk-beli');
+
+	Route::get('/produk-beli/create', [ProdukBeliController::class, 'create'])->name('produk-beli.create');
+
+	Route::get('produk-jual', function () {
+		return view('pages.produk_jual');
+	})->name('produk-jual');
+
+	Route::get('/produk-jual/create', [ProdukJualController::class, 'create'])->name('produk-jual.create');
+
+	Route::get('/kategori-produk-jual/create', [KategoriProdukJualController::class, 'create'])->name('kategori-produk-jual.create');
+	Route::get('/kategori-produk-beli/create', [KategoriProdukBeliController::class, 'create'])->name('kategori-produk-beli.create');
 });
 
 // Route::middleware('auth')->group(function() {

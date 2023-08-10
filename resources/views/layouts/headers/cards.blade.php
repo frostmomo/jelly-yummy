@@ -1,4 +1,3 @@
-<div></div>
 <div class="header bg-yellow pb-6">
     <div class="container-fluid">
         <div class="header-body">
@@ -13,10 +12,6 @@
                             <li class="breadcrumb-item active" aria-current="page">{{ $activePage }}</li>
                         </ol>
                     </nav>
-                </div>
-                <div class="col-lg-6 col-5 text-right">
-                    <!-- Add your buttons here -->
-                    <!-- Example: <a href="#" class="btn btn-sm btn-neutral">New</a> -->
                 </div>
             </div>
         </div>

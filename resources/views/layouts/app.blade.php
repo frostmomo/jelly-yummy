@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Argon Dashboard') }}</title>
+        <title>{{ config('app.name', 'Jelly Yummy') }}</title>
         <!-- Favicon -->
         <link href="{{ asset('argon') }}/img/brand/favicon.png" rel="icon" type="image/png">
         <!-- Fonts -->
@@ -26,10 +26,12 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
+            {{-- Sidebar menus --}}
             @include('layouts.navbars.sidebar')
         @endauth
         
         <div class="main-content">
+            {{-- Logout / Profile menus --}}
             @include('layouts.navbars.navbar')
             @yield('content')
         </div>

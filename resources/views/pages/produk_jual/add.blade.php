@@ -12,9 +12,9 @@
 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
 
-{{-- <br> --}}
+<br>
 
-<div class="container-fluid mt--7" style="padding-top: 50px">
+<div class="container-fluid mt--7">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow">
