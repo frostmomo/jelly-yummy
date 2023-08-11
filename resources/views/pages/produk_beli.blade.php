@@ -4,8 +4,7 @@
 // Define dynamic data 
 $pageTitle = "Produk Beli"; 
 $breadcrumbs = [ 
-    // ['label' => 'Home', 'url' => '#'], 
-    // ['label' => 'Maps', 'url' => '#'], 
+    ['label' => 'Home', 'url' => '#'], 
     ]; 
     $activePage = "Produk Beli"; 
 @endphp 
@@ -241,5 +240,9 @@ $breadcrumbs = [
       </div>
     </div>
   </div>
-</div> @endsection @push('js') <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
-<script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script> @endpush
+</div>
+@endsection 
+@push('js') 
+<script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script> 
+@endpush

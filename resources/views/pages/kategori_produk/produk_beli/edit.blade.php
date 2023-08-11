@@ -2,12 +2,12 @@
 
 @section('content') 
 @php 
-    $pageTitle = "Buat Kategori Produk Jual"; 
+    $pageTitle = "Edit Kategori Produk Beli"; 
     $breadcrumbs = [ 
-        ['label' => 'Kategori Produk Jual', 'url' => '#'], 
+        ['label' => 'Kategori Produk Beli', 'url' => '#'], 
         // ['label' => 'Add', 'url' => '#'], 
     ]; 
-    $activePage = "Add"; 
+    $activePage = "Edit"; 
 @endphp 
 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
@@ -19,15 +19,15 @@
         <div class="col-lg-8">
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Kategori Jual</div>
+                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Kategori Beli</div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('produk-jual.create') }}" method="POST">
+                    <form action="{{ route('produk-beli.create') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="deskripsi">Kategori Jual <span class="text-danger">*</span></label>
+                                    <label for="deskripsi">Kategori Beli <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                         <!-- Form Footer -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary">Save</button>
-                            <a href="{{ route('produk-jual') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('produk-beli') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

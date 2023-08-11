@@ -12,8 +12,6 @@
 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
 
-{{-- <br> --}}
-
 <div class="container-fluid mt--7" style="padding-top: 50px">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -22,7 +20,6 @@
                     <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Cash</div>
                 </div>
                 <div class="card-body">
-                    <!-- Journal Entry Form -->
                     <form action="{{ route('jurnal.create') }}" method="POST">
                         @csrf
                         <div class="row">

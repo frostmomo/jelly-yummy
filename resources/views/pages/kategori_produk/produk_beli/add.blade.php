@@ -19,10 +19,9 @@
         <div class="col-lg-8">
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Cash</div>
+                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Kategori Beli</div>
                 </div>
                 <div class="card-body">
-                    <!-- Journal Entry Form -->
                     <form action="{{ route('produk-beli.create') }}" method="POST">
                         @csrf
                         <div class="row">

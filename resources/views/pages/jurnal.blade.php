@@ -4,12 +4,8 @@
   $pageTitle = "Jurnal"; 
   $breadcrumbs = [ 
     ['label' => 'Home', 'url' => '#'],
-    ['label' => 'Maps', 'url' => '#'], 
   ];
   $activePage = "Jurnal";  
-  $totalPemasukan = 350897; 
-  $totalPengeluaran = 2356; 
-  $saldoKas = 924;
 @endphp 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage')) 
 <br>
@@ -20,112 +16,35 @@
       <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
         <div class="d-flex justify-content-end">
             <a href="{{ route('jurnal.create') }}" class="btn btn-primary">Buat Jurnal</a>
-            <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#createJournalModal">
-                Cetak Laporan Jurnal <i class="fas fa-book-open ml-2"></i>
-            </button>
+            <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#createJournalModal">Cetak Laporan Jurnal</button>
         </div>
-    </div>
+      </div>
       <div class="modal fade" id="createJournalModal" tabindex="-1" role="dialog" aria-labelledby="createJournalModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Journal Entry Form</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <h5 class="modal-title" id="exampleModalLabel">Cetak Laporan Jurnal</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-              <!-- Journal Entry Form -->
               <form action="{{ route('jurnal.create') }}" method="POST"> @csrf <div class="form-group">
-                  <label for="bulan">Bulan</label>
-                  <select class="form-control" id="bulan" name="bulan" required> @php $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']; @endphp @foreach($months as $index => $month) <option value="{{ $index + 1 }}">{{ $month }}</option> @endforeach </select>
-                </div>
-                <div class="form-group">
-                  <label for="tahun">Tahun</label>
-                  <select class="form-control" id="tahun" name="tahun" required> @php $currentYear = date('Y'); $startYear = $currentYear - 10; @endphp @for($year = $currentYear; $year >= $startYear; $year--) <option value="{{ $year }}">{{ $year }}</option> @endfor </select>
-                </div>
-                <!-- Add more form fields if needed -->
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-4 col-lg-6">
-        <div class="card card-stats mb-4 mb-xl-0">
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <h5 class="card-title text-uppercase text-muted mb-0">Total Pemasukan</h5>
-                <span class="h2 font-weight-bold mb-0">{{ $totalPemasukan }}</span>
+                <label for="bulan">Bulan</label>
+                <select class="form-control" id="bulan" name="bulan" required> @php $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']; @endphp @foreach($months as $index => $month) <option value="{{ $index + 1 }}">{{ $month }}</option> @endforeach </select>
               </div>
-              <div class="col-auto">
-                <div class="icon icon-shape bg-success text-white rounded-circle shadow">
-                  <i class="fas fa-money-bill-wave"></i>
-                </div>
+              <div class="form-group">
+                <label for="tahun">Tahun</label>
+                <select class="form-control" id="tahun" name="tahun" required> @php $currentYear = date('Y'); $startYear = $currentYear - 10; @endphp @for($year = $currentYear; $year >= $startYear; $year--) <option value="{{ $year }}">{{ $year }}</option> @endfor </select>
               </div>
-            </div>
-            <p class="mt-3 mb-0 text-muted text-sm">
-              <span class="text-success mr-2">
-                <i class="fa fa-arrow-up"></i> 3.48% </span>
-              <span class="text-nowrap">Since last month</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-6">
-        <div class="card card-stats mb-4 mb-xl-0">
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <h5 class="card-title text-uppercase text-muted mb-0">Total Pengeluaran</h5>
-                <span class="h2 font-weight-bold mb-0">{{ $totalPengeluaran }}</span>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
               </div>
-              <div class="col-auto">
-                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                  <i class="fas fa-shopping-cart"></i>
-                </div>
-              </div>
-            </div>
-            <p class="mt-3 mb-0 text-muted text-sm">
-              <span class="text-danger mr-2">
-                <i class="fas fa-arrow-down"></i> 3.48% </span>
-              <span class="text-nowrap">Since last week</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-6">
-        <div class="card card-stats mb-4 mb-xl-0">
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <h5 class="card-title text-uppercase text-muted mb-0">Saldo Kas</h5>
-                <span class="h2 font-weight-bold mb-0">{{ $saldoKas }}</span>
-              </div>
-              <div class="col-auto">
-                <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                  <i class="fas fa-money-bill"></i>
-                </div>
-              </div>
-            </div>
-            <p class="mt-3 mb-0 text-muted text-sm">
-              <span class="text-warning mr-2">
-                <i class="fas fa-arrow-down"></i> 1.10% </span>
-              <span class="text-nowrap">Since yesterday</span>
-            </p>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <br>
   <div class="row">
     <div class="col">
       <div class="card shadow">

@@ -4,8 +4,7 @@
 // Define dynamic data 
 $pageTitle = "Produk Jual"; 
 $breadcrumbs = [ 
-    // ['label' => 'Home', 'url' => '#'], 
-    // ['label' => 'Maps', 'url' => '#'], 
+    ['label' => 'Home', 'url' => '#'], 
     ]; 
     $activePage = "Produk Jual"; 
 @endphp 
@@ -17,7 +16,7 @@ $breadcrumbs = [
     <div class="row">
       <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
         <div class="d-flex justify-content-end">
-          <a href="{{ route('jurnal.create') }}" class="btn btn-primary">Buat Kategori Jual<i class="fas fa-book-open ml-2"></i></a>
+          <a href="{{ route('kategori-produk-jual.create') }}" class="btn btn-primary">Buat Kategori Jual<i class="fas fa-book-open ml-2"></i></a>
         </div>
       </div>
     </div>
@@ -133,7 +132,7 @@ $breadcrumbs = [
   <div class="row">
     <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
         <div class="d-flex justify-content-end">
-          <a href="{{ route('jurnal.create') }}" class="btn btn-primary">Buat Produk Jual<i class="fas fa-book-open ml-2"></i></a>
+          <a href="{{ route('produk-jual.create') }}" class="btn btn-primary">Buat Produk Jual<i class="fas fa-book-open ml-2"></i></a>
         </div>
       </div>
     <div class="col">
@@ -241,5 +240,9 @@ $breadcrumbs = [
       </div>
     </div>
   </div>
-</div> @endsection @push('js') <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
-<script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script> @endpush
+</div> 
+@endsection
+@push('js') 
+<script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script> 
+@endpush

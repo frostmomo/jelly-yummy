@@ -2,9 +2,9 @@
 
 @section('content') 
 @php 
-    $pageTitle = "Buat Jurnal"; 
+    $pageTitle = "Buat Produk Jual"; 
     $breadcrumbs = [ 
-        ['label' => 'Jurnal', 'url' => '#'], 
+        ['label' => 'Produk Jual', 'url' => '#'], 
         // ['label' => 'Add', 'url' => '#'], 
     ]; 
     $activePage = "Add"; 
@@ -19,58 +19,42 @@
         <div class="col-lg-8">
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Cash</div>
+                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Produk Jual</div>
                 </div>
                 <div class="card-body">
-                    <!-- Journal Entry Form -->
-                    <form action="{{ route('jurnal.create') }}" method="POST">
+                    <form action="{{ route('produk-jual.create') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="deskripsi">Deskripsi <span class="text-danger">*</span></label>
+                                    <label for="jenis">Kategori Jual <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="jenis" name="jenis" required>
+                                        <option value="Pemasukan">Data 1</option>
+                                        <option value="Pengeluaran">Data 2</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="deskripsi">Nama Produk Jual <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jenis">Jenis <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="jenis" name="jenis" required>
-                                        <option value="Pemasukan">Pemasukan</option>
-                                        <option value="Pengeluaran">Pengeluaran</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="nominal">Nominal <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="nominal" name="nominal" required>
+                                    <label for="deskripsi">Kode Produk Jual <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tanggal">Tanggal <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                                    <label for="deskripsi">Harga Jual <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="deskripsi">Stok <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="detail">DETAIL</label>
-                            <table class="table" id="detail">
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Harga</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Rows will be added dynamically using JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="tambahData">Tambah Data</button>
-                    
                         <!-- Form Footer -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary">Save</button>
-                            <a href="{{ route('jurnal') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('produk-jual') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -82,24 +66,6 @@
 <!-- Add the necessary JavaScript to handle adding rows to the table -->
 @push('js')
     <script>
-        document.getElementById('tambahData').addEventListener('click', function() {
-            var tableBody = document.querySelector('#detail tbody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><input type="text" class="form-control" name="item[]"></td>
-                <td><input type="number" class="form-control" name="harga[]"></td>
-                <td><button type="button" class="btn btn-danger btn-sm hapusData">Hapus</button></td>
-            `;
-            tableBody.appendChild(newRow);
-        });
-
-        // Handle removing rows
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapusData')) {
-                e.target.closest('tr').remove();
-            }
-        });
-
         // Format tanggal field in "month day, year" format (MDY)
         const tanggalInput = document.getElementById('tanggal');
         tanggalInput.addEventListener('change', function () {

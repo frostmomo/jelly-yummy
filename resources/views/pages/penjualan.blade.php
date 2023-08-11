@@ -1,13 +1,17 @@
 @extends('layouts.app') 
 @section('content') 
 @php // Define dynamic data 
-$pageTitle = "Penjualan"; $breadcrumbs = []; $activePage = "Penjualan"; 
+$pageTitle = "Penjualan"; 
+$breadcrumbs = [
+  ['label' => 'Home', 'url' => '#'],
+]; 
+$activePage = "Penjualan"; 
 @endphp 
 @include('layouts.headers.cards') 
 <div class="container-fluid mt--6">
   <div class="row">
     <div class="col text-right mb-3">
-      <a href="{{route('penjualan.create')}}" class="btn btn-primary">Add Item</a>
+      <a href="{{route('penjualan.create')}}" class="btn btn-primary">Tambah Penjualan</a>
     </div>
   </div>
   <div class="row">
