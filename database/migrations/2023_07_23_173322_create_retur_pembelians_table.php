@@ -20,8 +20,8 @@ class CreateReturPembeliansTable extends Migration
             $table->double('subtotal', 12, 2);
             $table->timestamps();
 
-            $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('cascade');
-            $table->foreign('id_produk_beli')->references('id')->on('produk_beli')->onDelete('cascade');
+            $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('set null');
+            $table->foreign('id_produk_beli')->references('id')->on('produk_beli')->onDelete('set null');
         });
     }
 

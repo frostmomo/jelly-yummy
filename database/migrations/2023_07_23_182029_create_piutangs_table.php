@@ -20,8 +20,8 @@ class CreatePiutangsTable extends Migration
             $table->double('bayar', 12, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_penjualan')->references('id')->on('penjualan')->onDelete('cascade');
-            $table->foreign('id_retur_penjualan')->references('id')->on('retur_penjualan')->onDelete('cascade');
+            $table->foreign('id_penjualan')->references('id')->on('penjualan')->onDelete('set null');
+            $table->foreign('id_retur_penjualan')->references('id')->on('retur_penjualan')->onDelete('set null');
         });
     }
 

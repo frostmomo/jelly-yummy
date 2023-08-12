@@ -23,9 +23,9 @@ class CreatePenjualansTable extends Migration
             $table->integer('diskon')->nullable();
             $table->timestamps();
 
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_customer')->references('id')->on('customer')->onDelete('cascade');
-            $table->foreign('id_salesman')->references('id')->on('salesman')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('id_customer')->references('id')->on('customer')->onDelete('set null');
+            $table->foreign('id_salesman')->references('id')->on('salesman')->onDelete('set null');
         });
     }
 

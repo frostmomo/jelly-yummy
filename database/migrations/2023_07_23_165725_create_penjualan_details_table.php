@@ -21,8 +21,8 @@ class CreatePenjualanDetailsTable extends Migration
             $table->double('total', 12, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_penjualan')->references('id')->on('penjualan')->onDelete('cascade');
-            $table->foreign('id_produk_jual')->references('id')->on('produk_jual')->onDelete('cascade');
+            $table->foreign('id_penjualan')->references('id')->on('penjualan')->onDelete('set null');
+            $table->foreign('id_produk_jual')->references('id')->on('produk_jual')->onDelete('set null');
         });
     }
 

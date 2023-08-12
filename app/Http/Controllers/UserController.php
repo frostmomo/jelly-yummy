@@ -16,19 +16,20 @@ class UserController extends Controller
      * @return \Illuminate\View\View
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
-    public function index(User $model)
+    public function index()
     {
-        return view('users.index');
+        $user = User::all();
+        return view('pages.user.index', ['user' => $user]);
     }
 
     public function create()
     {
-        return view('users.add');
+        return view('pages.user.create');
     }
 
     public function store(Request $request) 

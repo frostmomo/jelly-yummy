@@ -56,40 +56,25 @@
                 </thead>
                 <tbody>
                     {{-- For loop here --}}
-                  <tr>
-                    <td>Jajang Spakbor</td>
-                    <td>jspro@mail.com</td>
-                    <td>Developer</td>
-                    <td class="text-center">
-                      <div class="btn-group" role="group">
-                          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
-                              <i class="ni ni-ruler-pencil mr-2"></i>
-                              Edit
-                          </button>
-                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
-                              <i class="ni ni-fat-remove mr-2"></i>
-                              Delete
-                          </button>
-                      </div>
-                  </td>
-                  </tr>
-                  <tr> 
-                    <td>Jajang Spakbor</td>
-                    <td>jspro@mail.com</td>
-                    <td>Developer</td>
-                    <td class="text-center">
-                      <div class="btn-group" role="group">
-                          <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
-                              <i class="ni ni-ruler-pencil mr-2"></i>
-                              Edit
-                          </button>
-                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
-                              <i class="ni ni-fat-remove mr-2"></i>
-                              Delete
-                          </button>
-                      </div>
-                  </td>
-                  </tr>
+                  @foreach ($user as $data)
+                    <tr>
+                      <td>{{ $data->name }}</td>
+                      <td>{{ $data->email }}</td>
+                      <td>{{ $data->level }}</td>
+                      <td class="text-center">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                                <i class="ni ni-ruler-pencil mr-2"></i>
+                                Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
+                                <i class="ni ni-fat-remove mr-2"></i>
+                                Delete
+                            </button>
+                        </div>
+                      </td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>

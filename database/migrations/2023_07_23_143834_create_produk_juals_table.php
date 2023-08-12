@@ -23,7 +23,7 @@ class CreateProdukJualsTable extends Migration
             $table->integer('stok')->nullable();
             $table->timestamps();
 
-            $table->foreign('id_kategori_jual')->references('id')->on('kategori_jual')->onDelete('cascade');
+            $table->foreign('id_kategori_jual')->references('id')->on('kategori_jual')->onDelete('set null');
         });
     }
 

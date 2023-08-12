@@ -22,7 +22,7 @@ class CreatePembeliansTable extends Migration
             $table->double('bayar', 12, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('cascade');
+            $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('set null');
         });
     }
 

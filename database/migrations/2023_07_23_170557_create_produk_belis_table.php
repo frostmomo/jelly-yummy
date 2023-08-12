@@ -22,7 +22,7 @@ class CreateProdukBelisTable extends Migration
             $table->integer('stok')->nullable();
             $table->timestamps();
 
-            $table->foreign('id_kategori_beli')->references('id')->on('kategori_beli')->onDelete('cascade');
+            $table->foreign('id_kategori_beli')->references('id')->on('kategori_beli')->onDelete('set null');
         });
     }
 

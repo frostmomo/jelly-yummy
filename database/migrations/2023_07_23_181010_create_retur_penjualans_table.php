@@ -20,8 +20,8 @@ class CreateReturPenjualansTable extends Migration
             $table->double('subtotal', 12, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_customer')->references('id')->on('customer')->onDelete('cascade');
-            $table->foreign('id_produk_jual')->references('id')->on('produk_jual')->onDelete('cascade');
+            $table->foreign('id_customer')->references('id')->on('customer')->onDelete('set null');
+            $table->foreign('id_produk_jual')->references('id')->on('produk_jual')->onDelete('set null');
         });
     }
 

@@ -7,7 +7,7 @@
         ['label' => 'User', 'url' => '#'], 
         // ['label' => 'Add', 'url' => '#'], 
     ]; 
-    $activePage = "Add"; 
+    $activePage = "Create"; 
 @endphp 
 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
