@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PenjualanController;
@@ -113,6 +114,22 @@ Route::middleware('auth')->group(function() {
 	Route::get('salesman/edit/{id}', [SalesmanController::class, 'edit'])->name('salesman.edit');
 	Route::put('salesman/update/{id}', [SalesmanController::class, 'update'])->name('salesman.update');
 	Route::get('salesman/delete/{id}', [SalesmanController::class, 'delete'])->name('salesman.delete');
+
+	//Route untuk Customer
+	Route::get('customer', [CustomerController::class, 'index'])->name('customer');
+	Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');
+	Route::post('customer', [CustomerController::class, 'store'])->name('customer.store');
+	Route::get('customer/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+	Route::put('customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
+	Route::get('customer/delete/{id}', [CustomerController::class, 'delete'])->name('customer.delete');
+
+	//Route untuk Supplier
+	Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
+	Route::get('supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+	Route::post('supplier', [SupplierController::class, 'store'])->name('supplier.store');
+	Route::get('supplier/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
+	Route::put('supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
+	Route::get('supplier/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
 
 	//Logout lalu redirect ke halaman login
 	Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

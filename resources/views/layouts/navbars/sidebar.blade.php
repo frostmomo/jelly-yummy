@@ -101,6 +101,16 @@
                                     <i class="ni ni-single-02 text-yellow"></i> {{ __('Salesman') }}
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('customer') }}">
+                                    <i class="ni ni-single-02 text-yellow"></i> {{ __('Customer') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('supplier') }}">
+                                    <i class="ni ni-single-02 text-yellow"></i> {{ __('Supplier') }}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

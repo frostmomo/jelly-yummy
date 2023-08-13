@@ -7,116 +7,61 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //
     public function index()
     {
-        //redirect ke data salesman
-        return view();
+        $customer = Customer::all();
+        return view('pages.customer.index', ['customer' => $customer]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('pages.customer.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //validasi data customer
         $request->validate([
             'nama_customer' => 'required|max:255',
             'alamat_customer' => 'required',
-            'telepon_customer' => 'required|numeric|digits_between:8,20',
+            'telepon_customer' => 'required|numeric|digits_between:8,15',
         ]);
 
-        //store data ke tabel customer
         $customer = new Customer;
-            $customer->nama_customer = ucwords(strtolower($request->nama_customer));
+            $customer->nama_customer = $request->nama_customer;
             $customer->alamat_customer = $request->alamat_customer;
             $customer->telepon_customer = $request->telepon_customer;
         $customer->save();
 
-        //redirect ke halaman data customer
-        return redirect()->route('')
-                        ->with('success','Data customer berhasil ditambahkan');
+        return redirect('customer')->with('success', 'Data customer berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $customer = Customer::find($id);
+        return view('pages.customer.edit', ['customer' => $customer]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //validasi input data edit customer
         $request->validate([
             'nama_customer' => 'required|max:255',
             'alamat_customer' => 'required',
-            'telepon_customer' => 'required|numeric|digits_between:8,20',
+            'telepon_customer' => 'required|numeric|digits_between:8,15',
         ]);
 
-        //cari data customer yang akan diedit
         $customer = Customer::find($id);
-
-        //update data customer
-        $customer->nama_customer = ucwords(strtolower($request->nama_customer));
-        $customer->alamat_customer = $request->alamat_customer;
-        $customer->telepon_customer = $request->telepon_customer;
+            $customer->nama_customer = $request->nama_customer;
+            $customer->alamat_customer = $request->alamat_customer;
+            $customer->telepon_customer = $request->telepon_customer;
         $customer->update();
 
-        return redirect('')->with('success', 'Data Customer Berhasil Diperbaharui');
+        return redirect('customer')->with('success', 'Data customer berhasil diperbaharui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function delete($id)
     {
-        //hapus data customer
-        $customer = Customer::find($id)->delete();
-
-        //
-        return redirect('')->with('success', 'Data Customer Berhasil Dihapus');
+        Customer::find($id)->delete();
+        return redirect('customer')->with('success', 'Data customer berhasil dihapus');
     }
 }
