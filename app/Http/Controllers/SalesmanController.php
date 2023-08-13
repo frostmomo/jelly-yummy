@@ -2,117 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Salesman;
 use Illuminate\Http\Request;
 
 class SalesmanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //
     public function index()
     {
-        //redirect ke data salesman
-        return view();
+        $salesman = Salesman::all();
+        return view('pages.salesman.index', ['salesman' => $salesman]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('pages.salesman.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request) 
     {
-        //validasi data salesman
+        //validasi data salesman yang akan ditambahkan
         $request->validate([
             'nama_salesman' => 'required|max:255',
             'alamat_salesman' => 'required',
         ]);
 
-        //store data ke tabel salesman
+        //store data salesman ke database
         $salesman = new Salesman;
             $salesman->nama_salesman = ucwords(strtolower($request->nama_salesman));
             $salesman->alamat_salesman = $request->alamat_salesman;
         $salesman->save();
 
-        //redirect ke halaman data salesman
-        return redirect()->route('')
-                        ->with('success','Data Salesman berhasil ditambahkan');
+        //redirect ke index salesman
+        return redirect('salesman')->with('success', 'Data salesman berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($id) 
     {
-        //
+        $salesman = Salesman::find($id);
+        return view('pages.salesman.edit', ['salesman' => $salesman]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //validasi input data edit salesman
         $request->validate([
             'nama_salesman' => 'required|max:255',
             'alamat_salesman' => 'required',
         ]);
 
-        //cari data salesman yang akan diedit
         $salesman = Salesman::find($id);
-
-        //update data salesman
-        $salesman->nama_salesman = ucwords(strtolower($request->nama_salesman));
-        $salesman->alamat_salesman = $request->alamat_salesman;
-        $salesman->telepon_salesman = $request->telepon_salesman;
+            $salesman->nama_salesman = $request->nama_salesman;
+            $salesman->alamat_salesman = $request->alamat_salesman;
         $salesman->update();
 
-        return redirect('')->with('success', 'Data Salesman Berhasil Diperbaharui');
+        return redirect('salesman')->with('success', 'Data salesman berhasil diperbaharui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function delete($id)
     {
-        //hapus data salesman
-        $salesman = Salesman::find($id)->delete();
+        Salesman::find($id)->delete();
 
-        //
-        return redirect('')->with('success', 'Data salesman Berhasil Dihapus');
+        return redirect('salesman')->with('success', 'Data salesman berhasil dihapus');
     }
 }

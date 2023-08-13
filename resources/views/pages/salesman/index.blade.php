@@ -1,11 +1,11 @@
 @extends('layouts.app') 
 @section('content') 
 @php 
-    $pageTitle = "User"; 
+    $pageTitle = "Salesman"; 
     $breadcrumbs = [ 
         ['label' => 'Home', 'url' => '#'], 
     ]; 
-        $activePage = "User"; 
+        $activePage = "Salesman"; 
 
 @endphp 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
@@ -16,7 +16,7 @@
         <div class="row">
           <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
             <div class="d-flex justify-content-end">
-              <a href="{{ route('user.create') }}" class="btn btn-primary">Tambah User</i></a>
+              <a href="{{ route('salesman.create') }}" class="btn btn-primary">Tambah Salesman</i></a>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
             <div class="card-header border-0">
               <div class="row align-items-center">
                 <div class="col-10">
-                  <h3 class="mb-0">User</h3>
+                  <h3 class="mb-0">Salesman</h3>
                 </div>
                 <div class="col-2">
                   <form action="{{ route('home') }}" method="GET" class="form-inline">
@@ -53,26 +53,24 @@
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Role</th>
+                    <th scope="col">Nama Salesman</th>
+                    <th scope="col">Alamat Salesman</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                     {{-- For loop here --}}
-                  @forelse ($user as $data)
+                  @forelse ($salesman as $data)
                     <tr>
-                      <td>{{ $data->name }}</td>
-                      <td>{{ $data->email }}</td>
-                      <td>{{ $data->level }}</td>
+                      <td>{{ $data->nama_salesman }}</td>
+                      <td>{{ $data->alamat_salesman }}</td>
                       <td class="text-center">
                         <div class="btn-group" role="group">
-                            <a href="{{ route('user.edit', $data->id) }}" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                            <a href="{{ route('salesman.edit', $data->id) }}" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
                                 <i class="ni ni-ruler-pencil mr-2"></i>
                                 Edit
                             </a>
-                            <a href="{{ route('user.delete', $data->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data user ini?');">
+                            <a href="{{ route('salesman.delete', $data->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data salesman ini?');">
                                 <i class="ni ni-fat-remove mr-2"></i>
                                 Delete
                             </a>

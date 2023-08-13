@@ -16,11 +16,6 @@ class UserController extends Controller
      * @return \Illuminate\View\View
      */
 
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-
     public function index()
     {
         $user = User::all();

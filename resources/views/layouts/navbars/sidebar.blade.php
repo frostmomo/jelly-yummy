@@ -96,11 +96,11 @@
                                     <i class="ni ni-single-02 text-yellow"></i> {{ __('User') }}
                                 </a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a class="nav-link" href="{{ route('salesmans') }}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('salesman') }}">
                                     <i class="ni ni-single-02 text-yellow"></i> {{ __('Salesman') }}
                                 </a>
-                            </li> --}}
+                            </li>
                         </ul>
                     </div>
                 </li>

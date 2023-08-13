@@ -2,12 +2,12 @@
 
 @section('content') 
 @php 
-    $pageTitle = "Buat User"; 
+    $pageTitle = "Edit Salesman"; 
     $breadcrumbs = [ 
-        ['label' => 'User', 'url' => '#'], 
+        ['label' => 'Salesman', 'url' => '#'], 
         // ['label' => 'Add', 'url' => '#'], 
     ]; 
-    $activePage = "Create"; 
+    $activePage = "Edit"; 
 @endphp 
 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
@@ -28,36 +28,25 @@
             @endif
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat User</div>
+                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Edit Salesman</div>
                 </div>
                 <div class="card-body">
                     <!-- User Registration Form -->
-                    <form action="{{ route('user.store') }}" method="POST" id="registrationForm">
+                    <form action="{{ route('salesman.update', $salesman->id) }}" method="post" id="registrationForm">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
-                            <label for="name">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                            <label for="nama_salesman">Nama Salesman<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nama_salesman" name="nama_salesman" value="{{ $salesman->nama_salesman }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="role">Role <span class="text-danger">*</span></label>
-                            <select class="form-control" id="role" name="role" required>
-                                <option value="" selected disabled>Pilih Role</option>
-                                <option value="Admin Kas">Admin Kas</option>
-                                <option value="Admin Penjualan">Admin Penjualan</option>
-                            </select>
+                            <label for="alamat_salesman">Alamat Salesman <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="alamat_salesman" name="alamat_salesman" value="{{ $salesman->alamat_salesman }}" required>
                         </div>
                         <!-- Form Footer -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary">Save</button>
-                            <a href="{{ route('user') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('salesman') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

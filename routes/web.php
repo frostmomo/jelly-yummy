@@ -106,11 +106,13 @@ Route::middleware('auth')->group(function() {
 	Route::put('user/update/{id}', [UserController::class, 'update'])->name('user.update');
 	Route::get('user/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
 
-	//Route untuk Resource SalesmanController
-	Route::resource('salesmans', SalesmanController::class);
-
-	//Route untuk Resource SupplierController
-	Route::resource('suppliers', SupplierController::class);
+	//Route untuk Salesman
+	Route::get('salesman', [SalesmanController::class, 'index'])->name('salesman');
+	Route::get('salesman/create', [SalesmanController::class, 'create'])->name('salesman.create');
+	Route::post('salesman', [SalesmanController::class, 'store'])->name('salesman.store');
+	Route::get('salesman/edit/{id}', [SalesmanController::class, 'edit'])->name('salesman.edit');
+	Route::put('salesman/update/{id}', [SalesmanController::class, 'update'])->name('salesman.update');
+	Route::get('salesman/delete/{id}', [SalesmanController::class, 'delete'])->name('salesman.delete');
 
 	//Logout lalu redirect ke halaman login
 	Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
