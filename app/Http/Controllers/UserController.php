@@ -39,25 +39,48 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|unique:users|max:255',
             'password' => 'required',
-            'password_confirmation' => 'required',
             'role' => 'required',
         ]);
 
-        //cek apakah password dan konfirmasi password sama
-        if($request->password == $request->password_confirmation) {
-            //store data user ke database
-            $user = new User;
-                $user->name = ucwords(strtolower($request->name));
-                $user->email = $request->email;
-                $user->password = Hash::make($request->password);
-                $user->level = $request->role;
-            $user->save();
+        //store data user ke database
+        $user = new User;
+            $user->name = ucwords(strtolower($request->name));
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->level = $request->role;
+        $user->save();
 
-            //redirect ke index user
-            return redirect('')->with('success', 'Data User Berhasil Ditambahkan');
-        };
+        //redirect ke index user
+        return redirect('user')->with('success', 'Data User Berhasil Ditambahkan');
+    }
 
-        //redirect ke index user jika password dan konfirmasi password tidak sama
-        return redirect('')->with('failed', 'Password tidak sama');
+    public function edit($id) 
+    {
+        $user = User::find($id);
+        return view('pages.user.edit', ['user' => $user]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|unique:users|max:255',
+            'role' => 'required',
+        ]);
+
+        $user = User::find($id);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->level = $request->role;
+        $user->update();
+
+        return redirect('user')->with('success', 'Data user berhasil diperbaharui');
+    }
+
+    public function delete($id)
+    {
+        User::find($id)->delete();
+
+        return redirect('user')->with('success', 'Data user berhasil dihapus');
     }
 }

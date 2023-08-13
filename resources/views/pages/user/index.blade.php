@@ -22,6 +22,11 @@
         </div>
       </div>
       <br>
+      @if ($message = Session::get('success'))
+          <div class="alert alert-success">
+            <p>{{ $message }}</p>
+          </div>
+      @endif
       <div class="row">
         <div class="col">
           <div class="card shadow">
@@ -63,14 +68,14 @@
                       <td>{{ $data->level }}</td>
                       <td class="text-center">
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                            <a href="{{ route('user.edit', $data->id) }}" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
                                 <i class="ni ni-ruler-pencil mr-2"></i>
                                 Edit
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
+                            </a>
+                            <a href="{{ route('user.delete', $data->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data user ini?');">
                                 <i class="ni ni-fat-remove mr-2"></i>
                                 Delete
-                            </button>
+                            </a>
                         </div>
                       </td>
                     </tr>

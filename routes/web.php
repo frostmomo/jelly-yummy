@@ -97,18 +97,23 @@ Route::middleware('auth')->group(function() {
 	Route::get('/penjualan', [PenjualanController::class, 'penjualan'])->name('penjualan');
 	Route::get('/produk-beli', [ProdukBeliController::class, 'penjualan'])->name('produk-beli');
 	Route::get('/produk-jual', [ProdukJualController::class, 'penjualan'])->name('produk-jual');
-	//Logout lalu redirect ke halaman login
-	Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 	//Route untuk User
 	Route::get('user', [UserController::class, 'index'])->name('user'); 
 	Route::get('user/create', [UserController::class, 'create'])->name('user.create');
+	Route::post('user', [UserController::class, 'store'])->name('user.store');
+	Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+	Route::put('user/update/{id}', [UserController::class, 'update'])->name('user.update');
+	Route::get('user/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
 
 	//Route untuk Resource SalesmanController
 	Route::resource('salesmans', SalesmanController::class);
 
 	//Route untuk Resource SupplierController
 	Route::resource('suppliers', SupplierController::class);
+
+	//Logout lalu redirect ke halaman login
+	Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 	// Route::middleware('hakakses:Owner')->group(function() {
 	// });
