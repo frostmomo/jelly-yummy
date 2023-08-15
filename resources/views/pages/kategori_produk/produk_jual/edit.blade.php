@@ -22,13 +22,14 @@ $activePage = "Edit";
                     <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Kategori Jual</div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('produk-jual.create') }}" method="POST">
+                    <form action="{{ route('kategori-jual.update', $kategorijual->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="deskripsi">Kategori Jual <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                                    <label for="kategori_jual">Kategori Jual <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="kategori_jual" name="kategori_jual" value="{{ $kategorijual->kategori_jual }}" required>
                                 </div>
                             </div>
                         </div>

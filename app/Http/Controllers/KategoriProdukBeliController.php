@@ -12,15 +12,6 @@ class KategoriProdukBeliController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    // public function index()
-    // {
-    //     return view('');
-    // }
 
     public function create()
     {
@@ -31,25 +22,8 @@ class KategoriProdukBeliController extends Controller
     {
         //validasi data input kategori beli
         $request->validate([
-            'kategori_beli' => 'required',
+            'kategori_beli' => 'required|unique:kategori_beli|max:255',
         ]);
-
-        //get data kategori beli dari database
-        $dataKategoriBeli = KategoriBeli::all();
-        $cek = [];
-
-        //memasukkan data kategori beli ke array cek
-        foreach($dataKategoriBeli as $data)
-        {
-            $cek[] = $data->kategori_beli;
-        }
-
-        //cek apabila kategori beli sudah ada
-        if(in_array($request->kategori_beli, $cek))
-        {
-            //kembali dengan error jika kategori beli yang dimasukkan sudah ada
-            return redirect()->back()->with('failed', 'Kategori beli sudah ada');
-        }
 
         //buat data baru untuk kategori beli jika data belum ada
         $kategoriBeli = new KategoriBeli;
@@ -57,6 +31,32 @@ class KategoriProdukBeliController extends Controller
         $kategoriBeli->save();
 
         //kembali ke menu kategori beli
-        return redirect()->back()->with('success', 'Kategori beli berhasil ditambahkan');
+        return redirect('produk-beli')->with('success', 'Kategori beli berhasil ditambahkan');
+    }
+
+    public function edit($id) 
+    {
+        $kategoribeli = KategoriBeli::find($id);
+        return view('pages.kategori_produk.produk_beli.edit', ['kategoribeli' => $kategoribeli]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'kategori_beli' => 'required|unique:kategori_beli|max:255'
+        ]);
+
+        $kategoribeli = KategoriBeli::find($id);
+            $kategoribeli->kategori_beli = $request->kategori_beli;
+        $kategoribeli->update();
+
+        return redirect('produk-beli')->with('success', 'Kategori Produk Beli berhasil diperbaharui');
+
+    }
+
+    public function delete($id)
+    {
+        KategoriBeli::find($id)->delete();
+        return redirect('produk-beli')->with('success', 'Kategori Produk Beli berhasil dihapus');
     }
 }

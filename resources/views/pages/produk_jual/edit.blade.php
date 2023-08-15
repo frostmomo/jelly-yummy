@@ -17,46 +17,64 @@
 <div class="container-fluid mt--7">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div><br>
+            @endif
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Produk Jual</div>
+                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Edit Produk Jual</div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('produk-jual.create') }}" method="POST">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="jenis">Kategori Jual <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="jenis" name="jenis" required>
-                                        <option value="Pemasukan">Data 1</option>
-                                        <option value="Pengeluaran">Data 2</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="deskripsi">Nama Produk Jual <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="deskripsi">Kode Produk Jual <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="deskripsi">Harga Jual <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="deskripsi">Stok <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                    @foreach($produkjual as $dataprodukjual)
+                        <form action="{{ route('produk-jual.update', $dataprodukjual->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="id_kategori_jual">Kategori Jual <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="id_kategori_jual" name="id_kategori_jual" required>
+                                            <option value="" disabled>Pilih Kategori Jual</option>
+                                            @foreach($kategorijual as $id => $value)
+                                                <option value="{{ $id }}" @if($dataprodukjual->id_kategori_jual == $id) selected @endif>{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama_produk_jual">Nama Produk Jual <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="nama_produk_jual" name="nama_produk_jual" value="{{ $dataprodukjual->nama_produk_jual }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kode_produk_jual">Kode Produk Jual <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="kode_produk_jual" name="kode_produk_jual" maxlength="3" value="{{ $dataprodukjual->kode_produk_jual }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="harga_produksi">Harga Produksi <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="harga_produksi" name="harga_produksi" value="{{ $dataprodukjual->harga_produksi }}" placeholder="Rp." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="harga_jual">Harga Jual <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="harga_jual" name="harga_jual" value="{{ $dataprodukjual->harga_jual }}" placeholder="Rp." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="stok">Stok <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="stok" name="stok" value="{{ $dataprodukjual->stok }}" placeholder="0" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Form Footer -->
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <a href="{{ route('produk-jual') }}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    </form>
+                            <!-- Form Footer -->
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <a href="{{ route('produk-jual') }}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    @endforeach
                 </div>
             </div>
         </div>

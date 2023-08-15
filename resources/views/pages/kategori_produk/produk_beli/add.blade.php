@@ -17,18 +17,27 @@
 <div class="container-fluid mt--7">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div><br>
+            @endif
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Kategori Beli</div>
+                    <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Kategori Produk Beli</div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('produk-beli.create') }}" method="POST">
+                    <form action="{{ route('kategori-beli.store') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="deskripsi">Kategori Beli <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                                    <label for="kategori_beli">Kategori Beli <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="kategori_beli" name="kategori_beli" value="{{ old('kategori_beli') }}" required>
                                 </div>
                             </div>
                         </div>

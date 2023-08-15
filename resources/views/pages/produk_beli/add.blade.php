@@ -23,32 +23,34 @@
                 </div>
                 <div class="card-body">
                     <!-- Journal Entry Form -->
-                    <form action="{{ route('produk-beli.create') }}" method="POST">
+                    <form action="{{ route('produk-beli.store') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="jenis">Kategori Beli <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="jenis" name="jenis" required>
-                                        <option value="Pemasukan">Data 1</option>
-                                        <option value="Pengeluaran">Data 2</option>
+                                    <label for="kategori_beli">Kategori Beli <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="kategori_beli" name="kategori_beli" required>
+                                        <option value="" selected disabled>Pilih Kategori Beli</option>
+                                        @foreach($kategoribeli as $id => $value)
+                                            <option value="{{ $id }}">{{ $value }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deskripsi">Nama Produk Beli <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                                    <label for="nama_produk_beli">Nama Produk Beli <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="nama_produk_beli" name="nama_produk_beli" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deskripsi">Kode Produk Beli <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                                    <label for="kode_produk_beli">Kode Produk Beli <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="kode_produk_beli" maxlength="3" name="kode_produk_beli" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deskripsi">Harga Beli <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                                    <label for="harga_beli">Harga Beli <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="harga_beli" name="harga_beli" placeholder="Rp." required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deskripsi">Stok <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                                    <label for="stok">Stok <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="stok" name="stok" placeholder="0" required>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +58,7 @@
                         <!-- Form Footer -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary">Save</button>
-                            <a href="{{ route('produk-beli') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('produk-beli.store') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>
