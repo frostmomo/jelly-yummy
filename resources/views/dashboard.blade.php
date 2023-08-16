@@ -97,8 +97,6 @@
                             </div>
                           </div>
                         </div>
-                        <div class="chart">
-                            {{-- Do something here --}}
                         </div>
                     </div>
                 </div>
@@ -112,4 +110,42 @@
 @push('js')
     <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
     <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script>
+    
+    <script>
+        // Initialize and configure the first chart
+        var ctx1 = document.getElementById('chart-sales-light-1').getContext('2d');
+        var chart1 = new Chart(ctx1, {
+            type: 'bar', // Change to the desired chart type
+            data: {
+                // Add your chart data here
+            },
+            options: {
+                // Configure chart options
+            }
+        });
+        
+        // Initialize and configure the second chart
+        var ctx2 = document.getElementById('chart-sales-light-2').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            type: 'line', // Change to the desired chart type
+            data: {
+                // Add your chart data here
+            },
+            options: {
+                // Configure chart options
+            }
+        });
+        
+        // Initialize and configure the third chart
+        var ctx3 = document.getElementById('chart-sales-light-3').getContext('2d');
+        var chart3 = new Chart(ctx3, {
+            type: 'pie', // Change to the desired chart type
+            data: {
+                // Add your chart data here
+            },
+            options: {
+                // Configure chart options
+            }
+        });
+    </script>
 @endpush

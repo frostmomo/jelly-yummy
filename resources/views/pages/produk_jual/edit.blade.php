@@ -15,8 +15,8 @@
 <br>
 
 <div class="container-fluid mt--7">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
+    <div class="row" style="padding-top: 88px">
+        <div class="col">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

@@ -15,8 +15,8 @@
 <br>
 
 <div class="container-fluid mt--7">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
+    <div class="row" style="padding-top: 88px">
+        <div class="col">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <label for="telepon_supplier">Telepon Supplier<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="telepon_supplier" name="telepon_supplier" maxlength="15" value="{{ old('telepon_supplier') }}" required>
+                            <input type="tel" pattern="[0-9]*" class="form-control" id="telepon_supplier" name="telepon_supplier" maxlength="15" value="{{ old('telepon_supplier') }}" required>
                         </div>
                         <!-- Form Footer -->
                         <div class="text-center mt-4">
@@ -60,25 +60,21 @@
 
 <!-- Add the necessary JavaScript to handle password mismatch -->
 @push('js')
-    <script>
-        const passwordField = document.getElementById('password');
-        const confirmPasswordField = document.getElementById('password_confirmation');
-        const passwordMismatchWarning = document.getElementById('passwordMismatch');
+<script>
+    const teleponSupplierField = document.getElementById('telepon_supplier');
+    
+    teleponSupplierField.addEventListener('input', function(event) {
+        // Remove non-numeric characters from the input value
+        this.value = this.value.replace(/\D/g, '');
+    });
 
-        confirmPasswordField.addEventListener('keyup', function() {
-            if (passwordField.value !== confirmPasswordField.value) {
-                passwordMismatchWarning.classList.remove('d-none');
-            } else {
-                passwordMismatchWarning.classList.add('d-none');
-            }
-        });
-
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            if (passwordField.value !== confirmPasswordField.value) {
-                event.preventDefault();
-                passwordMismatchWarning.classList.remove('d-none');
-            }
-        });
-    </script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        const teleponValue = teleponSupplierField.value;
+        if (teleponValue !== '' && isNaN(teleponValue)) {
+            event.preventDefault();
+            alert('Telepon Supplier must contain only numeric characters.');
+        }
+    });
+</script>
 @endpush
 @endsection

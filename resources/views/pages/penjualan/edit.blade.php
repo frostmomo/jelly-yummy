@@ -15,8 +15,8 @@
 <br>
 
 <div class="container-fluid mt--7">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
+    <div class="row" style="padding-top: 88px">
+        <div class="col">
             <div class="card shadow">
                 <div class="card-header border-0">
                     <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Penjualan</div>

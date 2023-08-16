@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 
 class UserController extends Controller
 {
@@ -27,7 +28,7 @@ class UserController extends Controller
         return view('pages.user.create');
     }
 
-    public function store(Request $request) 
+    public function store(Request $request)
     {
         //validasi data user yang akan ditambahkan
         $request->validate([
@@ -39,17 +40,17 @@ class UserController extends Controller
 
         //store data user ke database
         $user = new User;
-            $user->name = ucwords(strtolower($request->name));
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->level = $request->role;
+        $user->name = ucwords(strtolower($request->name));
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->level = $request->role;
         $user->save();
 
         //redirect ke index user
         return redirect('user')->with('success', 'Data User Berhasil Ditambahkan');
     }
 
-    public function edit($id) 
+    public function edit($id)
     {
         $user = User::find($id);
         return view('pages.user.edit', ['user' => $user]);
@@ -64,9 +65,9 @@ class UserController extends Controller
         ]);
 
         $user = User::find($id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->level = $request->role;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->level = $request->role;
         $user->update();
 
         return redirect('user')->with('success', 'Data user berhasil diperbaharui');
@@ -77,5 +78,16 @@ class UserController extends Controller
         User::find($id)->delete();
 
         return redirect('user')->with('success', 'Data user berhasil dihapus');
+    }
+
+    public function downloadPdf()
+    {
+        $users = User::all();
+
+        view()->share('users.pdf', $users);
+
+        $pdf = PDF::loadView('pages.user.pdf', ['users' => $users]);
+
+        return $pdf->download('pages.user.pdf');
     }
 }

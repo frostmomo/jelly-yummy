@@ -13,8 +13,8 @@
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
 
 <div class="container-fluid mt--7" style="padding-top: 50px">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
+    <div class="row" style="padding-top: 88px">
+        <div class="col">
             <div class="card shadow">
                 <div class="card-header border-0">
                     <div class="text-muted text-center mt-2 mb-3" style="font-weight: bold">Buat Cash</div>

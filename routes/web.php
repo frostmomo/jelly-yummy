@@ -94,7 +94,7 @@ Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
 // 	Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
 // // });
 
-Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function () {
 	Route::get('/jurnal', [JurnalController::class, 'jurnal'])->name('jurnal');
 	Route::get('/penjualan', [PenjualanController::class, 'penjualan'])->name('penjualan');
 
@@ -105,13 +105,13 @@ Route::middleware('auth')->group(function() {
 	Route::get('produk-jual/edit/{id}', [ProdukJualController::class, 'edit'])->name('produk-jual.edit');
 	Route::put('produk-jual/update/{id}', [ProdukJualController::class, 'update'])->name('produk-jual.update');
 	Route::get('produk-jual/delete/{id}', [ProdukJualController::class, 'delete'])->name('produk-jual.delete');
-		//Route untuk Kategori jual
-		Route::get('kategori-jual/create', [KategoriProdukJualController::class, 'create'])->name('kategori-jual.create');
-		Route::post('kategori-jual/store', [KategoriProdukJualController::class, 'store'])->name('kategori-jual.store');
-		Route::get('kategori-jual/edit/{id}', [KategoriProdukJualController::class, 'edit'])->name('kategori-jual.edit');
-		Route::put('kategori-jual/update/{id}', [KategoriProdukJualController::class, 'update'])->name('kategori-jual.update');
-		Route::get('kategori-jual/delete/{id}', [KategoriProdukJualController::class, 'delete'])->name('kategori-jual.delete');
-	
+	//Route untuk Kategori jual
+	Route::get('kategori-jual/create', [KategoriProdukJualController::class, 'create'])->name('kategori-jual.create');
+	Route::post('kategori-jual/store', [KategoriProdukJualController::class, 'store'])->name('kategori-jual.store');
+	Route::get('kategori-jual/edit/{id}', [KategoriProdukJualController::class, 'edit'])->name('kategori-jual.edit');
+	Route::put('kategori-jual/update/{id}', [KategoriProdukJualController::class, 'update'])->name('kategori-jual.update');
+	Route::get('kategori-jual/delete/{id}', [KategoriProdukJualController::class, 'delete'])->name('kategori-jual.delete');
+
 	//Route untuk Produk beli
 	Route::get('produk-beli', [ProdukBeliController::class, 'index'])->name('produk-beli');
 	Route::get('produk-beli/create', [ProdukBeliController::class, 'create'])->name('produk-beli.create');
@@ -119,20 +119,21 @@ Route::middleware('auth')->group(function() {
 	Route::get('produk-beli/edit/{id}', [ProdukBeliController::class, 'edit'])->name('produk-beli.edit');
 	Route::put('produk-beli/update/{id}', [ProdukBeliController::class, 'update'])->name('produk-beli.update');
 	Route::get('produk-beli/delete/{id}', [ProdukBeliController::class, 'delete'])->name('produk-beli.delete');
-		//Route untuk Kategori beli
-		Route::get('kategori-beli/create', [KategoriProdukBeliController::class, 'create'])->name('kategori-beli.create');
-		Route::post('kategori-beli/store', [KategoriProdukBeliController::class, 'store'])->name('kategori-beli.store');
-		Route::get('kategori-beli/edit/{id}', [KategoriProdukBeliController::class, 'edit'])->name('kategori-beli.edit');
-		Route::put('kategori-beli/update/{id}', [KategoriProdukBeliController::class, 'update'])->name('kategori-beli.update');
-		Route::get('kategori-beli/delete/{id}', [KategoriProdukBeliController::class, 'delete'])->name('kategori-beli.delete');
+	//Route untuk Kategori beli
+	Route::get('kategori-beli/create', [KategoriProdukBeliController::class, 'create'])->name('kategori-beli.create');
+	Route::post('kategori-beli/store', [KategoriProdukBeliController::class, 'store'])->name('kategori-beli.store');
+	Route::get('kategori-beli/edit/{id}', [KategoriProdukBeliController::class, 'edit'])->name('kategori-beli.edit');
+	Route::put('kategori-beli/update/{id}', [KategoriProdukBeliController::class, 'update'])->name('kategori-beli.update');
+	Route::get('kategori-beli/delete/{id}', [KategoriProdukBeliController::class, 'delete'])->name('kategori-beli.delete');
 
 	//Route untuk User
-	Route::get('user', [UserController::class, 'index'])->name('user'); 
+	Route::get('user', [UserController::class, 'index'])->name('user');
 	Route::get('user/create', [UserController::class, 'create'])->name('user.create');
 	Route::post('user', [UserController::class, 'store'])->name('user.store');
 	Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
 	Route::put('user/update/{id}', [UserController::class, 'update'])->name('user.update');
 	Route::get('user/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+	Route::get('download-pdf', [UserController::class, 'downloadPdf'])->name('download-pdf');
 
 	//Route untuk Salesman
 	Route::get('salesman', [SalesmanController::class, 'index'])->name('salesman');

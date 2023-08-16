@@ -18,10 +18,10 @@ $breadcrumbs = [
           </div>
     @endif
     <!-- Card stats -->
-    <div class="row">
+    <div class="row" style="padding-top: 20px">
       <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
         <div class="d-flex justify-content-end">
-          <a href="{{ route('kategori-jual.create') }}" class="btn btn-primary">Buat Kategori Jual<i class="fas fa-book-open ml-2"></i></a>
+          <a href="{{ route('kategori-jual.create') }}" class="btn btn-primary">Buat Kategori Jual</a>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@ $breadcrumbs = [
   <div class="row">
     <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
         <div class="d-flex justify-content-end">
-          <a href="{{ route('produk-jual.create') }}" class="btn btn-primary">Buat Produk Jual<i class="fas fa-book-open ml-2"></i></a>
+          <a href="{{ route('produk-jual.create') }}" class="btn btn-primary">Buat Produk Jual</a>
         </div>
       </div>
     <div class="col">
