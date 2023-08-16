@@ -56,7 +56,7 @@ $activePage = "Penjualan";
                     <div class="btn-group" role="group">
                       <a href="{{ route('penjualan.detail', $datapenjualan->id) }}" class="btn btn-sm btn-outline-primary" onclick="detailEntry()">
                         <i class="fas fa-info-circle mr-2"></i> Detail
-                    </a>
+                      </a>
                       <a href="" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
                         <i class="ni ni-ruler-pencil mr-2"></i> Edit </button>
                       </a>

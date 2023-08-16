@@ -197,4 +197,38 @@ class PenjualanController extends Controller
             ]
         );
     }
+
+    public function detail_penjualan($id)
+    {
+        $detailpenjualan = PenjualanDetail::join('penjualan', 'penjualan.id', '=', 'penjualan_detail.id_penjualan')
+            ->join('produk_jual', 'produk_jual.id', '=', 'penjualan_detail.id_produk_jual')
+            ->join('kategori_jual', 'kategori_jual.id', '=', 'produk_jual.id_kategori_jual')
+            ->where('penjualan_detail.id', '=', $id)
+            ->get([
+                'penjualan_detail.id', 'produk_jual.nama_produk_jual', 'penjualan_detail.qty',
+                'penjualan_detail.total', 'kategori_jual.kategori_jual'
+            ]);
+
+        return view(
+            'pages.penjualan.detail_penjualan.edit',
+            [
+                'detailpenjualan' => $detailpenjualan,
+            ]
+        );
+    }
+
+    public function update_detail_penjualan(Request $request, $id)
+    {
+        $request->validate([
+            'qty' => 'required|numeric',
+            'total' => 'required|numeric',
+        ]);
+
+        $detailpenjualan = PenjualanDetail::find($id);
+        $detailpenjualan->qty = $request->qty;
+        $detailpenjualan->total = $request->total;
+        $detailpenjualan->update();
+
+        return redirect('penjualan')->with('success', 'Data detail penjualan berhasil diperbaharui');
+    }
 }
