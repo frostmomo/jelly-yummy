@@ -104,7 +104,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
 	Route::post('penjualan/store', [PenjualanController::class, 'store'])->name('penjualan.store');
 	Route::get('penjualan/detail/{id}', [PenjualanController::class, 'detail'])->name('penjualan.detail');
-	Route::get('penjualan/detail/edit/{id}', [PenjualanController::class, 'detail_penjualan'])->name('penjualan.detail.edit');
+	Route::get('penjualan/detail/edit/{id}/{idpenjualan}', [PenjualanController::class, 'detail_penjualan'])->name('penjualan.detail.edit');
 	Route::put('penjualan/detail/update/{id}', [PenjualanController::class, 'update_detail_penjualan'])->name('penjualan.detail.update');
 
 	//Route untuk Pembelian
