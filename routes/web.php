@@ -102,6 +102,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('penjualan', [PenjualanController::class, 'index'])->name('penjualan');
 	Route::get('penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
 	Route::post('penjualan/store', [PenjualanController::class, 'store'])->name('penjualan.store');
+	Route::get('penjualan/detail/{id}', [PenjualanController::class, 'detail'])->name('penjualan.detail');
+
 
 	//Route untuk Produk jual
 	Route::get('produk-jual', [ProdukJualController::class, 'index'])->name('produk-jual');

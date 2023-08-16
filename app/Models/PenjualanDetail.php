@@ -18,11 +18,13 @@ class PenjualanDetail extends Model
         'total',
     ];
 
-    public function Penjualan() {
+    public function Penjualan()
+    {
         return $this->belongsTo(Penjualan::class, 'id_penjualan');
     }
 
-    public function ProdukJual() {
-        return $this->belongsTo(ProdukJual::class, 'id_produk_jual');
+    public function ProdukJual()
+    {
+        return $this->belongsTo(ProdukJual::class, 'id_produk_jual', 'id');
     }
 }

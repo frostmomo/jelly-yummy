@@ -31,15 +31,22 @@ class PenjualanController extends Controller
     public function index()
     {
         // $penjualan = Penjualan::all();
-        $penjualan = Penjualan::join('users', 'users.id', '=' ,'penjualan.id_user')
+        $penjualan = Penjualan::join('users', 'users.id', '=', 'penjualan.id_user')
             ->join('customer', 'customer.id', '=', 'penjualan.id_customer')
             ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
-            ->get([
-                'penjualan.id', 'penjualan.total_item', 'penjualan.subtotal', 'penjualan.diskon', 'penjualan.created_at',
-                'users.name', 'customer.nama_customer', 'salesman.nama_salesman',
-            ]);
+            ->select(
+                'penjualan.id',
+                'penjualan.total_item',
+                'penjualan.subtotal',
+                'penjualan.diskon',
+                'penjualan.created_at',
+                'users.name',
+                'customer.nama_customer',
+                'salesman.nama_salesman',
+            )->paginate(25);
 
-        return view('pages.penjualan.index',
+        return view(
+            'pages.penjualan.index',
             ['penjualan' => $penjualan]
         );
     }
@@ -59,8 +66,8 @@ class PenjualanController extends Controller
                 'kategori_jual.kategori_jual',
             ]);
 
-            // dd($produkjual);
-        return view('pages.penjualan.add',[
+        // dd($produkjual);
+        return view('pages.penjualan.add', [
             'produkjual' => $produkjual,
             'customer' => $customer,
             'salesman' => $salesman,
@@ -86,16 +93,14 @@ class PenjualanController extends Controller
         $penjualan->id_salesman = $request->id_salesman;
         $penjualan->save();
 
-        if(!is_null($request->qty_1))
-        {
+        if (!is_null($request->qty_1)) {
             $produkjual_1 = ProdukJual::find($request->id_produk_1);
 
             $penjualanDetail = new PenjualanDetail;
             $penjualanDetail->id_penjualan = $penjualan->id;
             $penjualanDetail->id_produk_jual = $request->id_produk_1;
 
-            if(($produkjual_1->stok - $request->qty_1) < 0)
-            {
+            if (($produkjual_1->stok - $request->qty_1) < 0) {
                 return redirect('penjualan.create')->with('failed', 'Stok barang tidak mencukupi');
             }
 
@@ -106,19 +111,17 @@ class PenjualanController extends Controller
             $penjualanDetail->save();
         }
 
-        if(!is_null($request->qty_2))
-        {
+        if (!is_null($request->qty_2)) {
             $produkjual_2 = ProdukJual::find($request->id_produk_2);
 
             $penjualanDetail = new PenjualanDetail;
             $penjualanDetail->id_penjualan = $penjualan->id;
             $penjualanDetail->id_produk_jual = $request->id_produk_2;
 
-            if(($produkjual_2->stok - $request->qty_2) < 0)
-            {
+            if (($produkjual_2->stok - $request->qty_2) < 0) {
                 return redirect('penjualan.create')->with('failed', 'Stok barang tidak mencukupi');
             }
-            
+
             $penjualanDetail->qty = $request->qty_2;
             $produkjual_2->stok = $produkjual_2->stok - $request->qty_2;
             $penjualanDetail->total = $request->qty_2 * $produkjual_2->harga_jual;
@@ -126,19 +129,17 @@ class PenjualanController extends Controller
             $penjualanDetail->save();
         }
 
-        if(!is_null($request->qty_3))
-        {
+        if (!is_null($request->qty_3)) {
             $produkjual_3 = ProdukJual::find($request->id_produk_3);
 
             $penjualanDetail = new PenjualanDetail;
             $penjualanDetail->id_penjualan = $penjualan->id;
             $penjualanDetail->id_produk_jual = $request->id_produk_3;
 
-            if(($produkjual_3->stok - $request->qty_3) < 0)
-            {
+            if (($produkjual_3->stok - $request->qty_3) < 0) {
                 return redirect('penjualan/create')->with('failed', 'Stok barang tidak mencukupi');
             }
-            
+
             $penjualanDetail->qty = $request->qty_3;
             $produkjual_3->stok = $produkjual_3->stok - $request->qty_3;
             $penjualanDetail->total = $request->qty_3 * $produkjual_3->harga_jual;
@@ -155,8 +156,7 @@ class PenjualanController extends Controller
 
         $penjualan->subtotal = $discountedTotal;
 
-        if($request->tunai == 0)
-        {
+        if ($request->tunai == 0) {
             $piutang = new Piutang;
             $piutang->id_penjualan = $penjualan->id;
             $piutang->bayar = $discountedTotal;
@@ -164,7 +164,16 @@ class PenjualanController extends Controller
         }
 
         $penjualan->save();
-        
+
         return redirect('penjualan')->with('success', 'Penjualan berhasil ditambahkan');
+    }
+
+    public function detail($id)
+    {
+        $penjualan = Penjualan::with('Salesman', 'Customer', 'PenjualanDetail', 'PenjualanDetail.ProdukJual')->find($id);
+        return view(
+            'pages.penjualan.detail',
+            ['penjualan' => $penjualan]
+        );
     }
 }

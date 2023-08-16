@@ -95,7 +95,6 @@
                             </div>
                             @php $i++ @endphp
                         @endforeach
-                        </div>
                         <div class="form-group">
                             <label for="diskon">Diskon % <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="diskon" name="diskon" placeholder="Masukkan hanya angka">
@@ -108,11 +107,11 @@
                                 <option value="0">Tidak</option>
                             </select>
                         </div>
-                        <!-- Form Footer -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary">Save</button>
                             <a href="{{ route('penjualan') }}" class="btn btn-secondary">Cancel</a>
-                        </div>
+                        </div>    
+                    </div>
                     </form>
                 </div>
             </div>

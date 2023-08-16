@@ -20,23 +20,28 @@ class Penjualan extends Model
         'diskon',
     ];
 
-    public function User() {
+    public function User()
+    {
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function Customer() {
-        return $this->belongsTo(Customer::class, 'id_customer');
+    public function Customer()
+    {
+        return $this->belongsTo(Customer::class, 'id_customer', 'id');
     }
 
-    public function Salesman() {
-        return $this->belongsTo(Salesman::class, 'id_salesman');
+    public function Salesman()
+    {
+        return $this->belongsTo(Salesman::class, 'id_salesman', 'id');
     }
 
-    public function PenjualanDetail() {
-        return $this->hasMany(PenjualanDetail::class, 'id_penjualan');
+    public function PenjualanDetail()
+    {
+        return $this->hasMany(PenjualanDetail::class, 'id_penjualan', 'id');
     }
 
-    public function Piutang() {
+    public function Piutang()
+    {
         return $this->hasMany(Piutang::class, 'id_penjualan');
     }
 }
