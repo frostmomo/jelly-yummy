@@ -214,7 +214,7 @@ class PenjualanController extends Controller
         );
     }
 
-    public function detail_penjualan($id)
+    public function detail_penjualan($id, $idpenjualan)
     {
         $detailpenjualan = PenjualanDetail::join('penjualan', 'penjualan.id', '=', 'penjualan_detail.id_penjualan')
             ->join('produk_jual', 'produk_jual.id', '=', 'penjualan_detail.id_produk_jual')
@@ -222,28 +222,57 @@ class PenjualanController extends Controller
             ->where('penjualan_detail.id', '=', $id)
             ->get([
                 'penjualan_detail.id', 'produk_jual.nama_produk_jual', 'penjualan_detail.qty',
-                'penjualan_detail.total', 'kategori_jual.kategori_jual'
+                'penjualan_detail.id_produk_jual', 'kategori_jual.kategori_jual',
             ]);
+        
+        // $idpenjualan = $idpenjualan;
 
         return view(
             'pages.penjualan.detail_penjualan.edit',
             [
                 'detailpenjualan' => $detailpenjualan,
+                'idpenjualan' => $idpenjualan,
             ]
         );
     }
 
     public function update_detail_penjualan(Request $request, $id)
     {
+        // dd($request);
         $request->validate([
             'qty' => 'required|numeric',
-            'total' => 'required|numeric',
         ]);
 
+        $produkjual = ProdukJual::find($request->id_produk_jual);
+
         $detailpenjualan = PenjualanDetail::find($id);
+
+        $oldQty = $detailpenjualan->qty;
+        $newQty = $request->qty;
+
+        $stok = $produkjual->stok + ($oldQty - $newQty);
+
+        if($stok < 0)
+        {
+            return redirect()->back()->with('failed', 'Stok barang tidak mencukupi');
+        }
+
         $detailpenjualan->qty = $request->qty;
-        $detailpenjualan->total = $request->total;
+        $detailpenjualan->total = $produkjual->harga_jual * $request->qty;
         $detailpenjualan->update();
+
+        $produkjual->stok = $stok;
+        $produkjual->update();
+
+        $penjualan = Penjualan::find($request->id_penjualan);
+        $penjualan->total_item = PenjualanDetail::where('id_penjualan', '=', $request->id_penjualan)->count();
+
+        $subtotal = PenjualanDetail::where('id_penjualan', '=', $request->id_penjualan)->sum('total');
+
+        $discountedTotal = $subtotal - (($subtotal * $penjualan->diskon / 100));
+
+        $penjualan->subtotal = $discountedTotal;
+        $penjualan->update();
 
         return redirect('penjualan')->with('success', 'Data detail penjualan berhasil diperbaharui');
     }

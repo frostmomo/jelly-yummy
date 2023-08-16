@@ -26,6 +26,13 @@
                     </ul>
                 </div><br>
             @endif
+
+            @if ($message = Session::get('failed'))
+                <div class="alert alert-danger">
+                    <p>{{ $message }}</p>
+                </div>
+            @endif
+
             <div class="card shadow">
                 <div class="card-header text-center">
                     Detail Penjualan
@@ -38,7 +45,15 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="nama_produk">Nama Produk Jual:</label>
+                                        <label for="id_penjualan">ID Penjualan</label>
+                                        <input type="text" class="form-control" id="id_penjualan" name="id_penjualan" value="{{ $idpenjualan }}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_produk_jual">ID Produk Jual</label>
+                                        <input type="text" class="form-control" id="id_produk_jual" name="id_produk_jual" value="{{ $data->id_produk_jual }}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama_produk_jual">Nama Produk Jual:</label>
                                         <input type="text" class="form-control" id="nama_produk_jual" name="nama_produk_jual" value="{{ $data->nama_produk_jual }}" readonly>
                                     </div>
                                     <div class="form-group">
@@ -48,10 +63,6 @@
                                     <div class="form-group">
                                         <label for="qty">Jumlah:</label>
                                         <input type="number" class="form-control" id="qty" name="qty"  value="{{ $data->qty }}" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="total">Total Harga:</label>
-                                        <input type="number" class="form-control" id="total" name="total" value="{{ $data->total }}" required>
                                     </div>
                                 </div>
                             </div>
