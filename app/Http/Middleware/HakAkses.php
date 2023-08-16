@@ -20,6 +20,6 @@ class HakAkses
         if(in_array($request->user()->level, $level)) {
             return $next($request);
         }
-        return redirect()->back();
+        return redirect('home')->with('failed', 'Anda tidak meemiliki akses untuk fitur ini');
     }
 }
