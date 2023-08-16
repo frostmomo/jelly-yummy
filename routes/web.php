@@ -15,6 +15,7 @@ use App\Http\Controllers\ProdukBeliController;
 use App\Http\Controllers\ProdukJualController;
 use App\Http\Controllers\KategoriProdukBeliController;
 use App\Http\Controllers\KategoriProdukJualController;
+use App\Models\Penjualan;
 use App\Models\ProdukBeli;
 
 /*
@@ -96,7 +97,11 @@ Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
 
 Route::middleware('auth')->group(function () {
 	Route::get('/jurnal', [JurnalController::class, 'jurnal'])->name('jurnal');
-	Route::get('/penjualan', [PenjualanController::class, 'penjualan'])->name('penjualan');
+
+	//Route untuk Penjualan
+	Route::get('penjualan', [PenjualanController::class, 'index'])->name('penjualan');
+	Route::get('penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
+	Route::post('penjualan/store', [PenjualanController::class, 'store'])->name('penjualan.store');
 
 	//Route untuk Produk jual
 	Route::get('produk-jual', [ProdukJualController::class, 'index'])->name('produk-jual');

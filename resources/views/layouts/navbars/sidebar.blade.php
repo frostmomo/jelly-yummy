@@ -55,10 +55,27 @@
                         <i class="fa fa-book text-yellow"></i> {{ __('Jurnal') }}
                     </a>
                 </li>
+            </ul>
+            <hr class="my-3">
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('penjualan') }}">
-                        <i class="fa fa-shopping-cart text-yellow"></i> {{ __('Penjualan') }}
+                    <a class="nav-link" data-toggle="collapse" href="#transaksi-collapse" role="button" aria-expanded="false" aria-controls="transaksi-collapse">
+                        <i class="fa fa-folder text-yellow"></i> {{ __('Transaksi') }}
                     </a>
+                    <div class="collapse" id="transaksi-collapse">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('penjualan') }}">
+                                    <i class="fa fa-shopping-cart text-yellow"></i> {{ __('Penjualan') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fa fa-shopping-cart text-yellow"></i> {{ __('Pembelian') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
             <hr class="my-3">
