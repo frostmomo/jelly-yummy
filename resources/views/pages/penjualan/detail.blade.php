@@ -22,42 +22,72 @@
                     Detail Penjualan
                 </div>
                 <div class="card-body">
+                    @foreach($penjualan as $datapenjualan)
+                        <div class="form-group">
+                            <label for="user">Dibuat Oleh:</label>
+                            <input type="text" class="form-control" value="{{ $datapenjualan->name }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_customer">Nama Customer:</label>
+                            <input type="text" class="form-control" value="{{ $datapenjualan->nama_customer }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_salesman">Nama Salesman:</label>
+                            <input type="text" class="form-control" value="{{ $datapenjualan->nama_salesman }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="diskon">Diskon %:</label>
+                            <input type="text" class="form-control" value="{{ $datapenjualan->diskon }}%" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tunai">Piutang:</label>
+                            <input type="text" class="form-control" value="{{ $datapenjualan->bayar }}" readonly>
+                        </div>
+                    @endforeach
                     <div class="form-group">
-                        <label for="id_customer">Nama Customer:</label>
-                        <input type="text" class="form-control" value="{{ $penjualan->Customer->nama_customer }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_salesman">Nama Salesman:</label>
-                        <input type="text" class="form-control" value="{{ $penjualan->Salesman->nama_salesman }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_produk">Produk Jual:</label>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nama Produk</th>
-                                    <th>Harga</th>
-                                    <th>Jumlah Item</th>
+                        <label for="id_produk">Detail Penjualan:</label>
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-flush">
+                              <thead class="thead-light">
+                                <tr class="text-center">
+                                  <th scope="col">Nama Produk Jual</th>
+                                  <th scope="col">Kategori Jual</th>
+                                  <th scope="col">Jumlah</th>
+                                  <th scope="col">Total Harga</th>
+                                  <th scope="col">Action</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($penjualan->PenjualanDetail as $penjualanDetail)
-                                <tr>
-                                    <td>{{ $penjualanDetail->ProdukJual->nama_produk ?? 'N/A' }}</td>
-                                    <td>{{ $penjualanDetail->ProdukJual->harga_jual ?? 0 }}</td>
-                                    <td>{{ $penjualanDetail->qty ?? 0 }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="form-group">
-                        <label for="diskon">Diskon %:</label>
-                        <input type="text" class="form-control" value="{{ $penjualan->diskon }}%" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="tunai">Tunai:</label>
-                        <input type="text" class="form-control" value="{{ $penjualan->tunai ? 'Ya' : 'Tidak' }}" readonly>
+                              </thead>
+                              <tbody class="list">
+                                <!-- Replace with dynamic data using a loop -->
+                                @forelse($detailpenjualan as $datadetail)
+                                  <tr class="text-center">
+                                    <td>{{ $datadetail->nama_produk_jual }}</td>
+                                    <td>{{ $datadetail->kategori_jual }}</td>
+                                    <td>{{ $datadetail->qty }}</td>
+                                    <td>{{ $datadetail->total }}</td>
+                                    <td class="text-center">
+                                      <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="detailEntry()">
+                                          <i class="fas fa-info-circle mr-2"></i>
+                                          <!-- Bootstrap icon for detail --> Detail </button>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
+                                          <i class="ni ni-ruler-pencil mr-2"></i> Edit </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
+                                          <i class="ni ni-fat-remove mr-2"></i> Delete </button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                @empty
+                                  <tr class="text-center">
+                                    <td colspan="7">
+                                      Tidak ada data
+                                    </td>
+                                  </tr>
+                                @endforelse
+                                <!-- End loop -->
+                              </tbody>
+                            </table>
+                          </div>
                     </div>
                     <div class="text-center mt-4">
                         <a href="{{ route('penjualan') }}" class="btn btn-secondary">Kembali</a>

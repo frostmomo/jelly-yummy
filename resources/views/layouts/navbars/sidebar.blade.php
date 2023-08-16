@@ -70,7 +70,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('pembelian') }}">
                                     <i class="fa fa-shopping-cart text-yellow"></i> {{ __('Pembelian') }}
                                 </a>
                             </li>

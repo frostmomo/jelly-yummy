@@ -9,7 +9,7 @@ class PembelianDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'pembelian_detal';
+    protected $table = 'pembelian_detail';
 
     protected $fillable = [
         'id_pembelian',

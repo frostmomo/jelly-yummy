@@ -170,10 +170,31 @@ class PenjualanController extends Controller
 
     public function detail($id)
     {
-        $penjualan = Penjualan::with('Salesman', 'Customer', 'PenjualanDetail', 'PenjualanDetail.ProdukJual')->find($id);
+        $penjualan = Penjualan::join('users', 'users.id', '=', 'penjualan.id_user')
+            ->join('customer', 'customer.id', '=', 'penjualan.id_customer')
+            ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
+            ->join('piutang', 'piutang.id_penjualan', '=', 'penjualan.id')
+            ->where('penjualan.id', '=', $id)
+            ->get([
+                'penjualan.id', 'users.name', 'customer.nama_customer', 'salesman.nama_salesman',
+                'penjualan.total_item', 'penjualan.subtotal', 'penjualan.diskon', 'piutang.bayar',
+            ]);
+
+        $detailpenjualan = PenjualanDetail::join('penjualan', 'penjualan.id', '=', 'penjualan_detail.id_penjualan')
+            ->join('produk_jual', 'produk_jual.id', '=', 'penjualan_detail.id_produk_jual')
+            ->join('kategori_jual', 'kategori_jual.id', '=', 'produk_jual.id_kategori_jual')
+            ->where('penjualan_detail.id_penjualan', '=', $id)
+            ->get([
+                'penjualan_detail.id', 'produk_jual.nama_produk_jual', 'penjualan_detail.qty',
+                'penjualan_detail.total', 'kategori_jual.kategori_jual'
+            ]);
+
         return view(
             'pages.penjualan.detail',
-            ['penjualan' => $penjualan]
+            [
+                'penjualan' => $penjualan,
+                'detailpenjualan' => $detailpenjualan,
+            ]
         );
     }
 }

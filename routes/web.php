@@ -2,6 +2,8 @@
 
 use App\Models\Salesman;
 use App\Models\Supplier;
+use App\Models\Penjualan;
+use App\Models\ProdukBeli;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -10,13 +12,12 @@ use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukBeliController;
 use App\Http\Controllers\ProdukJualController;
 use App\Http\Controllers\KategoriProdukBeliController;
 use App\Http\Controllers\KategoriProdukJualController;
-use App\Models\Penjualan;
-use App\Models\ProdukBeli;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +105,11 @@ Route::middleware('auth')->group(function () {
 	Route::post('penjualan/store', [PenjualanController::class, 'store'])->name('penjualan.store');
 	Route::get('penjualan/detail/{id}', [PenjualanController::class, 'detail'])->name('penjualan.detail');
 
+	//Route untuk Pembelian
+	Route::get('pembelian', [PembelianController::class, 'index'])->name('pembelian');
+	Route::get('pembelian/create', [PembelianController::class, 'create'])->name('pembelian.create');
+	Route::post('pembelian/store', [PembelianController::class, 'store'])->name('pembelian.store');
+	Route::get('pembelian/detail/{id}', [PembelianController::class, 'detail'])->name('pembelian.detail');
 
 	//Route untuk Produk jual
 	Route::get('produk-jual', [ProdukJualController::class, 'index'])->name('produk-jual');
