@@ -100,6 +100,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/jurnal', [JurnalController::class, 'jurnal'])->name('jurnal');
 
 	//Route untuk Penjualan
+	Route::post('penjualan-pdf', [PenjualanController::class, 'generate_pdf'])->name('penjualan.pdf');
 	Route::get('penjualan', [PenjualanController::class, 'index'])->name('penjualan');
 	Route::get('penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
 	Route::post('penjualan/store', [PenjualanController::class, 'store'])->name('penjualan.store');
@@ -108,6 +109,7 @@ Route::middleware('auth')->group(function () {
 	Route::put('penjualan/detail/update/{id}', [PenjualanController::class, 'update_detail_penjualan'])->name('penjualan.detail.update');
 
 	//Route untuk Pembelian
+	Route::post('pembelian-pdf', [PembelianController::class, 'generate_pdf'])->name('pembelian.pdf');
 	Route::get('pembelian', [PembelianController::class, 'index'])->name('pembelian');
 	Route::get('pembelian/create', [PembelianController::class, 'create'])->name('pembelian.create');
 	Route::post('pembelian/store', [PembelianController::class, 'store'])->name('pembelian.store');
@@ -148,7 +150,6 @@ Route::middleware('auth')->group(function () {
 	Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
 	Route::put('user/update/{id}', [UserController::class, 'update'])->name('user.update');
 	Route::get('user/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
-	Route::get('download-pdf', [UserController::class, 'downloadPdf'])->name('download-pdf');
 
 	//Route untuk Salesman
 	Route::get('salesman', [SalesmanController::class, 'index'])->name('salesman');

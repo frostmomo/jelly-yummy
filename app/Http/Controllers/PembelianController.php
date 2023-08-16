@@ -7,10 +7,31 @@ use App\Models\PembelianDetail;
 use App\Models\ProdukBeli;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use PDF;
 
 class PembelianController extends Controller
 {
-    //
+    public function generate_pdf(Request $request)
+    {
+        $startMonth = $request->input('bulan_awal');
+        $endMonth = $request->input('bulan_akhir');
+
+        $startOfMonth = Carbon::parse($startMonth)->startOfMonth();
+        $endOfMonth = Carbon::parse($endMonth)->endOfMonth();
+
+        $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
+            ->whereBetween('pembelian.created_at', [$startOfMonth, $endOfMonth])
+            ->get([
+                'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
+                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
+            ]);
+
+        $pdf = PDF::loadView('pages.pembelian.pdf', compact('pembelian'));
+
+        return $pdf->download('pembelian_report.pdf');
+    }
+
     public function index()
     {
         $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
@@ -18,7 +39,7 @@ class PembelianController extends Controller
                 'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
                 'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
             ]);
-        return view('pages.pembelian.index',[
+        return view('pages.pembelian.index', [
             'pembelian' => $pembelian,
         ]);
     }
@@ -28,7 +49,7 @@ class PembelianController extends Controller
         $supplier = Supplier::pluck('nama_supplier', 'id');
         $produkbeli = ProdukBeli::join('kategori_beli', 'kategori_beli.id', '=', 'produk_beli.id_kategori_beli')
             ->get([
-                'produk_beli.id', 'produk_beli.nama_produk_beli', 'produk_beli.kode_produk_beli', 
+                'produk_beli.id', 'produk_beli.nama_produk_beli', 'produk_beli.kode_produk_beli',
                 'produk_beli.harga_beli', 'produk_beli.stok', 'kategori_beli.kategori_beli'
             ]);
         return view('pages.pembelian.add', [
@@ -70,21 +91,17 @@ class PembelianController extends Controller
 
     public function show($id)
     {
-
     }
 
     public function edit($id)
     {
-
     }
 
     public function update(Request $request, $id)
     {
-        
     }
 
     public function delete($id)
     {
-
     }
 }

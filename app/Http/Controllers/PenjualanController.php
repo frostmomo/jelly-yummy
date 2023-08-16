@@ -10,24 +10,40 @@ use App\Models\Piutang;
 use App\Models\ProdukJual;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use PDF;
 
 class PenjualanController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function generate_pdf(Request $request)
     {
-        $this->middleware('auth');
+        $startMonth = $request->input('bulan_awal');
+        $endMonth = $request->input('bulan_akhir');
+
+        $startOfMonth = Carbon::parse($startMonth)->startOfMonth();
+        $endOfMonth = Carbon::parse($endMonth)->endOfMonth();
+
+        $penjualan = Penjualan::join('users', 'users.id', '=', 'penjualan.id_user')
+            ->join('customer', 'customer.id', '=', 'penjualan.id_customer')
+            ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
+            ->whereBetween('penjualan.created_at', [$startOfMonth, $endOfMonth])
+            ->select(
+                'penjualan.id',
+                'penjualan.total_item',
+                'penjualan.subtotal',
+                'penjualan.diskon',
+                'penjualan.created_at',
+                'users.name',
+                'customer.nama_customer',
+                'salesman.nama_salesman'
+            )
+            ->get();
+
+        $pdf = PDF::loadView('pages.penjualan.pdf', compact('penjualan'));
+
+        return $pdf->download('penjualan_report.pdf');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
         // $penjualan = Penjualan::all();

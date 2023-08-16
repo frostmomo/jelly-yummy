@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -69,4 +69,55 @@
       Invoice was created on a computer and is valid without the signature and seal.
     </footer>
   </body>
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Laravel PDF Report - Penjualan</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        table {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-5">
+        <h5 class="font-weight-bold text-center">Laravel PDF Report - Penjualan</h5>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Total Item</th>
+                    <th>Subtotal</th>
+                    <th>Diskon</th>
+                    <th>Created At</th>
+                    <th>User</th>
+                    <th>Customer</th>
+                    <th>Salesman</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($penjualan as $item)
+                <tr>
+                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->total_item }}</td>
+                    <td>{{ $item->subtotal }}</td>
+                    <td>{{ $item->diskon }}</td>
+                    <td>{{ $item->created_at }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->nama_customer }}</td>
+                    <td>{{ $item->nama_salesman }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</body>
+
 </html>

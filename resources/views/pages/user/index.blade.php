@@ -26,9 +26,6 @@
             <p>{{ $message }}</p>
           </div>
       @endif
-      <div class="col-xl-12 text-right">
-        <a href="{{ route('download-pdf') }}" class="btn btn-success btn-sm">test to PDF</a>
-    </div>
       <div class="row">
         <div class="col">
           <div class="card shadow">

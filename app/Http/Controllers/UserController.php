@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use PDF;
 
 class UserController extends Controller
 {
@@ -78,16 +76,5 @@ class UserController extends Controller
         User::find($id)->delete();
 
         return redirect('user')->with('success', 'Data user berhasil dihapus');
-    }
-
-    public function downloadPdf()
-    {
-        $users = User::all();
-
-        view()->share('users.pdf', $users);
-
-        $pdf = PDF::loadView('pages.user.pdf', ['users' => $users]);
-
-        return $pdf->download('pages.user.pdf');
     }
 }
