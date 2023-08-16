@@ -12,10 +12,15 @@ class ReturPenjualan extends Model
     protected $table = 'retur_penjualan';
 
     protected $fillable = [
+        'id_penjualan',
         'id_customer',
         'id_produk_jual',
         'subtotal',
     ];
+
+    public function Penjualan() {
+        return $this->belongsTo(Penjualan::class, 'id_penjualan');
+    }
 
     public function Customer() {
         return $this->belongsTo(Customer::class, 'id_customer');

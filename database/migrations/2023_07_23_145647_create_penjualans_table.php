@@ -20,7 +20,7 @@ class CreatePenjualansTable extends Migration
             $table->bigInteger('id_salesman')->unsigned()->nullable();
             $table->integer('total_item')->nullable();
             $table->double('subtotal', 12, 2)->nullable();
-            $table->integer('diskon')->nullable();
+            $table->integer('diskon')->nullable()->default(0);
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('set null');

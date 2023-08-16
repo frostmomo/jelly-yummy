@@ -44,4 +44,9 @@ class Penjualan extends Model
     {
         return $this->hasMany(Piutang::class, 'id_penjualan');
     }
+
+    public function ReturPenjualan()
+    {
+        return $this->hasMany(ReturPenjualan::class, 'id_penjualan');
+    }
 }
