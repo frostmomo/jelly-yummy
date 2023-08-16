@@ -18,7 +18,7 @@ class CreatePembeliansTable extends Migration
             $table->bigInteger('id_supplier')->unsigned()->nullable();
             $table->integer('total_item')->nullable();
             $table->double('subtotal', 12, 2)->nullable();
-            $table->integer('diskon')->nullable();
+            $table->integer('diskon')->nullable()->default(0);
             $table->double('bayar', 12, 2)->nullable();
             $table->timestamps();
 

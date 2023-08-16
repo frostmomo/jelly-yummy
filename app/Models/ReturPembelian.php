@@ -12,10 +12,15 @@ class ReturPembelian extends Model
     protected $table = 'retur_pembelian';
 
     protected $fillable = [
+        'id_pembelian',
         'id_supplier',
         'id_produk_beli',
         'subtotal',
     ];
+
+    public function Pembelian() {
+        return $this->belongsTo(Pembelian::class, 'id_pembelian');
+    }
 
     public function Supplier() {
         return $this->belongsTo(Supplier::class, 'id_supplier');
