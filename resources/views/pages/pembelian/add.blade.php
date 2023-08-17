@@ -71,42 +71,6 @@
                             <button type="submit" class="btn btn-primary">Save</button>
                             <a href="{{ route('pembelian') }}" class="btn btn-secondary">Cancel</a>
                         </div>
-                        {{-- @php $i = 1 @endphp
-                        @foreach($produkbeli as $dataprodukbeli)
-                        <div class="form-group">
-                            <label for="id_salesman">Produk beli {{ $i }}</span></label>
-                                <div class="card">
-                                    <div class="table-responsive">
-                                        <table class="table align-items-center table-flush">
-                                            <thead class="thead-light">
-                                                <tr class="text-center">
-                                                <th scope="col">Nama Produk Beli</th>
-                                                <th scope="col">Kategori Produk Beli</th>
-                                                <th scope="col">Kode Produk Beli</th>
-                                                <th scope="col">Harga Beli</th>
-                                                <th scope="col">Stok Dimiliki</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="list">
-                                                <tr class="text-center">
-                                                    <td>{{ $dataprodukbeli->nama_produk_beli }}</td>
-                                                    <td>{{ $dataprodukbeli->kategori_beli }}</td>
-                                                    <td>{{ $dataprodukbeli->kode_produk_beli }}</td>
-                                                    <td>{{ $dataprodukbeli->harga_beli}}</td>
-                                                    <td>{{ $dataprodukbeli->stok}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <label for="qty[]" class="mt-2">Jumlah Item {{ $i }} (Kosongkan jika tidak ada item dibeli)</span></label>
-                                <input type="text" class="form-control mb-2" id="qty[]" name="qty[]" placeholder="0">
-                            <div class="form-group">
-                                <label for="id_produk[]" hidden>ID Produk <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="id_produk[]" name="id_produk[]" value="{{ $dataprodukbeli->id }}" hidden>
-                            </div>
-                            @php $i++ @endphp
-                        @endforeach --}}
                     </form>
                 </div>
             </div>

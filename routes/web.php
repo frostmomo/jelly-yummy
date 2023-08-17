@@ -77,7 +77,10 @@ Route::middleware('auth')->group(function () {
 	Route::post('pembelian/store', [PembelianController::class, 'store'])->name('pembelian.store');
 	Route::get('pembelian/detail/{id}', [PembelianController::class, 'detail'])->name('pembelian.detail');
 	Route::get('pembelian/detail/edit/{id}/{idpembelian}', [PembelianController::class, 'detail_pembelian'])->name('pembelian.detail.edit');
-	Route::put('pembelian/detail/update/{id}', [PenjualanController::class, 'update_detail_pembelian'])->name('pembelian.detail.update');
+	Route::put('pembelian/detail/update/{id}', [PembelianController::class, 'update_detail_pembelian'])->name('pembelian.detail.update');
+	Route::post('pembelian/tambah-item/{id}', [PembelianController::class, 'tambah_item_pembelian'])->name('pembelian.tambah-item');
+	//Route untuk Retur Pembelian
+	Route::put('pembelian/retur-pembelian/{idpembeliandetail}', [PembelianController::class, 'retur_pembelian'])->name('pembelian.retur-pembelian');
 
 	//Route untuk Produk jual
 	Route::get('produk-jual', [ProdukJualController::class, 'index'])->name('produk-jual');

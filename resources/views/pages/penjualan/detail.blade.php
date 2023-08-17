@@ -142,6 +142,7 @@
                                           </div>
                                         </td>
                                       </tr>
+                                      <<!-- Modal Retur Penjualan -->
                                       <div class="modal fade" id="returPenjualan" tabindex="-1" role="dialog" aria-labelledby="returPenjualanLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                           <div class="modal-content">

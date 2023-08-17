@@ -90,9 +90,6 @@ $activePage = "Pembelian";
                       <a href="{{ route('pembelian.detail', $datapembelian->id) }}" class="btn btn-sm btn-outline-primary" onclick="detailEntry()">
                         <i class="fas fa-info-circle mr-2"></i> Detail
                       </a>
-                      <a href="" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
-                        <i class="ni ni-ruler-pencil mr-2"></i> Edit </button>
-                      </a>
                       <a href="" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data kategori produk jual ini?');">
                         <i class="ni ni-fat-remove mr-2"></i> Delete </button>
                       </a>

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pembelian;
-use App\Models\PembelianDetail;
-use App\Models\ProdukBeli;
-use App\Models\Supplier;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use PDF;
+use Carbon\Carbon;
+use App\Models\Supplier;
+use App\Models\Pembelian;
+use App\Models\ProdukBeli;
+use Illuminate\Http\Request;
+use App\Models\ReturPembelian;
+use App\Models\PembelianDetail;
+use Illuminate\Support\Facades\Auth;
 
 class PembelianController extends Controller
 {
@@ -37,6 +38,7 @@ class PembelianController extends Controller
     {
         $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
             ->join('users', 'users.id', '=', 'pembelian.id_user')
+            ->orderByDesc('pembelian.created_at')
             ->get([
                 'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
                 'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier', 'users.name',
@@ -84,7 +86,10 @@ class PembelianController extends Controller
         $pembeliandetail->total = $request->qty * $produkbeli->harga_beli;
         $pembeliandetail->save();
 
-        $pembelian->subtotal = $pembeliandetail->total;
+        $produkbeli->stok = $produkbeli->stok + $request->qty;
+        $produkbeli->update();
+
+        $pembelian->subtotal = PembelianDetail::where('pembelian_detail.id_pembelian', '=', $pembelian->id)->sum('total');
         $pembelian->total_item = PembelianDetail::where('pembelian_detail.id_pembelian', '=', $pembelian->id)->count();
         $pembelian->bayar = $pembeliandetail->total - (($pembeliandetail->total * $request->diskon) / 100);
         $pembelian->save();
@@ -100,6 +105,7 @@ class PembelianController extends Controller
             ->get([
                 'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
                 'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier', 'users.name', 
+                'pembelian.id_supplier',
             ]);
 
         $detailpembelian = PembelianDetail::join('pembelian', 'pembelian.id', '=', 'pembelian_detail.id_pembelian')
@@ -108,12 +114,18 @@ class PembelianController extends Controller
             ->where('pembelian.id', '=', $id)
             ->get([
                 'pembelian_detail.id', 'produk_beli.nama_produk_beli', 'pembelian_detail.qty',
-                'pembelian_detail.total', 'kategori_beli.kategori_beli'
+                'pembelian_detail.total', 'pembelian_detail.id_produk_beli', 'kategori_beli.kategori_beli',
             ]);
+
+        $supplier = Supplier::pluck('nama_supplier', 'id');
+
+        $produkbeli = ProdukBeli::pluck('nama_produk_beli' ,'id');
 
         return view('pages.pembelian.detail', [
             'pembelian' => $pembelian,
             'detailpembelian' => $detailpembelian,
+            'supplier' => $supplier, 
+            'produkbeli' => $produkbeli, 
         ]);
     }
 
@@ -128,8 +140,7 @@ class PembelianController extends Controller
                 'pembelian_detail.id_produk_beli', 'kategori_beli.kategori_beli'
             ]);
 
-        return view(
-            'pages.pembelian.detail_pembelian.edit',
+        return view('pages.pembelian.detail_pembelian.edit',
             [
                 'detailpembelian' => $detailpembelian,
                 'idpembelian' => $idpembelian,
@@ -137,16 +148,127 @@ class PembelianController extends Controller
         );
     }
 
-    public function retur_pembelian()
+    public function update_detail_pembelian(Request $request, $id)
     {
-        
+        $request->validate([
+            'qty' => 'required|numeric'
+        ]);
+
+        $produkbeli = ProdukBeli::find($request->id_pembelian);
+        $detailpembelian = PembelianDetail::find($id);
+
+        $oldQty = $detailpembelian->qty;
+        $newQty = $request->qty;
+        $selisihQty = $oldQty - $newQty;
+
+        $stok = $produkbeli->stok - $selisihQty;
+
+        if ($stok < 0) {
+            return redirect()->back()->with('failed', 'Stok barang tidak mencukupi');
+        }
+
+        $detailpembelian->qty = $request->qty;
+        $detailpembelian->total = $produkbeli->harga_beli * $request->qty;
+        $detailpembelian->update();
+
+        $produkbeli->stok = $stok;
+        $produkbeli->update();
+
+        $pembelian = Pembelian::find($request->id_pembelian);
+        $pembelian->total_item = PembelianDetail::where('id_pembelian', '=', $request->id_pembelian)->count();
+
+        $subtotal = PembelianDetail::where('id_pembelian', '=', $request->id_pembelian)->sum('total');
+
+        $discountedTotal = $subtotal - (($subtotal * $pembelian->diskon / 100));
+
+        $pembelian->subtotal = $subtotal;
+        $pembelian->bayar = $discountedTotal;
+        $pembelian->update();
+
+        return redirect()->back()->with('success', 'Data detail pembelian berhasil diperbaharui');
     }
 
-    public function update(Request $request, $id)
+    public function retur_pembelian(Request $request, $idpembeliandetail)
     {
+        $request->validate([
+            'jumlah_retur' => 'required|numeric',
+        ]);
+
+        $pembeliandetail = PembelianDetail::find($idpembeliandetail);
+
+        if(($pembeliandetail->qty - $request->jumlah_retur) < 0)
+        {
+            return redirect()->back()->with('failed', 'Jumlah retur melebihi jumlah pembelian produk');
+        }
+
+        $pembelian = Pembelian::find($pembeliandetail->id_pembelian);
+        $produkbeli = ProdukBeli::find($pembeliandetail->id_produk_beli);
+
+        $subtotalretur = ($produkbeli->harga_beli * $request->jumlah_retur) * ($pembelian->diskon / 100);
+
+        $returpembelian = new ReturPembelian;
+        $returpembelian->id_pembelian_detail = $pembeliandetail->id;
+        $returpembelian->qty = $request->jumlah_retur;
+        $returpembelian->subtotal = $subtotalretur;
+        $returpembelian->save();
+
+        $pembeliandetail->qty = $pembeliandetail->qty - $request->jumlah_retur;
+        $pembeliandetail->total = $pembeliandetail->qty * $produkbeli->harga_beli;
+        $pembeliandetail->update();
+
+        $produkbeli->stok = $produkbeli->stok - $request->jumlah_retur;
+        $produkbeli->update();
+
+        $subtotal = PembelianDetail::where('id_pembelian', '=', $pembelian->id)->sum('total');
+        $discountedTotal = $subtotal - (($subtotal * $pembelian->diskon) / 100);
+
+        $pembelian->subtotal = $subtotal;
+        $pembelian->bayar = $discountedTotal;
+        $pembelian->update();
+
+        return redirect()->back()->with('success', 'Retur pembelian berhasil ditambahkan');
+    }
+
+    public function tambah_item_pembelian(Request $request, $id)
+    {
+        $request->validate([
+            'qty' => 'required|numeric',
+        ]);
+
+        $pembelian = Pembelian::find($id);
+        $produkbeli = ProdukBeli::find($request->id_produk);
+        
+        $pembeliandetail = new PembelianDetail;
+        $pembeliandetail->id_pembelian = $pembelian->id;
+        $pembeliandetail->id_produk_beli = $produkbeli->id;
+        $pembeliandetail->qty = $request->qty;
+        $pembeliandetail->total = $request->qty * $produkbeli->harga_beli;
+        $pembeliandetail->save();
+
+        $produkbeli->stok = $produkbeli->stok + $request->qty;
+        $produkbeli->update();
+
+        $pembelian->total_item = PembelianDetail::where('id_pembelian', '=', $id)->count();
+        $pembelian->subtotal = PembelianDetail::where('id_pembelian', '=', $id)->sum('total');
+        $pembelian->bayar = $pembelian->subtotal - (($pembelian->subtotal * $pembelian->diskon) / 100);
+        $pembelian->update();
+
+        return redirect()->back()->with('success', 'Item berhasil ditambahkan');
     }
 
     public function delete($id)
     {
+        $pembeliandetail = PembelianDetail::where('id_pembelian', '=', $id)->get();
+
+        foreach($pembeliandetail as $datapembeliandetail)
+        {
+            $produkbeli = ProdukBeli::find($datapembeliandetail->id_produk_beli);
+            $produkbeli->stok = $produkbeli->stok - $datapembeliandetail->qty;
+            $produkbeli->update();
+        }
+
+        Pembelian::find($id)->delete();
+
+        return redirect('pembelian')->with('success', 'Data pembelian berhasil dihapus');
     }
 }

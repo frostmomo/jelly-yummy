@@ -319,7 +319,7 @@ class PenjualanController extends Controller
 
         if(($penjualandetail->qty - $request->jumlah_retur) < 0)
         {
-            return redirect()->back()->with('failed', 'Jumlah retur melebih jumlah penjualan produk');
+            return redirect()->back()->with('failed', 'Jumlah retur melebihi jumlah penjualan produk');
         }
 
         $penjualan = Penjualan::find($penjualandetail->id_penjualan);
