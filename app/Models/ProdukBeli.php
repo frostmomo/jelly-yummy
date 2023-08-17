@@ -27,7 +27,7 @@ class ProdukBeli extends Model
         return $this->hasMany(PembelianDetail::class, 'id_produk_Beli');
     }
 
-    public function ReturPembelian() {
-        return $this->hasMany(ReturPembelian::class, 'id_produk_beli');
-    }
+    // public function ReturPembelian() {
+    //     return $this->hasMany(ReturPembelian::class, 'id_produk_beli');
+    // }
 }

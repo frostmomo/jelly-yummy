@@ -22,7 +22,7 @@ class Customer extends Model
         return $this->hasMany(Penjualan::class, 'id_customer');
     }
 
-    public function ReturPenjualan() {
-        return $this->hasMany(ReturPenjualan::class, 'id_customer');
-    }
+    // public function ReturPenjualan() {
+    //     return $this->hasMany(ReturPenjualan::class, 'id_customer');
+    // }
 }

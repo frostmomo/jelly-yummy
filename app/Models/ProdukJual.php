@@ -28,7 +28,7 @@ class ProdukJual extends Model
         return $this->hasMany(PenjualanDetail::class, 'id_produk_jual');
     }
 
-    public function ReturPenjualan() {
-        return $this->hasMany(ReturPenjualan::class, 'id_produk_jual');
-    }
+    // public function ReturPenjualan() {
+    //     return $this->hasMany(ReturPenjualan::class, 'id_produk_jual');
+    // }
 }

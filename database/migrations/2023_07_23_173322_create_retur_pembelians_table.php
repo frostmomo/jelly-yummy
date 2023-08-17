@@ -15,16 +15,16 @@ class CreateReturPembeliansTable extends Migration
     {
         Schema::create('retur_pembelian', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_pembelian')->unsigned()->nullable();
-            $table->bigInteger('id_supplier')->unsigned()->nullable();
-            $table->bigInteger('id_produk_beli')->unsigned()->nullable();
+            $table->bigInteger('id_pembelian_detail')->unsigned()->nullable();
+            // $table->bigInteger('id_supplier')->unsigned()->nullable();
+            // $table->bigInteger('id_produk_beli')->unsigned()->nullable();
             $table->integer('qty')->nullable();
             $table->double('subtotal', 12, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_pembelian')->references('id')->on('pembelian')->onDelete('cascade');
-            $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('set null');
-            $table->foreign('id_produk_beli')->references('id')->on('produk_beli')->onDelete('set null');
+            $table->foreign('id_pembelian_detail')->references('id')->on('pembelian_detail')->onDelete('cascade');
+            // $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('set null');
+            // $table->foreign('id_produk_beli')->references('id')->on('produk_beli')->onDelete('set null');
         });
     }
 

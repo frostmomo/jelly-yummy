@@ -63,7 +63,7 @@
                         @forelse($piutang as $datapiutang)
                           <div class="form-group">
                               <label for="tunai">Piutang:</label>
-                              <input type="text" class="form-control" value="{{ $datapiutang->bayar }}" readonly>
+                              <input type="text" class="form-control" value="Rp. {{ $datapiutang->bayar }}" readonly>
                           </div>
                           @if($datapiutang->bayar != 0)
                               <div class="form-group">
@@ -87,11 +87,11 @@
                                     @method('PUT')
                                     <div class="form-group">
                                       <label for="jumlah_piutang">Jumlah Piutang</label>
-                                      <input type="text" id="jumlah_piutang" name="jumlah_piutang" value="{{ $datapiutang->bayar }}" class="form-control" readonly>
+                                      <input type="text" id="jumlah_piutang" name="jumlah_piutang" value="Rp. {{ $datapiutang->bayar }}" class="form-control" readonly>
                                     </div>
                                     <div class="form-group">
                                       <label for="jumlah_bayar">Jumlah Dibayarkan</label>
-                                      <input type="text" id="jumlah_bayar" name="jumlah_bayar" class="form-control" required>
+                                      <input type="text" id="jumlah_bayar" name="jumlah_bayar" class="form-control" placeholder="Rp." required>
                                     </div>
                                     <div class="row justify-content-center">
                                       <div class="col text-center">
@@ -136,12 +136,48 @@
                                             <a href="{{ route('penjualan.detail.edit', ['id' => $datadetail->id, 'idpenjualan' => $datapenjualan->id]) }}" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
                                               <i class="ni ni-ruler-pencil mr-2"></i> Edit </button>
                                             </a>
-                                            <a href="" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data kategori produk jual ini?');">
-                                              <i class="ni ni-fat-remove mr-2"></i> Delete </button>
-                                            </a>
+                                            <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#returPenjualan">
+                                              <i class="ni ni-fat-remove mr-2"></i> Retur </button>
+                                            </button>
                                           </div>
                                         </td>
                                       </tr>
+                                      <div class="modal fade" id="returPenjualan" tabindex="-1" role="dialog" aria-labelledby="returPenjualanLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h3 class="mb-0 text-center">Retur Penjualan</h3>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <form action="{{ route('penjualan.retur-penjualan', $datadetail->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="form-group">
+                                                  <label for="jumlah_item">Nama Produk Jual</label>
+                                                  <input type="text" id="jumlah_item" name="jumlah_item" value="{{ $datadetail->nama_produk_jual }} {{ $datadetail->kategori_jual }}" class="form-control" disabled readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="jumlah_bayar">Jumlah</label>
+                                                  <input type="text" id="jumlah_bayar" name="jumlah_bayar" value="{{ $datadetail->qty }}" class="form-control" disabled readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="jumlah_retur">Retur Sebanyak</label>
+                                                  <input type="text" id="jumlah_retur" name="jumlah_retur" class="form-control" placeholder="0." required>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                  <div class="col text-center">
+                                                    <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi Retur Penjualan?')">Confirm</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                  </div>
+                                                </div>
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     @empty
                                       <tr class="text-center">
                                         <td colspan="7">

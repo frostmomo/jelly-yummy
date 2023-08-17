@@ -8,6 +8,7 @@ use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
 use App\Models\Piutang;
 use App\Models\ProdukJual;
+use App\Models\ReturPenjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -166,6 +167,7 @@ class PenjualanController extends Controller
         $subtotal = PenjualanDetail::where('id_penjualan', '=', $penjualan->id)->sum('total');
 
         $discountedTotal = $subtotal - (($subtotal * $request->diskon) / 100);
+        // dd($discountedTotal);
 
         $penjualan->subtotal = $discountedTotal;
 
@@ -305,5 +307,76 @@ class PenjualanController extends Controller
         $penjualan->update();
 
         return redirect()->back()->with('success', 'Pembayaran piutang berhasil diupdate');
+    }
+
+    public function retur_penjualan(Request $request, $idpenjualandetail)
+    {
+        $request->validate([
+            'jumlah_retur' => 'required|numeric',
+        ]);
+
+        $penjualandetail = PenjualanDetail::find($idpenjualandetail);
+
+        if(($penjualandetail->qty - $request->jumlah_retur) < 0)
+        {
+            return redirect()->back()->with('failed', 'Jumlah retur melebih jumlah penjualan produk');
+        }
+
+        $penjualan = Penjualan::find($penjualandetail->id_penjualan);
+        $produkjual = ProdukJual::find($penjualandetail->id_produk_jual);
+        
+        $subtotalretur = ($produkjual->harga_jual * $request->jumlah_retur) * ($penjualan->diskon / 100);
+
+        $returpenjualan = new ReturPenjualan;
+        $returpenjualan->id_penjualan_detail = $penjualandetail->id;
+        $returpenjualan->qty = $request->jumlah_retur;
+        $returpenjualan->subtotal = $subtotalretur;
+        $returpenjualan->save();
+
+        $penjualandetail->qty = $penjualandetail->qty - $request->jumlah_retur;
+        $penjualandetail->total = $penjualandetail->qty * $produkjual->harga_jual;
+        $penjualandetail->update();
+
+        $produkjual->stok = $produkjual->stok + $request->jumlah_retur;
+        $produkjual->update();
+
+        $subtotal = PenjualanDetail::where('id_penjualan', '=', $penjualan->id)->sum('total');
+        $discountedTotal = $subtotal - (($subtotal * $penjualan->diskon) / 100);
+        $penjualan->subtotal = $discountedTotal;
+
+        // dd($subtotal);
+
+        if($penjualan->keterangan_penjualan == 'Belum Lunas')
+        {
+            $caripiutang = Piutang::where('id_penjualan', '=', $penjualan->id)->get();
+
+            foreach($caripiutang as $datapiutang)
+            {
+                $idpiutang = $datapiutang->id;
+                $jumlahpiutang = $datapiutang->bayar;
+            }
+
+            $piutang = Piutang::find($idpiutang);
+            $piutang->id_retur_penjualan = $returpenjualan->id;
+            $piutang->bayar = $jumlahpiutang - $subtotalretur;
+            $piutang->update();
+
+            if($penjualan->subtotal == 0){
+                $penjualan->keterangan_penjualan = 'Dibatalkan';
+            }
+
+            $penjualan->update();
+
+            return redirect()->back()->with('success', 'Retur penjualan berhasil ditambahkan');
+        }
+
+        // $penjualan->subtotal = $discountedTotal;
+        $penjualan->tunai = $discountedTotal;
+        if($penjualan->subtotal == 0){
+            $penjualan->keterangan_penjualan = 'Dibatalkan';
+        }
+        $penjualan->update();
+
+        return redirect()->back()->with('success', 'Retur penjualan berhasil ditambahkan');
     }
 }

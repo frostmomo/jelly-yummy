@@ -68,7 +68,7 @@
                             </div>
                             <div class="text-center mt-4">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{ route('penjualan') }}" class="btn btn-secondary">Cancel</a>
+                                <a href="{{ route('penjualan.detail', $idpenjualan) }}" class="btn btn-secondary">Cancel</a>
                             </div>
                         </form>
                     @endforeach

@@ -12,26 +12,39 @@ class ReturPenjualan extends Model
     protected $table = 'retur_penjualan';
 
     protected $fillable = [
-        'id_penjualan',
-        'id_customer',
-        'id_produk_jual',
+        'id_penjualan_detail',
         'qty',
         'subtotal',
     ];
 
-    public function Penjualan() {
-        return $this->belongsTo(Penjualan::class, 'id_penjualan');
+    //before
+    // protected $fillable = [
+    //     'id_penjualan',
+    //     'id_customer',
+    //     'id_produk_jual',
+    //     'qty',
+    //     'subtotal',
+    // ];
+
+    // public function Penjualan() {
+    //     return $this->belongsTo(Penjualan::class, 'id_penjualan');
+    // }
+
+    // public function Customer() {
+    //     return $this->belongsTo(Customer::class, 'id_customer');
+    // }
+
+    // public function ProdukJual() {
+    //     return $this->belongsTo(ProdukJual::class, 'id_produk_jual');
+    // }
+
+    public function PenjualanDetail()
+    {
+        return $this->belongsTo(PenjualanDetail::class, 'id_penjualan_detail');
     }
 
-    public function Customer() {
-        return $this->belongsTo(Customer::class, 'id_customer');
-    }
-
-    public function ProdukJual() {
-        return $this->belongsTo(ProdukJual::class, 'id_produk_jual');
-    }
-
-    public function Piutang() {
+    public function Piutang() 
+    {
         return $this->hasMany(Piutang::class, 'id_retur_penjualan');
     }
 }

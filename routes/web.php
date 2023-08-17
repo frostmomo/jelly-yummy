@@ -109,6 +109,8 @@ Route::middleware('auth')->group(function () {
 	Route::put('penjualan/detail/update/{id}', [PenjualanController::class, 'update_detail_penjualan'])->name('penjualan.detail.update');
 	//Route untuk Piutang
 	Route::put('penjualan/piutang/{id}/{idpenjualan}', [PenjualanController::class, 'bayar_piutang'])->name('penjualan.bayar-piutang');
+	//Route untuk Retur Penjualan
+	Route::put('penjualan/retur-penjualan/{idpenjualandetail}', [PenjualanController::class, 'retur_penjualan'])->name('penjualan.retur-penjualan');
 
 	//Route untuk Pembelian
 	Route::post('pembelian-pdf', [PembelianController::class, 'generate_pdf'])->name('pembelian.pdf');

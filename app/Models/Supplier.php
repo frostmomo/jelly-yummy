@@ -21,7 +21,7 @@ class Supplier extends Model
         return $this->hasMany(Pembelian::class, 'id_supplier');
     }
 
-    public function ReturPembelian() {
-        return $this->hasMany(ReturPembelian::class, 'id_supplier');
-    }
+    // public function ReturPembelian() {
+    //     return $this->hasMany(ReturPembelian::class, 'id_supplier');
+    // }
 }

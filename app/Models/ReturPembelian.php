@@ -12,22 +12,34 @@ class ReturPembelian extends Model
     protected $table = 'retur_pembelian';
 
     protected $fillable = [
-        'id_pembelian',
-        'id_supplier',
-        'id_produk_beli',
+        'id_pembelian_detail',
         'qty',
         'subtotal',
     ];
 
-    public function Pembelian() {
-        return $this->belongsTo(Pembelian::class, 'id_pembelian');
-    }
+    //before
+    // protected $fillable = [
+    //     'id_pembelian',
+    //     'id_supplier',
+    //     'id_produk_beli',
+    //     'qty',
+    //     'subtotal',
+    // ];
 
-    public function Supplier() {
-        return $this->belongsTo(Supplier::class, 'id_supplier');
-    }
+    // public function Pembelian() {
+    //     return $this->belongsTo(Pembelian::class, 'id_pembelian');
+    // }
 
-    public function ProdukBeli() {
-        return $this->belongsTo(ProdukBeli::class, 'id_produk_beli');
+    // public function Supplier() {
+    //     return $this->belongsTo(Supplier::class, 'id_supplier');
+    // }
+
+    // public function ProdukBeli() {
+    //     return $this->belongsTo(ProdukBeli::class, 'id_produk_beli');
+    // }
+
+    public function PembelianDetail()
+    {
+        return $this->belongsTo(PembelianDetail::class, 'id_pembelian_detail');
     }
 }
