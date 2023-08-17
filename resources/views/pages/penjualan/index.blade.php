@@ -114,7 +114,7 @@ $activePage = "Penjualan";
         <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
-              {{ $penjualan->links() }}
+              {{-- {{ $penjualan->links() }} --}}
           </ul>
           </nav>
         </div>

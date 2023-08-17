@@ -60,7 +60,7 @@ class PenjualanController extends Controller
                 'users.name',
                 'customer.nama_customer',
                 'salesman.nama_salesman',
-            )->paginate(25);
+            )->orderByDesc('penjualan.created_at')->get();
 
         return view(
             'pages.penjualan.index',
