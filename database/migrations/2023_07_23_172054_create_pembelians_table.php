@@ -15,6 +15,7 @@ class CreatePembeliansTable extends Migration
     {
         Schema::create('pembelian', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('id_user')->unsigned()->nullable();
             $table->bigInteger('id_supplier')->unsigned()->nullable();
             $table->integer('total_item')->nullable();
             $table->double('subtotal', 12, 2)->nullable();
@@ -22,6 +23,7 @@ class CreatePembeliansTable extends Migration
             $table->double('bayar', 12, 2)->nullable();
             $table->timestamps();
 
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('set null');
             $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('set null');
         });
     }

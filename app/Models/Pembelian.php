@@ -12,12 +12,17 @@ class Pembelian extends Model
     protected $table = 'pembelian';
 
     protected $fillable = [
+        'id_user',
         'id_supplier',
         'total_item',
         'subtotal',
         'diskon',
         'bayar',
     ];
+
+    public function User() {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 
     public function Supplier() {
         return $this->belongsTo(Supplier::class, 'id_supplier');

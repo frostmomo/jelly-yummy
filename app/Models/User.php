@@ -45,4 +45,8 @@ class User extends Authenticatable
     public function Penjualan() {
         return $this->hasMany(Penjualan::class, 'id_user');
     }
+
+    public function Pembelian() {
+        return $this->hasMany(Pembelian::class, 'id_user');
+    }
 }

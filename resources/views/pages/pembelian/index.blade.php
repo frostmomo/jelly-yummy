@@ -65,6 +65,7 @@ $activePage = "Pembelian";
             <thead class="thead-light">
               <tr class="text-center">
                 <th scope="col">Tanggal</th>
+                <th scope="col">Dibuat Oleh</th>
                 <th scope="col">Supplier</th>
                 <th scope="col">Total Item</th>
                 <th scope="col">Subtotal</th>
@@ -78,11 +79,12 @@ $activePage = "Pembelian";
               @forelse($pembelian as $datapembelian)
                 <tr class="text-center">
                   <td>{{ $datapembelian->created_at }}</td>
+                  <td>{{ $datapembelian->name }}</td>
                   <td>{{ $datapembelian->nama_supplier }}</td>
                   <td>{{ $datapembelian->total_item }}</td>
-                  <td>{{ $datapembelian->subtotal }}</td>
+                  <td>Rp. {{ $datapembelian->subtotal }}</td>
                   <td>{{ $datapembelian->diskon }}%</td>
-                  <td>{{ $datapembelian->bayar }}</td>
+                  <td>Rp. {{ $datapembelian->bayar }}</td>
                   <td class="text-center">
                     <div class="btn-group" role="group">
                       <a href="{{ route('pembelian.detail', $datapembelian->id) }}" class="btn btn-sm btn-outline-primary" onclick="detailEntry()">

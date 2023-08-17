@@ -8,6 +8,7 @@ use App\Models\ProdukBeli;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class PembelianController extends Controller
@@ -35,9 +36,10 @@ class PembelianController extends Controller
     public function index()
     {
         $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
+            ->join('users', 'users.id', '=', 'pembelian.id_user')
             ->get([
                 'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
-                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
+                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier', 'users.name',
             ]);
         return view('pages.pembelian.index', [
             'pembelian' => $pembelian,
@@ -68,6 +70,7 @@ class PembelianController extends Controller
         ]);
 
         $pembelian = new Pembelian;
+        $pembelian->id_user = Auth::user()->id;
         $pembelian->id_supplier = $request->id_supplier;
         $pembelian->diskon = $request->diskon;
         $pembelian->save();
@@ -92,14 +95,17 @@ class PembelianController extends Controller
     public function detail($id)
     {
         $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
+            ->join('users', 'users.id', '=', 'pembelian.id_user')
+            ->where('pembelian.id', '=', $id)
             ->get([
                 'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
-                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
+                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier', 'users.name', 
             ]);
 
         $detailpembelian = PembelianDetail::join('pembelian', 'pembelian.id', '=', 'pembelian_detail.id_pembelian')
             ->join('produk_beli', 'produk_beli.id', '=', 'pembelian_detail.id_produk_beli')
             ->join('kategori_beli', 'kategori_beli.id', '=', 'produk_beli.id_kategori_beli')
+            ->where('pembelian.id', '=', $id)
             ->get([
                 'pembelian_detail.id', 'produk_beli.nama_produk_beli', 'pembelian_detail.qty',
                 'pembelian_detail.total', 'kategori_beli.kategori_beli'
@@ -131,12 +137,9 @@ class PembelianController extends Controller
         );
     }
 
-    public function show($id)
+    public function retur_pembelian()
     {
-    }
-
-    public function edit($id)
-    {
+        
     }
 
     public function update(Request $request, $id)

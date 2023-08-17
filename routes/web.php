@@ -31,6 +31,11 @@ use App\Http\Controllers\KategoriProdukJualController;
 */
 
 Route::get('/', function () {
+	if(Auth::check())
+	{
+		return redirect('home');
+	}
+
 	return view('welcome');
 });
 
@@ -41,60 +46,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
-
-// Route::group(['middleware' => 'auth'], function () {
-
-// 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
-// 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
-// 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
-
-// 	Route::get('jurnal', function () {
-// 		return view('pages.jurnal');
-// 	})->name('jurnal');
-
-// 	Route::get('/jurnal/create', [JurnalController::class, 'create'])->name('jurnal.create');
-
-// 	Route::get('user', function () {
-// 		return view('pages.user');
-// 	})->name('user');
-
-// 	Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
-
-// 	Route::get('penjualan', function () {
-// 		return view('pages.penjualan');
-// 	})->name('penjualan');
-
-// 	Route::get('/penjualan/create', [PenjualanController::class, 'create'])->name('penjualan.create');
-
-// 	Route::get('produk-beli', function () {
-// 		return view('pages.produk_beli');
-// 	})->name('produk-beli');
-
-// 	Route::get('/produk-beli/create', [ProdukBeliController::class, 'create'])->name('produk-beli.create');
-
-// 	Route::get('produk-jual', function () {
-// 		return view('pages.produk_jual');
-// 	})->name('produk-jual');
-
-// 	Route::get('/produk-jual/create', [ProdukJualController::class, 'create'])->name('produk-jual.create');
-
-// 	Route::get('/kategori-produk-jual/create', [KategoriProdukJualController::class, 'create'])->name('kategori-produk-jual.create');
-// 	Route::get('/kategori-produk-beli/create', [KategoriProdukBeliController::class, 'create'])->name('kategori-produk-beli.create');
-// });
-
-// // Route::middleware('guest')->group(function() {
-// 	//redirect ke halaman login
-// 	Route::get('/login', [AuthController::class, 'login'])->name('login');
-
-// 	//post data login ke AuthController
-// 	Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
-// // });
 
 Route::middleware('auth')->group(function () {
 	Route::get('/jurnal', [JurnalController::class, 'jurnal'])->name('jurnal');
