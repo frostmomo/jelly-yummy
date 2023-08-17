@@ -89,6 +89,48 @@ class PembelianController extends Controller
         return redirect('pembelian')->with('success', 'Pembelian berhasil ditambahkan');
     }
 
+    public function detail($id)
+    {
+        $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
+            ->get([
+                'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
+                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
+            ]);
+
+        $detailpembelian = PembelianDetail::join('pembelian', 'pembelian.id', '=', 'pembelian_detail.id_pembelian')
+            ->join('produk_beli', 'produk_beli.id', '=', 'pembelian_detail.id_produk_beli')
+            ->join('kategori_beli', 'kategori_beli.id', '=', 'produk_beli.id_kategori_beli')
+            ->get([
+                'pembelian_detail.id', 'produk_beli.nama_produk_beli', 'pembelian_detail.qty',
+                'pembelian_detail.total', 'kategori_beli.kategori_beli'
+            ]);
+
+        return view('pages.pembelian.detail', [
+            'pembelian' => $pembelian,
+            'detailpembelian' => $detailpembelian,
+        ]);
+    }
+
+    public function detail_pembelian($id, $idpembelian)
+    {
+        $detailpembelian = PembelianDetail::join('pembelian', 'pembelian.id', '=', 'pembelian_detail.id_pembelian')
+            ->join('produk_beli', 'produk_beli.id', '=', 'pembelian_detail.id_produk_beli')
+            ->join('kategori_beli', 'kategori_beli.id', '=', 'produk_beli.id_kategori_beli')
+            ->where('pembelian_detail.id', '=', $id)
+            ->get([
+                'pembelian_detail.id', 'produk_beli.nama_produk_beli', 'pembelian_detail.qty',
+                'pembelian_detail.id_produk_beli', 'kategori_beli.kategori_beli'
+            ]);
+
+        return view(
+            'pages.pembelian.detail_pembelian.edit',
+            [
+                'detailpembelian' => $detailpembelian,
+                'idpembelian' => $idpembelian,
+            ]
+        );
+    }
+
     public function show($id)
     {
     }
