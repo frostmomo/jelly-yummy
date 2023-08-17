@@ -18,6 +18,8 @@ class Penjualan extends Model
         'total_item',
         'subtotal',
         'diskon',
+        'tunai',
+        'keterangan_penjualan',
     ];
 
     public function User()

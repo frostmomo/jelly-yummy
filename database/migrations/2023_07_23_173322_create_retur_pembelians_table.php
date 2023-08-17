@@ -19,10 +19,10 @@ class CreateReturPembeliansTable extends Migration
             $table->bigInteger('id_supplier')->unsigned()->nullable();
             $table->bigInteger('id_produk_beli')->unsigned()->nullable();
             $table->integer('qty')->nullable();
-            $table->double('subtotal', 12, 2);
+            $table->double('subtotal', 12, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_pembelian')->references('id')->on('pembelian')->onDelete('set null');
+            $table->foreign('id_pembelian')->references('id')->on('pembelian')->onDelete('cascade');
             $table->foreign('id_supplier')->references('id')->on('supplier')->onDelete('set null');
             $table->foreign('id_produk_beli')->references('id')->on('produk_beli')->onDelete('set null');
         });

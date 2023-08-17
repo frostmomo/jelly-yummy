@@ -21,7 +21,7 @@ class CreatePembelianDetailsTable extends Migration
             $table->double('total', 12, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_pembelian')->references('id')->on('pembelian')->onDelete('set null');
+            $table->foreign('id_pembelian')->references('id')->on('pembelian')->onDelete('cascade');
             $table->foreign('id_produk_beli')->references('id')->on('produk_beli')->onDelete('set null');
         });
     }

@@ -40,7 +40,7 @@
             <div class="table-responsive">
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
-                  <tr>
+                  <tr class="text-center">
                     <th scope="col">Nama Supplier</th>
                     <th scope="col">Alamat Supplier</th>
                     <th scope="col">Telepon Supplier</th>

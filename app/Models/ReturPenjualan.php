@@ -15,6 +15,7 @@ class ReturPenjualan extends Model
         'id_penjualan',
         'id_customer',
         'id_produk_jual',
+        'qty',
         'subtotal',
     ];
 

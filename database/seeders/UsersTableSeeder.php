@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Owner',
             'email' => 'owner@gmail.com',
             'password' => Hash::make('Owner'),
-            'level' => 'owner',
+            'level' => 'Owner',
         ]);
 
         User::create([

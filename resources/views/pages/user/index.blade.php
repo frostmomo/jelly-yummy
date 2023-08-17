@@ -26,6 +26,12 @@
             <p>{{ $message }}</p>
           </div>
       @endif
+
+      @if ($message = Session::get('failed'))
+          <div class="alert alert-danger">
+            <p>{{ $message }}</p>
+          </div>
+      @endif
       <div class="row">
         <div class="col">
           <div class="card shadow">
@@ -38,7 +44,7 @@
             </div>
             <div class="table-responsive">
               <table class="table align-items-center table-flush">
-                <thead class="thead-light">
+                <thead class="thead-light text-center">
                   <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>

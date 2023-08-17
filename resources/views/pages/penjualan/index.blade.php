@@ -68,9 +68,11 @@ $activePage = "Penjualan";
                 <th scope="col">Dibuat oleh</th>
                 <th scope="col">Customer</th>
                 <th scope="col">Salesman</th>
-                <th scope="col">Total Item</th>
-                <th scope="col">Diskon</th>
+                {{-- <th scope="col">Total Item</th>
+                <th scope="col">Diskon</th> --}}
                 <th scope="col">Subtotal</th>
+                <th scope="col">Dibayar</th>
+                <th scope="col">Keterangan</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -81,9 +83,9 @@ $activePage = "Penjualan";
                   <td>{{ $datapenjualan->name }}</td>
                   <td>{{ $datapenjualan->nama_customer }}</td>
                   <td>{{ $datapenjualan->nama_salesman }}</td>
-                  <td>{{ $datapenjualan->total_item }}</td>
-                  <td>{{ $datapenjualan->diskon }}%</td>
-                  <td>{{ $datapenjualan->subtotal }}</td>
+                  <td>Rp. {{ $datapenjualan->subtotal }}</td>
+                  <td>Rp. {{ $datapenjualan->tunai }}</td>
+                  <td>{{ $datapenjualan->keterangan_penjualan }}</td>
                   <td class="text-center">
                     <div class="btn-group" role="group">
                       <a href="{{ route('penjualan.detail', $datapenjualan->id) }}" class="btn btn-sm btn-outline-primary" onclick="detailEntry()">

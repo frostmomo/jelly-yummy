@@ -39,7 +39,7 @@
             </div>
             <div class="table-responsive">
               <table class="table align-items-center table-flush">
-                <thead class="thead-light">
+                <thead class="thead-light text-center">
                   <tr>
                     <th scope="col">Nama Salesman</th>
                     <th scope="col">Alamat Salesman</th>

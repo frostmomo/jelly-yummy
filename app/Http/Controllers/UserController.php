@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -73,6 +74,11 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        if(Auth::user()->id == $id)
+        {
+            return redirect('user')->with('failed', 'Anda tidak bisa menghapus akun ini');
+        }
+
         User::find($id)->delete();
 
         return redirect('user')->with('success', 'Data user berhasil dihapus');

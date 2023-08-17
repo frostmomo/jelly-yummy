@@ -15,6 +15,7 @@ class ReturPembelian extends Model
         'id_pembelian',
         'id_supplier',
         'id_produk_beli',
+        'qty',
         'subtotal',
     ];
 

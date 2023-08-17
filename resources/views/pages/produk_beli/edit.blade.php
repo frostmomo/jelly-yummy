@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="kode_produk_beli">Kode Produk Beli <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="kode_produk_beli" name="kode_produk_beli" maxlength="3" value="{{ $dataprodukbeli->kode_produk_beli }}" required>
+                                        <input type="text" class="form-control" id="kode_produk_beli" name="kode_produk_beli" value="{{ $dataprodukbeli->kode_produk_beli }}" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="harga_beli">Harga Beli <span class="text-danger">*</span></label>

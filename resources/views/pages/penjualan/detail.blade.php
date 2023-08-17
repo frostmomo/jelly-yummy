@@ -17,6 +17,27 @@
 <div class="container-fluid mt--7">
     <div class="row" style="padding-top: 80px">
         <div class="col">
+            @if ($message = Session::get('failed'))
+                <div class="alert alert-danger">
+                    <p>{{ $message }}</p>
+                </div>
+            @endif
+
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success">
+                    <p>{{ $message }}</p>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div><br>
+            @endif
             <div class="card">
                 <div class="card-header text-center">
                     Detail Penjualan
@@ -39,10 +60,56 @@
                             <label for="diskon">Diskon %:</label>
                             <input type="text" class="form-control" value="{{ $datapenjualan->diskon }}%" readonly>
                         </div>
-                        <div class="form-group">
-                            <label for="tunai">Piutang:</label>
-                            <input type="text" class="form-control" value="{{ $datapenjualan->bayar }}" readonly>
-                        </div>
+                        @forelse($piutang as $datapiutang)
+                          <div class="form-group">
+                              <label for="tunai">Piutang:</label>
+                              <input type="text" class="form-control" value="{{ $datapiutang->bayar }}" readonly>
+                          </div>
+                          @if($datapiutang->bayar != 0)
+                              <div class="form-group">
+                                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bayarPiutang">
+                                    + Pembayaran Piutang
+                                  </button>
+                              </div>
+                          @endif
+                          <div class="modal fade" id="bayarPiutang" tabindex="-1" role="dialog" aria-labelledby="bayarPiutangLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h3 class="mb-0 text-center">Pembayaran Piutang</h3>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form action="{{ route('penjualan.bayar-piutang', ['id' => $datapiutang->id, 'idpenjualan' => $datapenjualan->id]) }}" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group">
+                                      <label for="jumlah_piutang">Jumlah Piutang</label>
+                                      <input type="text" id="jumlah_piutang" name="jumlah_piutang" value="{{ $datapiutang->bayar }}" class="form-control" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="jumlah_bayar">Jumlah Dibayarkan</label>
+                                      <input type="text" id="jumlah_bayar" name="jumlah_bayar" class="form-control" required>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                      <div class="col text-center">
+                                        <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi Pembayaran?')">Confirm</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        @empty
+                          <div class="form-group">
+                              <label for="tunai">Piutang:</label>
+                              <input type="text" class="form-control" value="0" readonly>
+                          </div>
+                        @endforelse
                         <div class="form-group">
                             <label for="id_produk">Detail Penjualan:</label>
                             <div class="table-responsive">

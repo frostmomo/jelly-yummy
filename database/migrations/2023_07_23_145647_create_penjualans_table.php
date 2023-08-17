@@ -21,6 +21,8 @@ class CreatePenjualansTable extends Migration
             $table->integer('total_item')->nullable();
             $table->double('subtotal', 12, 2)->nullable();
             $table->integer('diskon')->nullable()->default(0);
+            $table->double('tunai', 12, 2)->nullable()->default(0);
+            $table->string('keterangan_penjualan')->nullable();
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('set null');
