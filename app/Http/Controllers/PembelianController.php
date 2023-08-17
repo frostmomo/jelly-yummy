@@ -27,7 +27,7 @@ class PembelianController extends Controller
                 'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
             ]);
 
-        $pdf = PDF::loadView('pages.pembelian.pdf', compact('pembelian'));
+        $pdf = PDF::loadView('pages.pembelian.pdf', compact('pembelian', 'startMonth', 'endMonth'));
 
         return $pdf->download('pembelian_report.pdf');
     }

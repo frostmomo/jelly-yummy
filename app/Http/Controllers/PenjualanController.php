@@ -39,7 +39,7 @@ class PenjualanController extends Controller
             )
             ->get();
 
-        $pdf = PDF::loadView('pages.penjualan.pdf', compact('penjualan'));
+        $pdf = PDF::loadView('pages.penjualan.pdf', compact('penjualan', 'startMonth', 'endMonth'));
 
         return $pdf->download('penjualan_report.pdf');
     }
@@ -224,7 +224,7 @@ class PenjualanController extends Controller
                 'penjualan_detail.id', 'produk_jual.nama_produk_jual', 'penjualan_detail.qty',
                 'penjualan_detail.id_produk_jual', 'kategori_jual.kategori_jual',
             ]);
-        
+
         // $idpenjualan = $idpenjualan;
 
         return view(
@@ -252,8 +252,7 @@ class PenjualanController extends Controller
 
         $stok = $produkjual->stok + ($oldQty - $newQty);
 
-        if($stok < 0)
-        {
+        if ($stok < 0) {
             return redirect()->back()->with('failed', 'Stok barang tidak mencukupi');
         }
 

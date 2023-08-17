@@ -1,22 +1,76 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html>
 <head>
-    <title>Laravel</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-        table {
-            font-size: 12px;
+        /* Add your styling here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header img {
+            max-width: 150px;
+        }
+        
+        .title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .content {
+            margin: 20px;
+
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
     </style>
 </head>
-
 <body>
-    <div class="container py-5">
-        <h5 class="font-weight-bold text-center">Laravel PDF Report - Pembelian</h5>
-        <table class="table table-bordered mt-3">
+    <div class="header">
+        <img src="{{ storage_path('app/public/trb.png') }}">
+        <div class="title">Pembelian</div>
+        <div class="description">Report pembelian pada {{$startMonth}} sampai {{$endMonth}}.</div>
+    </div>
+    
+    <div class="footer">
+      &copy; {{ date('Y') }} Tirta Rahayu. All rights reserved.
+    </div>
+
+    <div class="content">
+        <table>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -29,7 +83,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($pembelian as $item)
+                @forelse($pembelian as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->total_item }}</td>
@@ -48,5 +102,4 @@
         </table>
     </div>
 </body>
-
 </html>
