@@ -31,7 +31,7 @@ class PembelianController extends Controller
 
         $pdf = PDF::loadView('pages.pembelian.pdf', compact('pembelian', 'startMonth', 'endMonth'));
 
-        return $pdf->download('pembelian_report.pdf');
+        return $pdf->download('TirtaRahayuLaporanPembelian-'.date('M Y', strtotime($startMonth)).' - '.date('M Y', strtotime($endMonth)).'.pdf');
     }
 
     public function index()
@@ -121,11 +121,23 @@ class PembelianController extends Controller
 
         $produkbeli = ProdukBeli::pluck('nama_produk_beli' ,'id');
 
+        $returpembelian = ReturPembelian::
+            join('pembelian_detail', 'pembelian_detail.id', '=', 'retur_pembelian.id_pembelian_detail')
+            ->join('produk_beli', 'produk_beli.id', '=', 'pembelian_detail.id_produk_beli')
+            ->join('kategori_beli', 'kategori_beli.id', '=', 'produk_beli.id_kategori_beli')
+            ->join('pembelian', 'pembelian.id', '=', 'pembelian_detail.id_pembelian')
+            ->where('pembelian.id', '=', $id)
+            ->get([
+                'retur_pembelian.id', 'retur_pembelian.qty', 'retur_pembelian.subtotal',
+                'produk_beli.nama_produk_beli', 'kategori_beli.kategori_beli',
+            ]);
+
         return view('pages.pembelian.detail', [
             'pembelian' => $pembelian,
             'detailpembelian' => $detailpembelian,
             'supplier' => $supplier, 
             'produkbeli' => $produkbeli, 
+            'returpembelian' => $returpembelian, 
         ]);
     }
 
@@ -148,13 +160,32 @@ class PembelianController extends Controller
         );
     }
 
+    public function update_pembelian(Request $request, $id)
+    {
+        $request->validate([
+            'id_supplier' => 'required',
+        ]);
+
+        $pembelian = Pembelian::find($id);
+
+        if($pembelian->id_supplier == $request->id_supplier)
+        {
+            return redirect()->back()->with('failed', 'Data supplier sama dengan sebelumnya');
+        }
+
+        $pembelian->id_supplier = $request->id_supplier;
+        $pembelian->update();
+
+        return redirect()->back()->with('success', 'Data pembelian berhasil diperbaharui');
+    }
+
     public function update_detail_pembelian(Request $request, $id)
     {
         $request->validate([
             'qty' => 'required|numeric'
         ]);
 
-        $produkbeli = ProdukBeli::find($request->id_pembelian);
+        $produkbeli = ProdukBeli::find($request->id_produk_beli);
         $detailpembelian = PembelianDetail::find($id);
 
         $oldQty = $detailpembelian->qty;

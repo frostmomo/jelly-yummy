@@ -36,7 +36,7 @@ Route::get('/', function () {
 		return redirect('home');
 	}
 
-	return view('welcome');
+	return redirect('/login');
 });
 
 Auth::routes();
@@ -64,7 +64,9 @@ Route::middleware('auth')->group(function () {
 	Route::post('penjualan/store', [PenjualanController::class, 'store'])->name('penjualan.store');
 	Route::get('penjualan/detail/{id}', [PenjualanController::class, 'detail'])->name('penjualan.detail');
 	Route::get('penjualan/detail/edit/{id}/{idpenjualan}', [PenjualanController::class, 'detail_penjualan'])->name('penjualan.detail.edit');
+	Route::put('penjualan/update/{id}', [PenjualanController::class, 'update_penjualan'])->name('penjualan.update');
 	Route::put('penjualan/detail/update/{id}', [PenjualanController::class, 'update_detail_penjualan'])->name('penjualan.detail.update');
+	Route::post('penjualan/tambah-item/{id}', [PenjualanController::class, 'tambah_item_penjualan'])->name('penjualan.tambah-item');
 	//Route untuk Piutang
 	Route::put('penjualan/piutang/{id}/{idpenjualan}', [PenjualanController::class, 'bayar_piutang'])->name('penjualan.bayar-piutang');
 	//Route untuk Retur Penjualan
@@ -77,6 +79,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('pembelian/store', [PembelianController::class, 'store'])->name('pembelian.store');
 	Route::get('pembelian/detail/{id}', [PembelianController::class, 'detail'])->name('pembelian.detail');
 	Route::get('pembelian/detail/edit/{id}/{idpembelian}', [PembelianController::class, 'detail_pembelian'])->name('pembelian.detail.edit');
+	Route::put('pembelian/update/{id}', [PembelianController::class, 'update_pembelian'])->name('pembelian.update');
 	Route::put('pembelian/detail/update/{id}', [PembelianController::class, 'update_detail_pembelian'])->name('pembelian.detail.update');
 	Route::post('pembelian/tambah-item/{id}', [PembelianController::class, 'tambah_item_pembelian'])->name('pembelian.tambah-item');
 	//Route untuk Retur Pembelian

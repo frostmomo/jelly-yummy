@@ -9,6 +9,11 @@
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-body px-lg-5 py-lg-5">
                         <img src="{{ asset('argon') }}/img/brand/trb.png" style="width:50%; display: block; margin: 0 auto;"/>
+                        <p class="text-dark">
+                            <h3 class="text-center">
+                                Tirta Rahayu
+                            </h3>
+                        </p>
                         @if ($message = Session::get('failed'))
                             <div class="alert alert-danger">
                                 <p>{{ $message }}</p>
