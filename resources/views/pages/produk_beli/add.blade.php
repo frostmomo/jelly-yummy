@@ -58,7 +58,7 @@
                         <!-- Form Footer -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary">Save</button>
-                            <a href="{{ route('produk-beli.store') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('produk-beli') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

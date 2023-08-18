@@ -8,6 +8,7 @@
             <div class="col-lg-5 col-md-7">
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-body px-lg-5 py-lg-5">
+                        <img src="{{ asset('argon') }}/img/brand/trb.png" style="width:50%; display: block; margin: 0 auto;"/>
                         @if ($message = Session::get('failed'))
                             <div class="alert alert-danger">
                                 <p>{{ $message }}</p>
