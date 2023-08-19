@@ -13,9 +13,16 @@ class KategoriProdukBeliController extends Controller
      * @return void
      */
 
+    public function index()
+    {
+        $kategoribeli = KategoriBeli::all();
+
+        return view('pages.kategori_produk_beli.index', ['kategoribeli' => $kategoribeli]);
+    }
+
     public function create()
     {
-        return view('pages.kategori_produk.produk_beli.add');
+        return view('pages.kategori_produk_beli.add');
     }
 
     public function store(Request $request)
@@ -27,17 +34,17 @@ class KategoriProdukBeliController extends Controller
 
         //buat data baru untuk kategori beli jika data belum ada
         $kategoriBeli = new KategoriBeli;
-            $kategoriBeli->kategori_beli = $request->kategori_beli;
+        $kategoriBeli->kategori_beli = $request->kategori_beli;
         $kategoriBeli->save();
 
         //kembali ke menu kategori beli
-        return redirect('produk-beli')->with('success', 'Kategori beli berhasil ditambahkan');
+        return redirect('kategori-beli')->with('success', 'Kategori beli berhasil ditambahkan');
     }
 
-    public function edit($id) 
+    public function edit($id)
     {
         $kategoribeli = KategoriBeli::find($id);
-        return view('pages.kategori_produk.produk_beli.edit', ['kategoribeli' => $kategoribeli]);
+        return view('pages.kategori_produk_beli.edit', ['kategoribeli' => $kategoribeli]);
     }
 
     public function update(Request $request, $id)
@@ -47,16 +54,15 @@ class KategoriProdukBeliController extends Controller
         ]);
 
         $kategoribeli = KategoriBeli::find($id);
-            $kategoribeli->kategori_beli = $request->kategori_beli;
+        $kategoribeli->kategori_beli = $request->kategori_beli;
         $kategoribeli->update();
 
-        return redirect('produk-beli')->with('success', 'Kategori Produk Beli berhasil diperbaharui');
-
+        return redirect('kategori-beli')->with('success', 'Kategori Produk Beli berhasil diperbaharui');
     }
 
     public function delete($id)
     {
         KategoriBeli::find($id)->delete();
-        return redirect('produk-beli')->with('success', 'Kategori Produk Beli berhasil dihapus');
+        return redirect('kategori-beli')->with('success', 'Kategori Produk Beli berhasil dihapus');
     }
 }

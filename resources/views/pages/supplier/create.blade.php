@@ -18,7 +18,7 @@
     <div class="row" style="padding-top: 88px">
         <div class="col">
             @if ($errors->any())
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="alert-message">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -75,6 +75,17 @@
             alert('Telepon Supplier must contain only numeric characters.');
         }
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var alertMessage = document.getElementById("alert-message");
+
+        if (alertMessage) {
+            setTimeout(function() {
+                alertMessage.remove();
+            }, 5000);
+        }
+    });
+
 </script>
 @endpush
 @endsection

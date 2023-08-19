@@ -13,9 +13,16 @@ class KategoriProdukJualController extends Controller
      * @return void
      */
 
+    public function index()
+    {
+        $kategorijual = KategoriJual::all();
+
+        return view('pages.kategori_produk_jual.index', ['kategorijual' => $kategorijual]);
+    }
+
     public function create()
     {
-        return view('pages.kategori_produk.produk_jual.add');
+        return view('pages.kategori_produk_jual.add');
     }
 
     public function store(Request $request)
@@ -27,17 +34,17 @@ class KategoriProdukJualController extends Controller
 
         //buat data baru untuk kategori jual jika data belum ada
         $kategorijual = new KategoriJual;
-            $kategorijual->kategori_jual = $request->kategori_jual;
+        $kategorijual->kategori_jual = $request->kategori_jual;
         $kategorijual->save();
 
         //kembali ke menu kategori jual
-        return redirect('produk-jual')->with('success', 'Kategori jual berhasil ditambahkan');
+        return redirect('kategori-jual')->with('success', 'Kategori jual berhasil ditambahkan');
     }
 
-    public function edit($id) 
+    public function edit($id)
     {
         $kategorijual = KategoriJual::find($id);
-        return view('pages.kategori_produk.produk_jual.edit', ['kategorijual' => $kategorijual]);
+        return view('pages.kategori_produk_jual.edit', ['kategorijual' => $kategorijual]);
     }
 
     public function update(Request $request, $id)
@@ -47,16 +54,15 @@ class KategoriProdukJualController extends Controller
         ]);
 
         $kategorijual = KategoriJual::find($id);
-            $kategorijual->kategori_jual = $request->kategori_jual;
+        $kategorijual->kategori_jual = $request->kategori_jual;
         $kategorijual->update();
 
-        return redirect('produk-jual')->with('success', 'Kategori Produk jual berhasil diperbaharui');
-
+        return redirect('kategori-jual')->with('success', 'Kategori Produk jual berhasil diperbaharui');
     }
 
     public function delete($id)
     {
         KategoriJual::find($id)->delete();
-        return redirect('produk-jual')->with('success', 'Kategori Produk jual berhasil dihapus');
+        return redirect('kategori-jual')->with('success', 'Kategori Produk jual berhasil dihapus');
     }
 }

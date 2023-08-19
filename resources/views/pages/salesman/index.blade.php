@@ -23,7 +23,7 @@
       </div>
       <br>
       @if ($message = Session::get('success'))
-          <div class="alert alert-success">
+          <div class="alert alert-success" id="success-message">
             <p>{{ $message }}</p>
           </div>
       @endif
@@ -80,6 +80,16 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
-    <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      var successMessage = document.getElementById("success-message");
+
+      if (successMessage) {
+          setTimeout(function() {
+              successMessage.remove();
+          }, 5000);
+      }
+  });
+</script>
+
 @endpush

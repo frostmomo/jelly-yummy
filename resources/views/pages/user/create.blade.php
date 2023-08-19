@@ -18,7 +18,7 @@
     <div class="row" style="padding-top: 88px">
         <div class="col">
             @if ($errors->any())
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="alert-message">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -87,6 +87,17 @@
                 passwordMismatchWarning.classList.remove('d-none');
             }
         });
+
+        document.addEventListener("DOMContentLoaded", function() {
+        var successMessage = document.getElementById("success-message");
+        
+        if (successMessage) {
+            setTimeout(function() {
+                successMessage.remove();
+            }, 5000);
+        }
+    });
+
     </script>
 @endpush
 @endsection

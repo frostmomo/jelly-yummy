@@ -16,14 +16,13 @@ class ProdukBeliController extends Controller
 
     public function index()
     {
-        $kategoribeli = KategoriBeli::all();
         $produkbeli = ProdukBeli::join('kategori_beli', 'kategori_beli.id', '=', 'produk_beli.id_kategori_beli')
             ->get([
                 'produk_beli.id', 'produk_beli.nama_produk_beli', 'produk_beli.kode_produk_beli',
                 'produk_beli.harga_beli', 'produk_beli.stok', 'kategori_beli.kategori_beli',
             ]);
-        return view('pages.produk_beli.index', 
-            ['kategoribeli' => $kategoribeli],
+        return view(
+            'pages.produk_beli.index',
             ['produkbeli' => $produkbeli],
         );
     }
@@ -31,7 +30,8 @@ class ProdukBeliController extends Controller
     public function create()
     {
         $kategoribeli = KategoriBeli::pluck('kategori_beli', 'id');
-        return view('pages.produk_beli.add', 
+        return view(
+            'pages.produk_beli.add',
             ['kategoribeli' => $kategoribeli],
         );
     }
@@ -47,11 +47,11 @@ class ProdukBeliController extends Controller
         ]);
 
         $produkbeli = new ProdukBeli;
-            $produkbeli->id_kategori_beli = $request->kategori_beli;
-            $produkbeli->nama_produk_beli = $request->nama_produk_beli;
-            $produkbeli->kode_produk_beli = $request->kode_produk_beli;
-            $produkbeli->harga_beli = $request->harga_beli;
-            $produkbeli->stok = $request->stok;
+        $produkbeli->id_kategori_beli = $request->kategori_beli;
+        $produkbeli->nama_produk_beli = $request->nama_produk_beli;
+        $produkbeli->kode_produk_beli = $request->kode_produk_beli;
+        $produkbeli->harga_beli = $request->harga_beli;
+        $produkbeli->stok = $request->stok;
         $produkbeli->save();
 
         return redirect('produk-beli')->with('success', 'Produk beli berhasil ditambahkan');
@@ -67,10 +67,11 @@ class ProdukBeliController extends Controller
             ]);
 
         $kategoribeli = KategoriBeli::pluck('kategori_beli', 'id');
-        
+
         // dd($produkbeli);
 
-        return view('pages.produk_beli.edit', 
+        return view(
+            'pages.produk_beli.edit',
             ['produkbeli' => $produkbeli],
             ['kategoribeli' => $kategoribeli],
         );
@@ -87,11 +88,11 @@ class ProdukBeliController extends Controller
         ]);
 
         $produkbeli = ProdukBeli::find($id);
-            $produkbeli->id_kategori_beli = $request->id_kategori_beli;
-            $produkbeli->nama_produk_beli = $request->nama_produk_beli;
-            $produkbeli->kode_produk_beli = $request->kode_produk_beli;
-            $produkbeli->harga_beli = $request->harga_beli;
-            $produkbeli->stok = $request->stok;
+        $produkbeli->id_kategori_beli = $request->id_kategori_beli;
+        $produkbeli->nama_produk_beli = $request->nama_produk_beli;
+        $produkbeli->kode_produk_beli = $request->kode_produk_beli;
+        $produkbeli->harga_beli = $request->harga_beli;
+        $produkbeli->stok = $request->stok;
         $produkbeli->update();
 
         return redirect('produk-beli')->with('success', 'Data produk beli berhasil dipebaharui');

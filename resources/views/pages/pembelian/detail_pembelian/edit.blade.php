@@ -28,7 +28,7 @@
             @endif
 
             @if ($message = Session::get('failed'))
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="alert-message">
                     <p>{{ $message }}</p>
                 </div>
             @endif
@@ -78,3 +78,16 @@
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var alertMessage = document.getElementById("alert-message");
+  
+        if (alertMessage) {
+            setTimeout(function() {
+                alertMessage.remove();
+            }, 5000);
+        }
+    });
+  </script>
+@endpush

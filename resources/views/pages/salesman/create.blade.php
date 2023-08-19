@@ -18,7 +18,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             @if ($errors->any())
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="alert-message">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -56,25 +56,17 @@
 
 <!-- Add the necessary JavaScript to handle password mismatch -->
 @push('js')
-    <script>
-        const passwordField = document.getElementById('password');
-        const confirmPasswordField = document.getElementById('password_confirmation');
-        const passwordMismatchWarning = document.getElementById('passwordMismatch');
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var alertMessage = document.getElementById("alert-message");
 
-        confirmPasswordField.addEventListener('keyup', function() {
-            if (passwordField.value !== confirmPasswordField.value) {
-                passwordMismatchWarning.classList.remove('d-none');
-            } else {
-                passwordMismatchWarning.classList.add('d-none');
-            }
-        });
+        if (alertMessage) {
+            setTimeout(function() {
+                alertMessage.remove();
+            }, 5000);
+        }
+    });
+</script>
 
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            if (passwordField.value !== confirmPasswordField.value) {
-                event.preventDefault();
-                passwordMismatchWarning.classList.remove('d-none');
-            }
-        });
-    </script>
 @endpush
 @endsection

@@ -18,7 +18,7 @@
     <div class="row" style="padding-top: 88px">
         <div class="col">
             @if ($errors->any())
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="alert-message">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -83,15 +83,17 @@
 
 <!-- Add the necessary JavaScript to handle adding rows to the table -->
 @push('js')
-    <script>
-        // Format tanggal field in "month day, year" format (MDY)
-        const tanggalInput = document.getElementById('tanggal');
-        tanggalInput.addEventListener('change', function () {
-            const date = new Date(this.value);
-            const options = { month: 'short', day: 'numeric', year: 'numeric' };
-            const formattedDate = date.toLocaleDateString('en-US', options);
-            this.value = formattedDate;
-        });
-    </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var alertMessage = document.getElementById("alert-message");
+
+        if (alertMessage) {
+            setTimeout(function() {
+                alertMessage.remove();
+            }, 5000);
+        }
+    });
+</script>
+
 @endpush
 @endsection

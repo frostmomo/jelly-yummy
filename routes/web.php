@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AkunController;
 use App\Models\Salesman;
 use App\Models\Supplier;
 use App\Models\Penjualan;
@@ -31,8 +32,7 @@ use App\Http\Controllers\KategoriProdukJualController;
 */
 
 Route::get('/', function () {
-	if(Auth::check())
-	{
+	if (Auth::check()) {
 		return redirect('home');
 	}
 
@@ -93,6 +93,7 @@ Route::middleware('auth')->group(function () {
 	Route::put('produk-jual/update/{id}', [ProdukJualController::class, 'update'])->name('produk-jual.update');
 	Route::get('produk-jual/delete/{id}', [ProdukJualController::class, 'delete'])->name('produk-jual.delete');
 	//Route untuk Kategori jual
+	Route::get('kategori-jual', [KategoriProdukJualController::class, 'index'])->name('kategori-jual');
 	Route::get('kategori-jual/create', [KategoriProdukJualController::class, 'create'])->name('kategori-jual.create');
 	Route::post('kategori-jual/store', [KategoriProdukJualController::class, 'store'])->name('kategori-jual.store');
 	Route::get('kategori-jual/edit/{id}', [KategoriProdukJualController::class, 'edit'])->name('kategori-jual.edit');
@@ -107,6 +108,7 @@ Route::middleware('auth')->group(function () {
 	Route::put('produk-beli/update/{id}', [ProdukBeliController::class, 'update'])->name('produk-beli.update');
 	Route::get('produk-beli/delete/{id}', [ProdukBeliController::class, 'delete'])->name('produk-beli.delete');
 	//Route untuk Kategori beli
+	Route::get('kategori-beli', [KategoriProdukBeliController::class, 'index'])->name('kategori-beli');
 	Route::get('kategori-beli/create', [KategoriProdukBeliController::class, 'create'])->name('kategori-beli.create');
 	Route::post('kategori-beli/store', [KategoriProdukBeliController::class, 'store'])->name('kategori-beli.store');
 	Route::get('kategori-beli/edit/{id}', [KategoriProdukBeliController::class, 'edit'])->name('kategori-beli.edit');
@@ -144,6 +146,14 @@ Route::middleware('auth')->group(function () {
 	Route::get('supplier/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
 	Route::put('supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
 	Route::get('supplier/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
+
+	// Route untuk Akun
+	Route::get('akun', [AkunController::class, 'index'])->name('akun');
+	// Route::get('akun/create', [AkunController::class, 'create'])->name('akun.create');
+	// Route::post('akun', [AkunController::class, 'store'])->name('akun.store');
+	// Route::get('akun/edit/{id}', [AkunController::class, 'edit'])->name('akun.edit');
+	// Route::put('akun/update/{id}', [AkunController::class, 'update'])->name('akun.update');
+	// Route::get('akun/delete/{id}', [AkunController::class, 'delete'])->name('akun.delete');
 
 	//Logout lalu redirect ke halaman login
 	Route::get('logout', [AuthController::class, 'logout'])->name('logout');

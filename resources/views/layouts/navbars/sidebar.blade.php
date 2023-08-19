@@ -96,6 +96,16 @@
                                     <i class="fa fa-cart-arrow-down text-yellow"></i></i> {{ __('Produk Jual') }}
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('kategori-beli') }}">
+                                    <i class="fa fa-table text-yellow"></i></i> {{ __('Kategori Produk Beli') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('kategori-jual') }}">
+                                    <i class="fa fa-table text-yellow"></i></i> {{ __('Kategori Produk Jual') }}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -126,6 +136,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('supplier') }}">
                                     <i class="ni ni-single-02 text-yellow"></i> {{ __('Supplier') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('akun') }}">
+                                    <i class="ni ni-single-02 text-yellow"></i> {{ __('Akun') }}
                                 </a>
                             </li>
                         </ul>

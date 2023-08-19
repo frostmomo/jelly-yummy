@@ -18,13 +18,13 @@
     <div class="row" style="padding-top: 80px">
         <div class="col">
             @if ($message = Session::get('failed'))
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="alert-message">
                     <p>{{ $message }}</p>
                 </div>
             @endif
 
             @if ($message = Session::get('success'))
-                <div class="alert alert-success">
+                <div class="alert alert-success" id="success-message">
                     <p>{{ $message }}</p>
                 </div>
             @endif
@@ -336,3 +336,24 @@
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      var successMessage = document.getElementById("success-message"); 
+      var alertMessage = document.getElementById("alert-message");
+
+      if (alertMessage) {
+          setTimeout(function() {
+              alertMessage.remove();
+          }, 5000);
+      }
+
+      if(successMessage){
+        setTimeout(function(){
+          successMessage.remove();
+        },5000);
+      }
+  });
+</script>
+
+@endpush

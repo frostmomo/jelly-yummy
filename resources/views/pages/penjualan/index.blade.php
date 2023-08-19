@@ -52,7 +52,7 @@ $activePage = "Penjualan";
   <div class="row" style="padding-top: 20px">
     <div class="col">
       @if ($message = Session::get('success'))
-          <div class="alert alert-success">
+          <div class="alert alert-success" id="success-message">
             <p>{{ $message }}</p>
           </div>
       @endif
@@ -121,3 +121,16 @@ $activePage = "Penjualan";
   <!-- Footer -->
 </div> 
 @endsection
+@push('js')
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      var successMessage = document.getElementById("success-message");
+
+      if (successMessage) {
+          setTimeout(function() {
+              successMessage.remove();
+          }, 5000);
+      }
+  });
+</script>
+@endpush
