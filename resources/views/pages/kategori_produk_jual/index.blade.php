@@ -13,7 +13,7 @@ $breadcrumbs = [
 <div class="container-fluid mt--7">
   <div class="header-body">
     @if ($message = Session::get('success'))
-          <div class="alert alert-success">
+          <div class="alert alert-success" id="success-message">
             <p>{{ $message }}</p>
           </div>
     @endif
