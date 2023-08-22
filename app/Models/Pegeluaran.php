@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penerimaan extends Model
+class Pegeluaran extends Model
 {
     use HasFactory;
-    
-    protected $table = 'penerimaan';
+
+    protected $table = 'pengeluaran';
 
     protected $fillable = [
         'id_user',
-        'id_customer',
+        'id_supplier',
         'uraian',
         'subtotal',
     ];
@@ -23,13 +23,13 @@ class Penerimaan extends Model
         $this->belongsTo(User::class, 'id_user');
     }
 
-    public function Customer()
+    public function Supplier()
     {
-        $this->belongsTo(Customer::class, 'id_customer');
+        $this->belongsTo(Supplier::class, 'id_supplier');
     }
 
-    public function PenerimaanDetail()
+    public function PengeluaranDetail()
     {
-        $this->hasMany(PenerimaanDetail::class, 'id_penerimaan');
+        $this->hasMany(PengeluaranDetail::class, 'id_pengeluaran');
     }
 }

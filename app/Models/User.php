@@ -49,4 +49,12 @@ class User extends Authenticatable
     public function Pembelian() {
         return $this->hasMany(Pembelian::class, 'id_user');
     }
+    
+    public function Penerimaan() {
+        return $this->hasMany(Penerimaan::class, 'id_user');
+    }
+
+    public function Pengeluaran() {
+        return $this->hasMany(Pengeluaran::class, 'id_user');
+    }
 }

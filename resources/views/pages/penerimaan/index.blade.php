@@ -1,11 +1,11 @@
 @extends('layouts.app') 
 @section('content') 
 @php 
-    $pageTitle = "Akun"; 
+    $pageTitle = "Penerimaan"; 
     $breadcrumbs = [ 
         ['label' => 'Home', 'url' => '#'], 
     ]; 
-        $activePage = "Akun"; 
+        $activePage = "Penerimaan"; 
 
 @endphp 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
@@ -16,8 +16,8 @@
         <div class="row">
           <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
             <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahAkun">
-                 Tambah Akun
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahPenerimaan">
+                 Tambah Penerimaan
               </button>
             </div>
           </div>
@@ -52,20 +52,22 @@
               <table class="table align-items-center table-flush">
                 <thead class="thead-light text-center">
                   <tr>
-                    <th scope="col">Nama Akun</th>
-                    <th scope="col">Kelompok</th>
-                    <th scope="col">Kode Akun</th>
+                    <th scope="col">Dibuat Oleh</th>
+                    <th scope="col">Uraian</th>
+                    <th scope="col">Keterangan</th>
+                    <th scope="col">Subtotal</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                     {{-- For loop here --}}
                   @php $i = 1; @endphp
-                  @forelse ($akun as $data)
+                  @forelse ($penerimaan as $data)
                     <tr>
-                      <td>{{ $data->nama_akun }}</td>
-                      <td>{{ $data->kelompok_akun }}</td>
-                      <td>{{ $data->kode_akun }}</td>
+                      <td>{{ $data->id_user }}</td>
+                      <td>{{ $data->uraian }}</td>
+                      <td>{{ $data->keterangan }}</td>
+                      <td>{{ $data->subtotal }}</td>
                       <td class="text-center">
                         <div class="btn-group">
                           <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#editAkun{{ $i }}">
@@ -126,7 +128,7 @@
                     @php $i++ @endphp
                   @empty 
                     <tr>
-                      <td colspan="4" class="text-center">Tidak ada data</td>
+                      <td colspan="6" class="text-center">Tidak ada data</td>
                     </tr>
                   @endforelse
                 </tbody>
@@ -136,12 +138,12 @@
         </div>
       </div>
     </div>
-    <!-- Modal Tambah Akun -->
-    <div class="modal fade" id="tambahAkun" tabindex="-1" role="dialog" aria-labelledby="tambahAkunLabel" aria-hidden="true">
+    <!-- Modal Tambah Penerimaan -->
+    <div class="modal fade" id="tambahPenerimaan" tabindex="-1" role="dialog" aria-labelledby="tambahPenerimaanLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="mb-0 text-center">Tambah Akun</h3>
+            <h3 class="mb-0 text-center">Tambah Penerimaan</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -150,8 +152,16 @@
             <form action="{{ route('akun.store') }}" method="post">
               @csrf
               <div class="form-group">
-                <label for="nama_akun">Nama Akun</label>
-                <input type="text" id="nama_akun" name="nama_akun" class="form-control">
+                <label for="uraian">Uraian <span class="text-danger">*</span></label>
+                <input type="text" id="uraian" name="uraian" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
+                <input type="text" id="keterangan" name="keterangan" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="total">Total <span class="text-danger">*</span></label>
+                <input type="text" id="total" name="total" class="form-control">
               </div>
               <div class="form-group">
                 <label for="kelompok">Kelompok Akun <span class="text-danger">*</span></label>
