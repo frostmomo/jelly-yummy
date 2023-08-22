@@ -158,22 +158,6 @@ Route::middleware('auth')->group(function () {
 	// Route::put('akun/update/{id}', [AkunController::class, 'update'])->name('akun.update');
 	// Route::get('akun/delete/{id}', [AkunController::class, 'delete'])->name('akun.delete');
 
-	// Route untuk Penerimaan
-	Route::get('penerimaan', [PenerimaanController::class, 'index'])->name('penerimaan');
-	// Route::get('penerimaan/create', [PenerimaanController::class, 'create'])->name('penerimaan.create');
-	// Route::post('penerimaan', [PenerimaanController::class, 'store'])->name('penerimaan.store');
-	// Route::get('penerimaan/edit/{id}', [PenerimaanController::class, 'edit'])->name('penerimaan.edit');
-	// Route::put('penerimaan/update/{id}', [PenerimaanController::class, 'update'])->name('penerimaan.update');
-	// Route::get('penerimaan/delete/{id}', [PenerimaanController::class, 'delete'])->name('penerimaan.delete');
-
-	// Route untuk Pengeluaran
-	Route::get('pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran');
-	// Route::get('pengeluaran/create', [PengeluaranController::class, 'create'])->name('pengeluaran.create');
-	// Route::post('pengeluaran', [PengeluaranController::class, 'store'])->name('pengeluaran.store');
-	// Route::get('pengeluaran/edit/{id}', [PengeluaranController::class, 'edit'])->name('pengeluaran.edit');
-	// Route::put('pengeluaran/update/{id}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
-	// Route::get('pengeluaran/delete/{id}', [PengeluaranController::class, 'delete'])->name('pengeluaran.delete');
-
 	//Logout lalu redirect ke halaman login
 	Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
