@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
         <div class="d-flex justify-content-end">
-            <a href="{{ route('jurnal.create') }}" class="btn btn-primary">Buat Jurnal</a>
+            <a href="#" class="btn btn-primary">Buat Jurnal</a>
             <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#createJournalModal">Cetak Laporan Jurnal</button>
         </div>
       </div>
@@ -27,7 +27,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-              <form action="{{ route('jurnal.create') }}" method="POST"> @csrf <div class="form-group">
+              <form action="#" method="POST"> @csrf <div class="form-group">
                 <label for="bulan">Bulan</label>
                 <select class="form-control" id="bulan" name="bulan" required> @php $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']; @endphp @foreach($months as $index => $month) <option value="{{ $index + 1 }}">{{ $month }}</option> @endforeach </select>
               </div>

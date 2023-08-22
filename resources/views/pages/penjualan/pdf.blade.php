@@ -65,8 +65,9 @@
 <body>
     <div class="header">
         <img src="{{ storage_path('app/public/trb.png') }}">
+        <h1>CV. Tirta Rahayu</h1>
         <div class="title">Penjualan</div>
-        <div class="description">Report penjualan per {{$startDay}}.</div>
+        <div class="description">Laporan Penjualan Tanggal {{ date('d M Y', strtotime($startDay)) }} Sampai {{ date('d M Y', strtotime($endDay)) }} </div>
     </div>
     
     <div class="footer">
@@ -77,12 +78,12 @@
         <table>
             <thead>
                 <tr>
-                    <th>Created At</th>
-                    <th>Total Item</th>
-                    <th>Subtotal</th>
-                    <th>Discount</th>
-                    <th>User</th>
+                    <th>Tanggal</th>
+                    <th>Dibuat Oleh</th>
                     <th>Customer</th>
+                    <th>Total Item</th>
+                    <th>Discount</th>
+                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,12 +93,12 @@
     
                 @forelse($penjualan as $item)
                 <tr>
-                    <td>{{ $item->created_at }}</td>
-                    <td>{{ $item->total_item }}</td>
-                    <td>{{ $item->subtotal }}</td>
-                    <td>{{ $item->diskon }}</td>
+                    <td>{{ date('d M Y', strtotime($item->created_at)) }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->nama_customer }}</td>
+                    <td>{{ $item->total_item }}</td>
+                    <td>{{ $item->diskon }}%</td>
+                    <td>Rp.{{ $item->subtotal }}</td>
                 </tr>
                 @php
                     $totalSubtotal += $item->subtotal; 
@@ -111,7 +112,7 @@
                 @if(count($penjualan) > 0)
                 <tr>
                     <td colspan="5"></td>
-                    <td>Total : Rp. {{ number_format($totalSubtotal, 2) }}</td>
+                    <td>Total : Rp. {{ number_format($total, 2) }}</td>
                 </tr>
                 @endif
             </tbody>

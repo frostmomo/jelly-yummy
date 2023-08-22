@@ -59,7 +59,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
 
 Route::middleware('auth')->group(function () {
-	Route::get('/jurnal', [JurnalController::class, 'jurnal'])->name('jurnal');
+	Route::get('jurnal', [JurnalController::class, 'index'])->name('jurnal');
 
 	//Route untuk Penjualan
 	Route::post('penjualan-pdf', [PenjualanController::class, 'generate_pdf'])->name('penjualan.pdf');

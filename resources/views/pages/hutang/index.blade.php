@@ -66,8 +66,8 @@
                     <tr>
                       <td>{{ $data->name }}</td>
                       <td>{{ $data->nama_supplier }}</td>
-                      <td>{{ $data->subtotal }}</td>
-                      <td>Rp.{{ $data->bayar }}</td>
+                      <td>Rp.{{ $data->subtotal }}</td>
+                      <td>Rp.{{ $data->subtotal - $data->bayar }}</td>
                       <td class="text-center">
                         <div class="btn-group">
                           <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#prosesHutang{{ $i }}">
