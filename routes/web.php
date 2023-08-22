@@ -21,7 +21,7 @@ use App\Http\Controllers\KategoriProdukBeliController;
 use App\Http\Controllers\KategoriProdukJualController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PengeluaranController;
-
+use App\Http\Controllers\PiutangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +85,8 @@ Route::middleware('auth')->group(function () {
 	Route::put('pembelian/update/{id}', [PembelianController::class, 'update_pembelian'])->name('pembelian.update');
 	Route::put('pembelian/detail/update/{id}', [PembelianController::class, 'update_detail_pembelian'])->name('pembelian.detail.update');
 	Route::post('pembelian/tambah-item/{id}', [PembelianController::class, 'tambah_item_pembelian'])->name('pembelian.tambah-item');
+	//Route untuk Hutang
+	Route::put('pembelian/hutang/{id}', [PembelianController::class, 'bayar_hutang'])->name('pembelian.hutang');
 	//Route untuk Retur Pembelian
 	Route::put('pembelian/retur-pembelian/{idpembeliandetail}', [PembelianController::class, 'retur_pembelian'])->name('pembelian.retur-pembelian');
 
@@ -163,6 +165,11 @@ Route::middleware('auth')->group(function () {
 	Route::post('penerimaan', [PenerimaanController::class, 'store'])->name('penerimaan.store');
 	Route::put('penerimaan/update/{id}', [PenerimaanController::class, 'update'])->name('penerimaan.update');
 	Route::get('penerimaan/delete/{id}', [PenerimaanController::class, 'delete'])->name('penerimaan.delete');
+
+	//Route untuk Pengeluaran
+
+	//Route untuk Piutang
+	Route::get('piutang', [PiutangController::class, 'index'])->name('piutang');
 
 	//Logout lalu redirect ke halaman login
 	Route::get('logout', [AuthController::class, 'logout'])->name('logout');

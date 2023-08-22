@@ -97,7 +97,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ route('piutang') }}">
                                     <i class="fa fa-shopping-cart text-yellow"></i> {{ __('Piutang') }}
                                 </a>
                             </li>

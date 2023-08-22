@@ -65,7 +65,7 @@
                             <p>{{ $datapembelian->total_item }}</p>
                         </div>
                         <div class="form-group">
-                            <label for="subtotal">Subtotal :</label>
+                            <label for="subtotal">Jumlah yang Harus Dibayar :</label>
                             <p>Rp. {{ $datapembelian->subtotal }}</p>
                         </div>
                         <div class="form-group">
@@ -77,9 +77,13 @@
                             <p class="text-danger">Rp. {{ $datapembelian->bayar }}</p>
                         </div>
                         <div class="form-group">
+                          <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#bayarHutang">
+                            + Pembayaran Hutang</button>
+                        </div>
+                        <div class="form-group">
                             <label for="id_produk">Detail Pembelian:</label>
                             <div class="form-group">
-                              <button type="button" class="btn-sm btn-success" data-toggle="modal" data-target="#tambahItemPembelian">
+                              <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#tambahItemPembelian">
                                 + Tambah Item</button>
                             </div>
                             <div class="table-responsive">
@@ -95,6 +99,7 @@
                                   </thead>
                                   <tbody class="list">
                                     <!-- Replace with dynamic data using a loop -->
+                                    @php $i = 0; @endphp
                                     @forelse($detailpembelian as $datadetail)
                                       @php 
                                         $cekProduk = [];
@@ -104,16 +109,94 @@
                                         <td>{{ $datadetail->nama_produk_beli }}</td>
                                         <td>{{ $datadetail->kategori_beli }}</td>
                                         <td>{{ $datadetail->qty }}</td>
-                                        <td>{{ $datadetail->total }}</td>
+                                        <td>Rp.{{ $datadetail->total }}</td>
                                         <td class="text-center">
                                           <div class="btn-group" role="group">
-                                            <button type="button" class="btn-sm btn-primary mr-2" data-toggle="modal" data-target="#editDetailPembelian">
+                                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editDetailPembelian{{ $i }}">
                                               <i class="ni ni-ruler-pencil mr-2"></i> Edit </button>
-                                            <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#returPembelian">
+                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#returPembelian{{ $i }}">
                                               <i class="ni ni-fat-remove mr-2"></i> Retur </button>
                                           </div>
                                         </td>
                                       </tr>
+                                      <!-- Modal Edit Detail Pembelian-->
+                                      <div class="modal fade" id="editDetailPembelian{{ $i }}" tabindex="-1" role="dialog" aria-labelledby="editDetailPembelianLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h3 class="mb-0 text-center">Edit Detail Pembelian</h3>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <form action="{{ route('pembelian.detail.update', $datadetail->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                {{-- <div class="form-group"> --}}
+                                                  {{-- <label for="id_pembelian">ID Pembelian</label> --}}
+                                                  <input type="text" id="id_pembelian" name="id_pembelian" value="{{ $datapembelian->id }}" class="form-control" hidden readonly>
+                                                  <input type="text" id="id_produk_beli" name="id_produk_beli" value="{{ $datadetail->id_produk_beli }}" class="form-control" hidden readonly>
+                                                {{-- </div> --}}
+                                                <div class="form-group">
+                                                  <label for="jumlah_item">Nama Produk Beli</label>
+                                                  <input type="text" id="jumlah_item" name="jumlah_item" value="{{ $datadetail->nama_produk_beli }} {{ $datadetail->kategori_beli }}" class="form-control" disabled readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="qty">Jumlah</label>
+                                                  <input type="text" id="qty" name="qty" value="{{ $datadetail->qty }}" class="form-control">
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                  <div class="col text-center">
+                                                    <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi edit detail pembelian?')">Confirm</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                  </div>
+                                                </div>
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <!-- Modal Retur Pembelian-->
+                                      <div class="modal fade" id="returPembelian{{ $i }}" tabindex="-1" role="dialog" aria-labelledby="returPembelianLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h3 class="mb-0 text-center">Retur Pembelian</h3>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <form action="{{ route('pembelian.retur-pembelian', $datadetail->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                  <input type="text" id="id_pembelian" name="id_pembelian" value="{{ $datapembelian->id }}" class="form-control" hidden readonly>
+                                                <div class="form-group">
+                                                  <label for="produk_jual">Nama Produk Beli</label>
+                                                  <input type="text" id="produk_jual" name="produk_jual" value="{{ $datadetail->nama_produk_beli }} ({{ $datadetail->kategori_beli }})" class="form-control" disabled readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="jumlah_item">Jumlah Item</label>
+                                                  <input type="text" id="jumlah_item" name="jumlah_item" value="{{ $datadetail->qty }}" class="form-control" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="jumlah_retur">Jumlah Retur</label>
+                                                  <input type="text" id="jumlah_retur" name="jumlah_retur" value="" placeholder="0" class="form-control">
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                  <div class="col text-center">
+                                                    <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi retur pembelian?')">Confirm</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                  </div>
+                                                </div>
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      @php $i++; @endphp
                                     @empty
                                       <tr class="text-center">
                                         <td colspan="7">
@@ -158,9 +241,52 @@
                                   <!-- End loop -->
                                 </tbody>
                               </table>
-                            </div>
-                      </div>
+                          </div>
+                        </div>
                     @endforeach
+
+                    <!-- Modal Hutang -->
+                    <div class="modal fade" id="bayarHutang" tabindex="-1" role="dialog" aria-labelledby="bayarHutangLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h3 class="mb-0 text-center">Pembayaran Hutang</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form action="{{ route('pembelian.hutang', $datapembelian->id) }}" method="post">
+                              @csrf
+                              @method('PUT')
+                              <div class="form-group">
+                                <label for="jumlah_piutang">Jumlah yang Harus diabayar</label>
+                                <input type="text" id="jumlah_piutang" name="jumlah_piutang" value="Rp.{{ $datapembelian->subtotal }}" class="form-control" readonly>
+                              </div>
+                              <div class="form-group">
+                                <label for="jumlah_bayar">Jumlah Dibayarkan</label>
+                                <input type="text" id="jumlah_bayar" name="jumlah_bayar" class="form-control" placeholder="Rp." required>
+                              </div>
+                              <div class="form-group">
+                                <label for="akun">Akun <span class="text-danger">*</span></label>
+                                <select class="form-control" id="akun" name="akun" required>
+                                    <option value="" selected disabled>Pilih Akun</option>
+                                    @foreach($akun as $id => $value)
+                                      <option value="{{ $id }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                              </div>
+                              <div class="row justify-content-center">
+                                <div class="col text-center">
+                                  <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi Pembayaran?')">Confirm</button>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <!-- Modal Edit Pembelian -->
                     <div class="modal fade" id="editPembelian" tabindex="-1" role="dialog" aria-labelledby="editPembelianLabel" aria-hidden="true">
@@ -184,88 +310,14 @@
                                         <option value="{{ $id }}" @if($datapembelian->id_supplier == $id) selected @endif>{{ $value }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="diskon">Diskon</label>
+                                <input type="text" id="diskon" name="diskon" class="form-control" value="{{ $datapembelian->diskon }}" placeholder="%" required>
+                              </div>
                               <div class="row justify-content-center">
                                 <div class="col text-center">
                                   <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi edit pembelian?')">Confirm</button>
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Modal Edit Detail Pembelian-->
-                    <div class="modal fade" id="editDetailPembelian" tabindex="-1" role="dialog" aria-labelledby="editDetailPembelianLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h3 class="mb-0 text-center">Edit Detail Pembelian</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <form action="{{ route('pembelian.detail.update', $datadetail->id) }}" method="post">
-                              @csrf
-                              @method('PUT')
-                              {{-- <div class="form-group"> --}}
-                                {{-- <label for="id_pembelian">ID Pembelian</label> --}}
-                                <input type="text" id="id_pembelian" name="id_pembelian" value="{{ $datapembelian->id }}" class="form-control" hidden readonly>
-                                <input type="text" id="id_produk_beli" name="id_produk_beli" value="{{ $datadetail->id_produk_beli }}" class="form-control" hidden readonly>
-                              {{-- </div> --}}
-                              <div class="form-group">
-                                <label for="jumlah_item">Nama Produk Beli</label>
-                                <input type="text" id="jumlah_item" name="jumlah_item" value="{{ $datadetail->nama_produk_beli }} {{ $datadetail->kategori_beli }}" class="form-control" disabled readonly>
-                              </div>
-                              <div class="form-group">
-                                <label for="qty">Jumlah</label>
-                                <input type="text" id="qty" name="qty" value="{{ $datadetail->qty }}" class="form-control">
-                              </div>
-                              <div class="row justify-content-center">
-                                <div class="col text-center">
-                                  <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi edit detail pembelian?')">Confirm</button>
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Modal Retur Pembelian-->
-                    <div class="modal fade" id="returPembelian" tabindex="-1" role="dialog" aria-labelledby="returPembelianLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h3 class="mb-0 text-center">Retur Pembelian</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <form action="{{ route('pembelian.retur-pembelian', $datadetail->id) }}" method="post">
-                              @csrf
-                              @method('PUT')
-                                <input type="text" id="id_pembelian" name="id_pembelian" value="{{ $datapembelian->id }}" class="form-control" hidden readonly>
-                              <div class="form-group">
-                                <label for="produk_jual">Nama Produk Beli</label>
-                                <input type="text" id="produk_jual" name="produk_jual" value="{{ $datadetail->nama_produk_beli }} ({{ $datadetail->kategori_beli }})" class="form-control" disabled readonly>
-                              </div>
-                              <div class="form-group">
-                                <label for="jumlah_item">Jumlah Item</label>
-                                <input type="text" id="jumlah_item" name="jumlah_item" value="{{ $datadetail->qty }}" class="form-control" readonly>
-                              </div>
-                              <div class="form-group">
-                                <label for="jumlah_retur">Jumlah Retur</label>
-                                <input type="text" id="jumlah_retur" name="jumlah_retur" value="" placeholder="0" class="form-control">
-                              </div>
-                              <div class="row justify-content-center">
-                                <div class="col text-center">
-                                  <button type="submit" class="btn btn-success" onclick="return confirm('Konfirmasi retur pembelian?')">Confirm</button>
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                               </div>

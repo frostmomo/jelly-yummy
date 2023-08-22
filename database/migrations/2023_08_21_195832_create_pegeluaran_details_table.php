@@ -13,7 +13,7 @@ class CreatePegeluaranDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pegeluaran_detail', function (Blueprint $table) {
+        Schema::create('pengeluaran_detail', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_pengeluaran')->unsigned()->nullable();
             $table->bigInteger('id_akun')->unsigned()->nullable();

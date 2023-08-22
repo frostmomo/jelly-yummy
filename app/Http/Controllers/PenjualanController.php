@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use Carbon\Carbon;
+use App\Models\Akun;
+use App\Models\Piutang;
 use App\Models\Customer;
 use App\Models\Salesman;
 use App\Models\Penjualan;
-use App\Models\PenjualanDetail;
-use App\Models\Piutang;
+use App\Models\Penerimaan;
+use App\Models\PenerimaanDetail;
 use App\Models\ProdukJual;
-use App\Models\ReturPenjualan;
 use Illuminate\Http\Request;
+use App\Models\ReturPenjualan;
+use App\Models\PenjualanDetail;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use PDF;
 
 class PenjualanController extends Controller
 {
@@ -51,7 +54,6 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::join('users', 'users.id', '=', 'penjualan.id_user')
             ->join('customer', 'customer.id', '=', 'penjualan.id_customer')
             ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
-            ->join('piutang', 'piutang.id_penjualan', '=', 'penjualan.id')
             ->select(
                 'penjualan.id',
                 'penjualan.tunai',
@@ -61,11 +63,9 @@ class PenjualanController extends Controller
                 'users.name',
                 'customer.nama_customer',
                 'salesman.nama_salesman',
-                'piutang.bayar',
             )->orderByDesc('penjualan.created_at')->get();
 
-        return view(
-            'pages.penjualan.index',
+        return view('pages.penjualan.index',
             ['penjualan' => $penjualan]
         );
     }
@@ -218,7 +218,22 @@ class PenjualanController extends Controller
 
         $salesman = Salesman::pluck('nama_salesman', 'id');
 
-        $produkjual = ProdukJual::pluck('nama_produk_jual', 'id');
+        $produkjual = ProdukJual::join('kategori_jual', 'kategori_jual.id', '=', 'produk_jual.id_kategori_jual')
+            ->get([
+                'produk_jual.id', 'produk_jual.nama_produk_jual', 'kategori_jual.kategori_jual',
+            ]);
+
+        $returpenjualan = ReturPenjualan::join('penjualan_detail', 'penjualan_detail.id', '=', 'retur_penjualan.id_penjualan_detail')
+            ->join('produk_jual', 'produk_jual.id', '=', 'penjualan_detail.id_produk_jual')
+            ->join('kategori_jual', 'kategori_jual.id', '=', 'produk_jual.id_kategori_jual')
+            ->join('penjualan', 'penjualan.id', '=', 'penjualan_detail.id_penjualan')
+            ->where('penjualan.id', '=', $id)
+            ->get([
+                'retur_penjualan.id', 'retur_penjualan.qty', 'retur_penjualan.subtotal',
+                'produk_jual.nama_produk_jual', 'kategori_jual.kategori_jual',
+            ]);
+
+        $akun = Akun::pluck('nama_akun', 'id');
 
         return view('pages.penjualan.detail', [
             'penjualan' => $penjualan,
@@ -227,6 +242,8 @@ class PenjualanController extends Controller
             'customer' => $customer,
             'salesman' => $salesman,
             'produkjual' => $produkjual,
+            'returpenjualan' => $returpenjualan,
+            'akun' => $akun,
         ]);
     }
 
@@ -306,16 +323,28 @@ class PenjualanController extends Controller
             return redirect()->back()->with('failed', 'Stok barang tidak mencukupi');
         }
 
+        $detailpenjualan->qty = $request->qty;
+        $detailpenjualan->total = $produkjual->harga_jual * $request->qty;
+        $detailpenjualan->update();
+
+        $produkjual->stok = $stok;
+        $produkjual->update();
+
+        $penjualan->total_item = PenjualanDetail::where('id_penjualan', '=', $request->id_penjualan)->count();
+
+        $subtotal = PenjualanDetail::where('id_penjualan', '=', $request->id_penjualan)->sum('total');
+
+        $discountedTotal = $subtotal - (($subtotal * $penjualan->diskon / 100));
+
         if ($penjualan->keterangan_penjualan == 'Belum Lunas') {
             $caripiutang = Piutang::where('id_penjualan', '=', $penjualan->id)->get();
 
             foreach ($caripiutang as $datapiutang) {
                 $idpiutang = $datapiutang->id;
-                $jumlahpiutang = $datapiutang->bayar;
             }
 
             $piutang = Piutang::find($idpiutang);
-            $piutang->bayar = $piutangHasil;
+            $piutang->bayar = $discountedTotal;
             $piutang->update();
 
             $detailpenjualan->qty = $request->qty;
@@ -340,32 +369,89 @@ class PenjualanController extends Controller
             return redirect()->back()->with('success', 'Data detail penjualan berhasil ditambahkan');
         }
 
-        $detailpenjualan->qty = $request->qty;
-        $detailpenjualan->total = $produkjual->harga_jual * $request->qty;
-        $detailpenjualan->update();
-
-        $produkjual->stok = $stok;
-        $produkjual->update();
-
-        $penjualan->total_item = PenjualanDetail::where('id_penjualan', '=', $request->id_penjualan)->count();
-
-        $subtotal = PenjualanDetail::where('id_penjualan', '=', $request->id_penjualan)->sum('total');
-
-        $discountedTotal = $subtotal - (($subtotal * $penjualan->diskon / 100));
-
         $penjualan->subtotal = $discountedTotal;
         $penjualan->update();
 
         return redirect()->back()->with('success', 'Data detail penjualan berhasil diperbaharui');
     }
 
+    public function tambah_item_penjualan(Request $request, $id)
+    {
+        $request->validate([
+            'id_produk' => 'required',
+            'qty' => 'required|numeric',
+        ]);
+
+        $penjualan = Penjualan::find($id);
+        $produkjual = ProdukJual::find($request->id_produk);
+
+        $cekStok = $produkjual->stok - $request->qty;
+        if($cekStok < 0)
+        {
+            return redirect()->back()->with('failed', 'Stok barang tidak mencukupi');
+        }
+
+        $penjualandetail = new PenjualanDetail;
+        $penjualandetail->id_penjualan = $penjualan->id;
+        $penjualandetail->id_produk_jual = $produkjual->id;
+        $penjualandetail->qty = $request->qty;
+        $penjualandetail->total = $request->qty * $produkjual->harga_jual;
+        $penjualandetail->save();
+
+        $produkjual->stok = $produkjual->stok - $request->qty;
+        $produkjual->update();
+
+        $subtotal = PenjualanDetail::where('id_penjualan', '=', $id)->sum('total');
+        $discountedTotal = $subtotal - (($subtotal * $request->diskon) / 100);
+
+        $penjualan->total_item = PenjualanDetail::where('id_penjualan', '=', $id)->count();
+        $penjualan->subtotal = $subtotal - (($subtotal * $penjualan->diskon) / 100);
+        $penjualan->update();
+
+        $caripiutang = Piutang::where('id_penjualan', '=', $penjualan->id)->get();
+        if (!empty($caripiutang)) {
+
+            foreach ($caripiutang as $datapiutang) {
+                $idpiutang = $datapiutang->id;
+            }
+
+            $piutang = Piutang::find($idpiutang);
+            $piutang->bayar = $subtotal - (($subtotal * $penjualan->diskon) / 100);
+            $piutang->update();
+
+            if ($penjualan->subtotal == 0) {
+                $penjualan->keterangan_penjualan = 'Dibatalkan';
+            } elseif($penjualan->subtotal !== $penjualan->tunai) {
+                $penjualan->keterangan_penjualan = 'Belum Lunas';
+            }
+
+            $penjualan->update();
+
+            return redirect()->back()->with('success', 'Item berhasil ditambahkan');
+        }
+
+        $piutang = new Piutang;
+        $piutang->id_penjualan = $penjualan->id;
+        $piutang->bayar = $discountedTotal;
+        $piutang->save();
+
+        return redirect()->back()->with('success', 'Item berhasil ditambahkan');
+    }
+
     public function bayar_piutang(Request $request, $id, $idpenjualan)
     {
         $request->validate([
             'jumlah_bayar' => 'required|numeric',
+            'akun' => 'required',
         ]);
 
         $piutang = Piutang::find($id);
+
+        if($request->jumlah_bayar > $piutang->bayar || $request->jumlah_bayar < 0)
+        {
+            return redirect()->back()->with('failed', 'Jumlah bayar tidak valid atau melebihi piutang');
+        }
+
         $pelunasan = $piutang->bayar - $request->jumlah_bayar;
 
         if ($pelunasan < 0) {
@@ -383,6 +469,21 @@ class PenjualanController extends Controller
         }
 
         $penjualan->update();
+
+        $penerimaan = new Penerimaan;
+        $penerimaan->id_user = Auth::user()->id;
+        $penerimaan->id_customer = $penjualan->id_customer;
+        $penerimaan->uraian = 'Penerimaan Kas';
+        $penerimaan->subtotal = $request->jumlah_bayar;
+        $penerimaan->save();
+
+        $penerimaanDetail = new PenerimaanDetail;
+        $penerimaanDetail->id_penerimaan = $penerimaan->id;
+        $penerimaanDetail->id_akun = $request->akun;
+        $penerimaanDetail->keterangan = 'Pembayaran Piutang Dagang';
+        $penerimaanDetail->total = $request->jumlah_bayar;
+        $penerimaanDetail->save();
+
 
         return redirect()->back()->with('success', 'Pembayaran piutang berhasil diupdate');
     }
@@ -402,12 +503,12 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::find($penjualandetail->id_penjualan);
         $produkjual = ProdukJual::find($penjualandetail->id_produk_jual);
 
-        $subtotalretur = ($produkjual->harga_jual * $request->jumlah_retur) * ($penjualan->diskon / 100);
+        $discountedTotal = $produkjual->harga_jual * $request->jumlah_retur;
 
         $returpenjualan = new ReturPenjualan;
         $returpenjualan->id_penjualan_detail = $penjualandetail->id;
         $returpenjualan->qty = $request->jumlah_retur;
-        $returpenjualan->subtotal = $subtotalretur;
+        $returpenjualan->subtotal = $discountedTotal;
         $returpenjualan->save();
 
         $penjualandetail->qty = $penjualandetail->qty - $request->jumlah_retur;
@@ -433,7 +534,7 @@ class PenjualanController extends Controller
 
             $piutang = Piutang::find($idpiutang);
             $piutang->id_retur_penjualan = $returpenjualan->id;
-            $piutang->bayar = $subtotal - (($subtotal * $penjualan->diskon) / 100);
+            $piutang->bayar = $discountedTotal;
             $piutang->update();
 
             if ($penjualan->subtotal == 0) {

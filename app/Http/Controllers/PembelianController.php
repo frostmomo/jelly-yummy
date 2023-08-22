@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use PDF;
 use Carbon\Carbon;
+use App\Models\Akun;
 use App\Models\Supplier;
 use App\Models\Pembelian;
 use App\Models\ProdukBeli;
+use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use App\Models\ReturPembelian;
 use App\Models\PembelianDetail;
+use App\Models\PengeluaranDetail;
 use Illuminate\Support\Facades\Auth;
 
 class PembelianController extends Controller
@@ -89,9 +92,11 @@ class PembelianController extends Controller
         $produkbeli->stok = $produkbeli->stok + $request->qty;
         $produkbeli->update();
 
-        $pembelian->subtotal = PembelianDetail::where('pembelian_detail.id_pembelian', '=', $pembelian->id)->sum('total');
+        $subtotal = PembelianDetail::where('pembelian_detail.id_pembelian', '=', $pembelian->id)->sum('total');
+
+        $pembelian->subtotal = $subtotal - (($subtotal * $request->diskon) / 100);
         $pembelian->total_item = PembelianDetail::where('pembelian_detail.id_pembelian', '=', $pembelian->id)->count();
-        $pembelian->bayar = $pembeliandetail->total - (($pembeliandetail->total * $request->diskon) / 100);
+        $pembelian->bayar = 0;
         $pembelian->save();
 
         return redirect('pembelian')->with('success', 'Pembelian berhasil ditambahkan');
@@ -131,12 +136,15 @@ class PembelianController extends Controller
                 'produk_beli.nama_produk_beli', 'kategori_beli.kategori_beli',
             ]);
 
+        $akun = Akun::pluck('nama_akun', 'id');
+
         return view('pages.pembelian.detail', [
             'pembelian' => $pembelian,
             'detailpembelian' => $detailpembelian,
             'supplier' => $supplier,
             'produkbeli' => $produkbeli,
             'returpembelian' => $returpembelian,
+            'akun' => $akun,
         ]);
     }
 
@@ -164,15 +172,20 @@ class PembelianController extends Controller
     {
         $request->validate([
             'id_supplier' => 'required',
+            'diskon' => 'required|numeric',
         ]);
 
         $pembelian = Pembelian::find($id);
 
-        if ($pembelian->id_supplier == $request->id_supplier) {
-            return redirect()->back()->with('failed', 'Data supplier sama dengan sebelumnya');
-        }
+        // if ($pembelian->id_supplier == $request->id_supplier) {
+        //     return redirect()->back()->with('failed', 'Data supplier sama dengan sebelumnya');
+        // }
+
+        $subtotal = PembelianDetail::where('id_pembelian', '=', $id)->sum('total');
 
         $pembelian->id_supplier = $request->id_supplier;
+        $pembelian->diskon = $request->diskon;
+        $pembelian->subtotal = $subtotal - (($subtotal * $request->diskon) / 100);
         $pembelian->update();
 
         return redirect()->back()->with('success', 'Data pembelian berhasil diperbaharui');
@@ -211,8 +224,7 @@ class PembelianController extends Controller
 
         $discountedTotal = $subtotal - (($subtotal * $pembelian->diskon / 100));
 
-        $pembelian->subtotal = $subtotal;
-        $pembelian->bayar = $discountedTotal;
+        $pembelian->subtotal = $discountedTotal;
         $pembelian->update();
 
         return redirect()->back()->with('success', 'Data detail pembelian berhasil diperbaharui');
@@ -233,7 +245,7 @@ class PembelianController extends Controller
         $pembelian = Pembelian::find($pembeliandetail->id_pembelian);
         $produkbeli = ProdukBeli::find($pembeliandetail->id_produk_beli);
 
-        $subtotalretur = ($produkbeli->harga_beli * $request->jumlah_retur) * ($pembelian->diskon / 100);
+        $subtotalretur = $produkbeli->harga_beli * $request->jumlah_retur;
 
         $returpembelian = new ReturPembelian;
         $returpembelian->id_pembelian_detail = $pembeliandetail->id;
@@ -251,8 +263,7 @@ class PembelianController extends Controller
         $subtotal = PembelianDetail::where('id_pembelian', '=', $pembelian->id)->sum('total');
         $discountedTotal = $subtotal - (($subtotal * $pembelian->diskon) / 100);
 
-        $pembelian->subtotal = $subtotal;
-        $pembelian->bayar = $discountedTotal;
+        $pembelian->subtotal = $discountedTotal;
         $pembelian->update();
 
         return redirect()->back()->with('success', 'Retur pembelian berhasil ditambahkan');
@@ -277,12 +288,56 @@ class PembelianController extends Controller
         $produkbeli->stok = $produkbeli->stok + $request->qty;
         $produkbeli->update();
 
+        $subtotal = PembelianDetail::where('id_pembelian', '=', $id)->sum('total');
+
         $pembelian->total_item = PembelianDetail::where('id_pembelian', '=', $id)->count();
-        $pembelian->subtotal = PembelianDetail::where('id_pembelian', '=', $id)->sum('total');
-        $pembelian->bayar = $pembelian->subtotal - (($pembelian->subtotal * $pembelian->diskon) / 100);
+        $pembelian->subtotal = $subtotal - (($subtotal * $pembelian->diskon) / 100);
         $pembelian->update();
 
         return redirect()->back()->with('success', 'Item berhasil ditambahkan');
+    }
+
+    public function bayar_hutang(Request $request, $id)
+    {
+        $request->validate([
+            'jumlah_bayar' => 'required|numeric',
+            'akun' => 'required',
+        ]);
+
+        $pembelian = Pembelian::find($id);
+        $totalbayar = $pembelian->bayar + $request->jumlah_bayar;
+
+        if($request->jumlah_bayar > $pembelian->subtotal || $request->jumlah_bayar < 0 || $totalbayar > $pembelian->subtotal)
+        {
+            return redirect()->back()->with('failed', 'Jumlah bayar tidak valid atau melebihi hutang');
+        }
+
+        $pelunasan = $pembelian->subtotal - $request->jumlah_bayar;
+
+        if ($pelunasan < 0) {
+            return redirect()->back()->with('failed', 'Jumlah tidak valid atau tidak bisa minus');
+        }
+
+        
+        $pembelian->bayar = $pembelian->bayar + $request->jumlah_bayar;
+        $pembelian->update();
+
+        $pengeluaran = new Pengeluaran;
+        $pengeluaran->id_user = Auth::user()->id;
+        $pengeluaran->id_supplier = $pembelian->id_supplier;
+        $pengeluaran->uraian = 'Pengeluaran Kas';
+        $pengeluaran->subtotal = $request->jumlah_bayar;
+        $pengeluaran->save();
+
+        $pengeluaranDetail = new PengeluaranDetail;
+        $pengeluaranDetail->id_pengeluaran = $pengeluaran->id;
+        $pengeluaranDetail->id_akun = $request->akun;
+        $pengeluaranDetail->keterangan = 'Pembayaran Hutang Dagang';
+        $pengeluaranDetail->total = $request->jumlah_bayar;
+        $pengeluaranDetail->save();
+
+
+        return redirect()->back()->with('success', 'Pembayaran hutang berhasil diupdate');
     }
 
     public function delete($id)

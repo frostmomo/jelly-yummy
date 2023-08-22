@@ -8,4 +8,28 @@ use Illuminate\Database\Eloquent\Model;
 class Pengeluaran extends Model
 {
     use HasFactory;
+    
+    protected $table = 'pengeluaran';
+
+    protected $fillable = [
+        'id_user',
+        'id_supplier',
+        'uraian',
+        'subtotal',
+    ];
+
+    public function User()
+    {
+        $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function Supplier()
+    {
+        $this->belongsTo(Supplier::class, 'id_supplier');
+    }
+
+    public function PengeluaranDetail()
+    {
+        $this->hasMany(PengeluaranDetail::class, 'id_pengeluaran');
+    }
 }
