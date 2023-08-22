@@ -20,50 +20,45 @@
         </div>
       </div>
       <div class="modal fade" id="createJournalModal" tabindex="-1" role="dialog" aria-labelledby="createJournalModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Cetak Laporan Jurnal</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h3 class="mb-0 text-center">Pilih Bulan :</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <div class="modal-body">
-              <form action="#" method="POST"> @csrf <div class="form-group">
-                <label for="bulan">Bulan</label>
-                <select class="form-control" id="bulan" name="bulan" required> @php $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']; @endphp @foreach($months as $index => $month) <option value="{{ $index + 1 }}">{{ $month }}</option> @endforeach </select>
-              </div>
-              <div class="form-group">
-                <label for="tahun">Tahun</label>
-                <select class="form-control" id="tahun" name="tahun" required> @php $currentYear = date('Y'); $startYear = $currentYear - 10; @endphp @for($year = $currentYear; $year >= $startYear; $year--) <option value="{{ $year }}">{{ $year }}</option> @endfor </select>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save</button>
-              </div>
-            </form>
+              <form action="#" method="post">
+                @csrf
+                <div class="form-group">
+                  <label for="tanggal_awal">Start Date:</label>
+                  <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="tanggal_akhir">End Date:</label>
+                  <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control">
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary">Generate PDF Report</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row" style="padding-top: 20px">
     <div class="col">
       <div class="card shadow">
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col-10">
               <h3 class="mb-0">Jurnal</h3>
-            </div>
-            <div class="col-2">
-              <form action="{{ route('home') }}" method="GET" class="form-inline">
-                <div class="input-group input-group-rounded input-group-merge">
-                  <input type="search" name="query" class="form-control form-control-rounded" placeholder="Search">
-                  <div class="input-group-prepend">
-                    <button type="submit" class="input-group-text">
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </div>
-                </div>
-              </form>
             </div>
           </div>
         </div>
@@ -117,40 +112,21 @@
             </tbody>
           </table>
         </div>
-        <div class="card-footer py-4">
-          <nav aria-label="...">
-            <ul class="pagination justify-content-end mb-0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">
-                  <i class="fas fa-angle-left"></i>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2 <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">
-                  <i class="fas fa-angle-right"></i>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
       </div>
     </div>
   </div>
 </div> 
 @endsection 
-@push('js') 
-  <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
-  <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script>
+@push('js')
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      var successMessage = document.getElementById("success-message");
+
+      if (successMessage) {
+          setTimeout(function() {
+              successMessage.remove();
+          }, 5000);
+      }
+  });
+</script>
 @endpush
