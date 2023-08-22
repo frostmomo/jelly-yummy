@@ -44,7 +44,7 @@
             <div class="card-header border-0">
               <div class="row align-items-center">
                 <div class="col-10">
-                  <h3 class="mb-0">Akun</h3>
+                  <h3 class="mb-0">Penerimaan Kas</h3>
                 </div>
               </div>
             </div>
@@ -55,6 +55,7 @@
                     <th scope="col">Dibuat Oleh</th>
                     <th scope="col">Uraian</th>
                     <th scope="col">Keterangan</th>
+                    <th scope="col">Akun</th>
                     <th scope="col">Subtotal</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -64,59 +65,61 @@
                   @php $i = 1; @endphp
                   @forelse ($penerimaan as $data)
                     <tr>
-                      <td>{{ $data->id_user }}</td>
+                      <td>{{ $data->name }}</td>
                       <td>{{ $data->uraian }}</td>
                       <td>{{ $data->keterangan }}</td>
-                      <td>{{ $data->subtotal }}</td>
+                      <td>{{ $data->nama_akun }}</td>
+                      <td>Rp.{{ $data->subtotal }}</td>
                       <td class="text-center">
                         <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#editAkun{{ $i }}">
-                            <i class="ni ni-ruler-pencil mr-2"></i>Edit Akun
+                          <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#editPenerimaan{{ $i }}">
+                            <i class="ni ni-ruler-pencil mr-2"></i>Edit Penerimaan
                           </button>
-                          <a href="{{ route('akun.delete', $data->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data akun ini?');">
+                          <a href="{{ route('penerimaan.delete', $data->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data penerimaan ini?');">
                               <i class="ni ni-fat-remove mr-2"></i>
                               Delete
                           </a>
                         </div>
                       </td>
                     </tr>
-                    <!-- Modal edit Akun -->
-                    <div class="modal fade" id="editAkun{{ $i }}" tabindex="-1" role="dialog" aria-labelledby="editAkunLabel" aria-hidden="true">
+                    <!-- Modal edit Penerimaan -->
+                    <div class="modal fade" id="editPenerimaan{{ $i }}" tabindex="-1" role="dialog" aria-labelledby="editPenerimaanLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h3 class="mb-0 text-center">Edit Akun</h3>
+                            <h3 class="mb-0 text-center">Edit Penerimaan</h3>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form action="{{ route('akun.update', $data->id) }}" method="post">
+                            <form action="{{ route('penerimaan.update', $data->id) }}" method="post">
                               @csrf
                               @method('PUT')
                               <div class="form-group">
-                                <label for="nama_akun">Nama Akun</label>
-                                <input type="text" id="nama_akun" name="nama_akun" value="{{ $data->nama_akun }}" class="form-control">
+                                <label for="uraian">Uraian <span class="text-danger">*</span></label>
+                                <input type="text" id="uraian" name="uraian" value="{{ $data->uraian }}" class="form-control">
                               </div>
                               <div class="form-group">
-                                <label for="kelompok">Kelompok Akun <span class="text-danger">*</span></label>
-                                <select class="form-control" id="kelompok" name="kelompok" required>
-                                    <option value="" selected disabled>Pilih Kelompok</option>
-                                    <option value="1. Aktiva" @if($data->kelompok_akun == '1. Aktiva') selected @endif>1. Aktiva</option>
-                                    <option value="2. Hutang" @if($data->kelompok_akun == '2. Hutang') selected @endif>2. Hutang</option>
-                                    <option value="3. Modal Pemilik" @if($data->kelompok_akun == '3. Modal Pemilik') selected @endif>3. Modal Pemilik</option>
-                                    <option value="4. Penjualan" @if($data->kelompok_akun == '4. Penjualan') selected @endif>4. Penjualan</option>
-                                    <option value="5. Pembelian" @if($data->kelompok_akun == '5. Pembelian') selected @endif>5. Pembelian</option>
-                                    <option value="6. Beban" @if($data->kelompok_akun == '6. Beban') selected @endif>6. Beban</option>
+                                <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
+                                <input type="text" id="keterangan" name="keterangan" value="{{ $data->keterangan }}" class="form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="total">Total <span class="text-danger">*</span></label>
+                                <input type="text" id="total" name="total" value="{{ $data->subtotal }}" placeholder="Rp." class="form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="akun">Akun <span class="text-danger">*</span></label>
+                                <select class="form-control" id="akun" name="akun" required>
+                                    <option value="" selected disabled>Pilih Akun</option>
+                                    @foreach($akun as $id => $value)
+                                      <option value="{{ $id }}" @if($data->id_akun == $id) selected @endif>{{ $value }}</option>
+                                    @endforeach
                                 </select>
-                              </div>
-                              <div class="form-group">
-                                <label for="kode_akun">Kode Akun</label>
-                                <input type="text" id="kode_akun" name="kode_akun" value="{{ $data->kode_akun }}" class="form-control">
                               </div>
                               <div class="row justify-content-center">
                                 <div class="col text-center">
-                                  <button type="submit" class="btn btn-success" onclick="return confirm('Tambah Akun?')">Save</button>
+                                  <button type="submit" class="btn btn-success" onclick="return confirm('Update Penerimaan?')">Update</button>
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                               </div>
@@ -149,7 +152,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="{{ route('akun.store') }}" method="post">
+            <form action="{{ route('penerimaan.store') }}" method="post">
               @csrf
               <div class="form-group">
                 <label for="uraian">Uraian <span class="text-danger">*</span></label>
@@ -161,27 +164,20 @@
               </div>
               <div class="form-group">
                 <label for="total">Total <span class="text-danger">*</span></label>
-                <input type="text" id="total" name="total" class="form-control">
+                <input type="text" id="total" name="total" placeholder="Rp." class="form-control">
               </div>
               <div class="form-group">
-                <label for="kelompok">Kelompok Akun <span class="text-danger">*</span></label>
-                <select class="form-control" id="kelompok" name="kelompok" required>
-                    <option value="" selected disabled>Pilih Kelompok</option>
-                    <option value="1. Aktiva">1. Aktiva</option>
-                    <option value="2. Hutang">2. Hutang</option>
-                    <option value="3. Modal Pemilik">3. Modal Pemilik</option>
-                    <option value="4. Penjualan">4. Penjualan</option>
-                    <option value="5. Pembelian">5. Pembelian</option>
-                    <option value="6. Beban">6. Beban</option>
+                <label for="akun">Akun <span class="text-danger">*</span></label>
+                <select class="form-control" id="akun" name="akun" required>
+                    <option value="" selected disabled>Pilih Akun</option>
+                    @foreach($akun as $id => $value)
+                      <option value="{{ $id }}">{{ $value }}</option>
+                    @endforeach
                 </select>
-              </div>
-              <div class="form-group">
-                <label for="kode_akun">Kode Akun</label>
-                <input type="text" id="kode_akun" name="kode_akun" class="form-control">
               </div>
               <div class="row justify-content-center">
                 <div class="col text-center">
-                  <button type="submit" class="btn btn-success" onclick="return confirm('Tambah Akun?')">Save</button>
+                  <button type="submit" class="btn btn-success" onclick="return confirm('Tambah Penerimaan?')">Save</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
               </div>
