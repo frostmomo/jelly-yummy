@@ -18,16 +18,16 @@ class PenjualanController extends Controller
 {
     public function generate_pdf(Request $request)
     {
-        $startMonth = $request->input('bulan_awal');
-        $endMonth = $request->input('bulan_akhir');
+        $startDay = $request->input('tanggal_awal');
+        $endDay = $request->input('tanggal_akhir');
 
-        $startOfMonth = Carbon::parse($startMonth)->startOfMonth();
-        $endOfMonth = Carbon::parse($endMonth)->endOfMonth();
+        $startOfDay = Carbon::parse($startDay)->startOfDay();
+        $endOfDay = Carbon::parse($endDay)->endOfDay();
 
         $penjualan = Penjualan::join('users', 'users.id', '=', 'penjualan.id_user')
             ->join('customer', 'customer.id', '=', 'penjualan.id_customer')
             ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
-            ->whereBetween('penjualan.created_at', [$startOfMonth, $endOfMonth])
+            ->whereBetween('penjualan.created_at', [$startOfDay, $endOfDay])
             ->select(
                 'penjualan.id',
                 'penjualan.total_item',
@@ -40,9 +40,9 @@ class PenjualanController extends Controller
             )
             ->get();
 
-        $pdf = PDF::loadView('pages.penjualan.pdf', compact('penjualan', 'startMonth', 'endMonth'));
+        $pdf = PDF::loadView('pages.penjualan.pdf', compact('penjualan', 'startDay', 'endDay'));
 
-        return $pdf->download('penjualan_report.pdf');
+        return $pdf->download('TirtaRahayuLaporanPenjualan-' . date('d M Y', strtotime($startDay)) . ' - ' . date('d M Y', strtotime($endDay)) . '.pdf');
     }
 
     public function index()
@@ -64,7 +64,8 @@ class PenjualanController extends Controller
                 'piutang.bayar',
             )->orderByDesc('penjualan.created_at')->get();
 
-        return view('pages.penjualan.index',
+        return view(
+            'pages.penjualan.index',
             ['penjualan' => $penjualan]
         );
     }
@@ -201,7 +202,7 @@ class PenjualanController extends Controller
                 'penjualan.total_item', 'penjualan.subtotal', 'penjualan.diskon', 'penjualan.id_customer',
                 'penjualan.id_salesman',
             ]);
-        
+
         $piutang = Piutang::where('id_penjualan', '=', $id)->get();
 
         $detailpenjualan = PenjualanDetail::join('penjualan', 'penjualan.id', '=', 'penjualan_detail.id_penjualan')
@@ -212,14 +213,14 @@ class PenjualanController extends Controller
                 'penjualan_detail.id', 'produk_jual.nama_produk_jual', 'penjualan_detail.qty',
                 'penjualan_detail.total', 'kategori_jual.kategori_jual', 'penjualan_detail.id_produk_jual',
             ]);
-        
+
         $customer = Customer::pluck('nama_customer', 'id');
 
         $salesman = Salesman::pluck('nama_salesman', 'id');
-        
+
         $produkjual = ProdukJual::pluck('nama_produk_jual', 'id');
 
-        return view('pages.penjualan.detail',[
+        return view('pages.penjualan.detail', [
             'penjualan' => $penjualan,
             'piutang' => $piutang,
             'detailpenjualan' => $detailpenjualan,
@@ -260,8 +261,7 @@ class PenjualanController extends Controller
 
         $penjualan = Penjualan::find($id);
 
-        if(($penjualan->id_customer == $request->id_customer) && ($penjualan->id_salesman == $request->id_salesman))
-        {
+        if (($penjualan->id_customer == $request->id_customer) && ($penjualan->id_salesman == $request->id_salesman)) {
             return redirect()->back()->with('failed', 'Data customer dan salesman sama dengan sebelumnya');
         }
 
@@ -306,12 +306,10 @@ class PenjualanController extends Controller
             return redirect()->back()->with('failed', 'Stok barang tidak mencukupi');
         }
 
-        if($penjualan->keterangan_penjualan == 'Belum Lunas')
-        {
+        if ($penjualan->keterangan_penjualan == 'Belum Lunas') {
             $caripiutang = Piutang::where('id_penjualan', '=', $penjualan->id)->get();
 
-            foreach($caripiutang as $datapiutang)
-            {
+            foreach ($caripiutang as $datapiutang) {
                 $idpiutang = $datapiutang->id;
                 $jumlahpiutang = $datapiutang->bayar;
             }
@@ -334,7 +332,7 @@ class PenjualanController extends Controller
             $discountedTotal = $subtotal - (($subtotal * $penjualan->diskon / 100));
 
             $penjualan->subtotal = $discountedTotal;
-            if($penjualan->subtotal == 0){
+            if ($penjualan->subtotal == 0) {
                 $penjualan->keterangan_penjualan = 'Dibatalkan';
             }
             $penjualan->update();
@@ -370,8 +368,7 @@ class PenjualanController extends Controller
         $piutang = Piutang::find($id);
         $pelunasan = $piutang->bayar - $request->jumlah_bayar;
 
-        if($pelunasan < 0)
-        {
+        if ($pelunasan < 0) {
             return redirect()->back()->with('failed', 'Jumlah tidak valid atau tidak bisa minus');
         }
 
@@ -381,7 +378,7 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::find($idpenjualan);
         $penjualan->tunai = $penjualan->tunai + $request->jumlah_bayar;
 
-        if($penjualan->tunai == $penjualan->subtotal){
+        if ($penjualan->tunai == $penjualan->subtotal) {
             $penjualan->keterangan_penjualan = 'Lunas';
         }
 
@@ -398,14 +395,13 @@ class PenjualanController extends Controller
 
         $penjualandetail = PenjualanDetail::find($idpenjualandetail);
 
-        if(($penjualandetail->qty - $request->jumlah_retur) < 0)
-        {
+        if (($penjualandetail->qty - $request->jumlah_retur) < 0) {
             return redirect()->back()->with('failed', 'Jumlah retur melebihi jumlah penjualan produk');
         }
 
         $penjualan = Penjualan::find($penjualandetail->id_penjualan);
         $produkjual = ProdukJual::find($penjualandetail->id_produk_jual);
-        
+
         $subtotalretur = ($produkjual->harga_jual * $request->jumlah_retur) * ($penjualan->diskon / 100);
 
         $returpenjualan = new ReturPenjualan;
@@ -427,12 +423,10 @@ class PenjualanController extends Controller
 
         // dd($subtotal);
 
-        if($penjualan->keterangan_penjualan == 'Belum Lunas')
-        {
+        if ($penjualan->keterangan_penjualan == 'Belum Lunas') {
             $caripiutang = Piutang::where('id_penjualan', '=', $penjualan->id)->get();
 
-            foreach($caripiutang as $datapiutang)
-            {
+            foreach ($caripiutang as $datapiutang) {
                 $idpiutang = $datapiutang->id;
                 $jumlahpiutang = $datapiutang->bayar;
             }
@@ -442,7 +436,7 @@ class PenjualanController extends Controller
             $piutang->bayar = $subtotal - (($subtotal * $penjualan->diskon) / 100);
             $piutang->update();
 
-            if($penjualan->subtotal == 0){
+            if ($penjualan->subtotal == 0) {
                 $penjualan->keterangan_penjualan = 'Dibatalkan';
             }
 
@@ -453,7 +447,7 @@ class PenjualanController extends Controller
 
         // $penjualan->subtotal = $discountedTotal;
         $penjualan->tunai = $discountedTotal;
-        if($penjualan->subtotal == 0){
+        if ($penjualan->subtotal == 0) {
             $penjualan->keterangan_penjualan = 'Dibatalkan';
         }
         $penjualan->update();

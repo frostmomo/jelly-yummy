@@ -16,22 +16,22 @@ class PembelianController extends Controller
 {
     public function generate_pdf(Request $request)
     {
-        $startMonth = $request->input('bulan_awal');
-        $endMonth = $request->input('bulan_akhir');
+        $startDay = $request->input('tanggal_awal');
+        $endDay = $request->input('tanggal_akhir');
 
-        $startOfMonth = Carbon::parse($startMonth)->startOfMonth();
-        $endOfMonth = Carbon::parse($endMonth)->endOfMonth();
+        $startOfDay = Carbon::parse($startDay)->startOfDay();
+        $endOfDay = Carbon::parse($endDay)->endOfDay();
 
         $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
-            ->whereBetween('pembelian.created_at', [$startOfMonth, $endOfMonth])
+            ->whereBetween('pembelian.created_at', [$startOfDay, $endOfDay])
             ->get([
                 'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
                 'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
             ]);
 
-        $pdf = PDF::loadView('pages.pembelian.pdf', compact('pembelian', 'startMonth', 'endMonth'));
+        $pdf = PDF::loadView('pages.pembelian.pdf', compact('pembelian', 'startDay', 'endDay'));
 
-        return $pdf->download('TirtaRahayuLaporanPembelian-'.date('M Y', strtotime($startMonth)).' - '.date('M Y', strtotime($endMonth)).'.pdf');
+        return $pdf->download('TirtaRahayuLaporanPembelian-' . date('d M Y', strtotime($startDay)) . ' - ' . date('d M Y', strtotime($endDay)) . '.pdf');
     }
 
     public function index()
@@ -104,7 +104,7 @@ class PembelianController extends Controller
             ->where('pembelian.id', '=', $id)
             ->get([
                 'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
-                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier', 'users.name', 
+                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier', 'users.name',
                 'pembelian.id_supplier',
             ]);
 
@@ -119,10 +119,9 @@ class PembelianController extends Controller
 
         $supplier = Supplier::pluck('nama_supplier', 'id');
 
-        $produkbeli = ProdukBeli::pluck('nama_produk_beli' ,'id');
+        $produkbeli = ProdukBeli::pluck('nama_produk_beli', 'id');
 
-        $returpembelian = ReturPembelian::
-            join('pembelian_detail', 'pembelian_detail.id', '=', 'retur_pembelian.id_pembelian_detail')
+        $returpembelian = ReturPembelian::join('pembelian_detail', 'pembelian_detail.id', '=', 'retur_pembelian.id_pembelian_detail')
             ->join('produk_beli', 'produk_beli.id', '=', 'pembelian_detail.id_produk_beli')
             ->join('kategori_beli', 'kategori_beli.id', '=', 'produk_beli.id_kategori_beli')
             ->join('pembelian', 'pembelian.id', '=', 'pembelian_detail.id_pembelian')
@@ -135,9 +134,9 @@ class PembelianController extends Controller
         return view('pages.pembelian.detail', [
             'pembelian' => $pembelian,
             'detailpembelian' => $detailpembelian,
-            'supplier' => $supplier, 
-            'produkbeli' => $produkbeli, 
-            'returpembelian' => $returpembelian, 
+            'supplier' => $supplier,
+            'produkbeli' => $produkbeli,
+            'returpembelian' => $returpembelian,
         ]);
     }
 
@@ -152,7 +151,8 @@ class PembelianController extends Controller
                 'pembelian_detail.id_produk_beli', 'kategori_beli.kategori_beli'
             ]);
 
-        return view('pages.pembelian.detail_pembelian.edit',
+        return view(
+            'pages.pembelian.detail_pembelian.edit',
             [
                 'detailpembelian' => $detailpembelian,
                 'idpembelian' => $idpembelian,
@@ -168,8 +168,7 @@ class PembelianController extends Controller
 
         $pembelian = Pembelian::find($id);
 
-        if($pembelian->id_supplier == $request->id_supplier)
-        {
+        if ($pembelian->id_supplier == $request->id_supplier) {
             return redirect()->back()->with('failed', 'Data supplier sama dengan sebelumnya');
         }
 
@@ -227,8 +226,7 @@ class PembelianController extends Controller
 
         $pembeliandetail = PembelianDetail::find($idpembeliandetail);
 
-        if(($pembeliandetail->qty - $request->jumlah_retur) < 0)
-        {
+        if (($pembeliandetail->qty - $request->jumlah_retur) < 0) {
             return redirect()->back()->with('failed', 'Jumlah retur melebihi jumlah pembelian produk');
         }
 
@@ -268,7 +266,7 @@ class PembelianController extends Controller
 
         $pembelian = Pembelian::find($id);
         $produkbeli = ProdukBeli::find($request->id_produk);
-        
+
         $pembeliandetail = new PembelianDetail;
         $pembeliandetail->id_pembelian = $pembelian->id;
         $pembeliandetail->id_produk_beli = $produkbeli->id;
@@ -291,8 +289,7 @@ class PembelianController extends Controller
     {
         $pembeliandetail = PembelianDetail::where('id_pembelian', '=', $id)->get();
 
-        foreach($pembeliandetail as $datapembeliandetail)
-        {
+        foreach ($pembeliandetail as $datapembeliandetail) {
             $produkbeli = ProdukBeli::find($datapembeliandetail->id_produk_beli);
             $produkbeli->stok = $produkbeli->stok - $datapembeliandetail->qty;
             $produkbeli->update();

@@ -32,11 +32,11 @@ $activePage = "Pembelian";
                 @csrf
                 <div class="form-group">
                   <label for="bulan_awal">Start Month:</label>
-                  <input type="month" id="bulan_awal" name="bulan_awal" class="form-control">
+                  <input type="date" id="bulan_awal" name="bulan_awal" class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="bulan_akhir">End Month:</label>
-                  <input type="month" id="bulan_akhir" name="bulan_akhir" class="form-control">
+                  <input type="date" id="bulan_akhir" name="bulan_akhir" class="form-control">
                 </div>
                 <div class="row justify-content-center">
                   <div class="col">

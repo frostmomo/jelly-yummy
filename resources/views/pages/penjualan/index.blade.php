@@ -31,12 +31,12 @@ $activePage = "Penjualan";
           <form action="{{ route('penjualan.pdf') }}" method="post">
             @csrf
             <div class="form-group">
-              <label for="bulan_awal">Start Month:</label>
-              <input type="month" id="bulan_awal" name="bulan_awal" class="form-control">
+              <label for="tanggal_awal">Start Date:</label>
+              <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control">
             </div>
             <div class="form-group">
-              <label for="bulan_akhir">End Month:</label>
-              <input type="month" id="bulan_akhir" name="bulan_akhir" class="form-control">
+              <label for="tanggal_akhir">End Date:</label>
+              <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control">
             </div>
             <div class="row justify-content-center">
               <div class="col">

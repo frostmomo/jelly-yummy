@@ -43,6 +43,10 @@
             border-bottom: 1px solid #ddd;
         }
         
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
         .footer {
             text-align: center;
             font-size: 12px;
@@ -62,7 +66,7 @@
     <div class="header">
         <img src="{{ storage_path('app/public/trb.png') }}">
         <div class="title">Penjualan</div>
-        <div class="description">Report penjualan pada {{$startMonth}} sampai {{$endMonth}}.</div>
+        <div class="description">Report penjualan per {{$startDay}}.</div>
     </div>
     
     <div class="footer">
@@ -73,33 +77,43 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Created At</th>
                     <th>Total Item</th>
                     <th>Subtotal</th>
                     <th>Discount</th>
-                    <th>Created At</th>
                     <th>User</th>
                     <th>Customer</th>
-                    <th>Salesman</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $total = 0;
+                @endphp
+    
                 @forelse($penjualan as $item)
                 <tr>
-                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->created_at }}</td>
                     <td>{{ $item->total_item }}</td>
                     <td>{{ $item->subtotal }}</td>
                     <td>{{ $item->diskon }}</td>
-                    <td>{{ $item->created_at }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->nama_customer }}</td>
-                    <td>{{ $item->nama_salesman }}</td>
                 </tr>
+                @php
+                    $total += $item->subtotal; 
+                @endphp
                 @empty
                 <tr>
                     <td colspan="7">No data available</td>
                 </tr>
                 @endforelse
+    
+                @if(count($penjualan) > 0)
+                <tr>
+                    <td colspan="5"></td>
+                    <td>Total : Rp. {{ number_format($totalSubtotal, 2) }}</td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>

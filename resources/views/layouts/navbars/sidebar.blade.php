@@ -55,6 +55,16 @@
                         <i class="fa fa-book text-yellow"></i> {{ __('Jurnal') }}
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('penerimaan') }}">
+                        <i class="fa fa-money-bill text-yellow"></i> {{ __('Penerimaan') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('pengeluaran') }}">
+                        <i class="fa fa-money-bill text-yellow"></i> {{ __('Pengeluaran') }}
+                    </a>
+                </li>
             </ul>
             <hr class="my-3">
             <ul class="navbar-nav">

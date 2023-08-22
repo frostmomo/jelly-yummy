@@ -29,7 +29,6 @@
         
         .content {
             margin: 20px;
-
         }
         
         table {
@@ -41,6 +40,10 @@
             padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
         
         .footer {
@@ -62,7 +65,7 @@
     <div class="header">
         <img src="{{ storage_path('app/public/trb.png') }}">
         <div class="title">Pembelian</div>
-        <div class="description">Report pembelian pada {{$startMonth}} sampai {{$endMonth}}.</div>
+        <div class="description">Report pembelian per {{$startDay}} .</div>
     </div>
     
     <div class="footer">
@@ -73,31 +76,41 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Tanggal</th>
                     <th>Total Item</th>
                     <th>Subtotal</th>
                     <th>Diskon</th>
                     <th>Bayar</th>
-                    <th>Created At</th>
-                    <th>Supplier</th>
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $totalBayar = 0;
+                @endphp
+    
                 @forelse($pembelian as $item)
                 <tr>
-                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->created_at }}</td>
                     <td>{{ $item->total_item }}</td>
                     <td>{{ $item->subtotal }}</td>
                     <td>{{ $item->diskon }}</td>
                     <td>{{ $item->bayar }}</td>
-                    <td>{{ $item->created_at }}</td>
-                    <td>{{ $item->nama_supplier }}</td>
                 </tr>
+                @php
+                    $totalBayar += $item->bayar;
+                @endphp
                 @empty
                 <tr>
                     <td colspan="7">No data available</td>
                 </tr>
                 @endforelse
+
+                @if(count($pembelian) > 0)
+                <tr>
+                    <td colspan="4"></td>
+                    <td>Total Bayar: Rp. {{ number_format($totalBayar, 2) }}</td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>
