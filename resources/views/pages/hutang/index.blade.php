@@ -1,11 +1,11 @@
 @extends('layouts.app') 
 @section('content') 
 @php 
-    $pageTitle = "Piutang"; 
+    $pageTitle = "Hutang"; 
     $breadcrumbs = [ 
         ['label' => 'Home', 'url' => '#'], 
     ]; 
-        $activePage = "Piutang"; 
+        $activePage = "Hutang"; 
 
 @endphp 
 @include('layouts.headers.cards', compact('pageTitle', 'breadcrumbs', 'activePage'))
@@ -16,8 +16,8 @@
         <div class="row">
           <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
             <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cetakLaporanPiutang">
-                 Cetak Piutang
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cetakLaporanHutang">
+                 Cetak Hutang
               </button>
             </div>
           </div>
@@ -44,7 +44,7 @@
             <div class="card-header border-0">
               <div class="row align-items-center">
                 <div class="col-10">
-                  <h3 class="mb-0">Piutang</h3>
+                  <h3 class="mb-0">Hutang</h3>
                 </div>
               </div>
             </div>
@@ -53,35 +53,35 @@
                 <thead class="thead-light text-center">
                   <tr>
                     <th scope="col">Dibuat Oleh</th>
-                    <th scope="col">Customer</th>
-                    <th scope="col">Salesman</th>
-                    <th scope="col">Piutang Dagang</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Hutang Dagang</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                     {{-- For loop here --}}
                   @php $i = 1; @endphp
-                  @forelse ($piutang as $data)
+                  @forelse ($hutang as $data)
                     <tr>
                       <td>{{ $data->name }}</td>
-                      <td>{{ $data->nama_customer }}</td>
-                      <td>{{ $data->nama_salesman }}</td>
+                      <td>{{ $data->nama_supplier }}</td>
+                      <td>{{ $data->subtotal }}</td>
                       <td>Rp.{{ $data->bayar }}</td>
                       <td class="text-center">
                         <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#prosesPiutang{{ $i }}">
-                            <i class="ni ni-ruler-pencil mr-2"></i>Proses Piutang
+                          <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#prosesHutang{{ $i }}">
+                            <i class="ni ni-ruler-pencil mr-2"></i>Proses Hutang
                           </button>
                         </div>
                       </td>
                     </tr>
                     <!-- Modal edit Penerimaan -->
-                    <div class="modal fade" id="prosesPiutang{{ $i }}" tabindex="-1" role="dialog" aria-labelledby="prosesPiutangLabel" aria-hidden="true">
+                    <div class="modal fade" id="prosesHutang{{ $i }}" tabindex="-1" role="dialog" aria-labelledby="prosesHutangLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h3 class="mb-0 text-center">Proses Piutang</h3>
+                            <h3 class="mb-0 text-center">Proses Hutang</h3>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -92,18 +92,18 @@
                               @method('PUT')
                               <div class="form-group">
                                 <label for="name">Name <span class="text-danger">*</span></label>
-                                <input type="text" id="uraian" name="uraian" value="{{ $data->name }}" class="form-control">
+                                <input type="text" id="name" name="name" value="{{ $data->name }}" class="form-control">
                               </div>
                               <div class="form-group">
-                                <label for="nama_customer">Nama Customer <span class="text-danger">*</span></label>
-                                <input type="text" id="nama_customer" name="nama_customer" value="{{ $data->nama_customer }}" class="form-control">
+                                <label for="nama_supplier">Nama Supplier <span class="text-danger">*</span></label>
+                                <input type="text" id="nama_supplier" name="nama_supplier" value="{{ $data->nama_supplier }}" class="form-control">
                               </div>
                               <div class="form-group">
-                                <label for="nama_salesman">Nama Salesman <span class="text-danger">*</span></label>
-                                <input type="text" id="nama_salesman" name="nama_salesman" value="{{ $data->nama_salesman }}" class="form-control">
+                                <label for="subtotal">Subtotal <span class="text-danger">*</span></label>
+                                <input type="text" id="subtotal" name="subtotal" value="{{ $data->subtotal }}" class="form-control">
                               </div>
                               <div class="form-group">
-                                <label for="bayarl">Bayar <span class="text-danger">*</span></label>
+                                <label for="bayar">Bayar <span class="text-danger">*</span></label>
                                 <input type="text" id="bayar" name="bayar" value="{{ $data->bayar }}" placeholder="Rp." class="form-control">
                               </div>
                               {{-- <div class="form-group">
@@ -117,7 +117,7 @@
                               </div> --}}
                               <div class="row justify-content-center">
                                 <div class="col text-center">
-                                  <button type="submit" class="btn btn-success" onclick="return confirm('Update Piutang?')">Update</button>
+                                  <button type="submit" class="btn btn-success" onclick="return confirm('Update Hutang?')">Update</button>
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                               </div>
@@ -139,8 +139,8 @@
         </div>
       </div>
     </div>
-    <!-- Modal Cetak Piutang -->
-    <div class="modal fade" id="cetakLaporanPiutang" tabindex="-1" role="dialog" aria-labelledby="cetakLaporanPiutangLabel" aria-hidden="true">
+    <!-- Modal Cetak Hutang -->
+    <div class="modal fade" id="cetakLaporanHutang" tabindex="-1" role="dialog" aria-labelledby="cetakLaporanHutangLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -150,7 +150,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="{{ route('piutang.pdf') }}" method="post">
+            <form action="{{ route('hutang.pdf') }}" method="post">
               @csrf
               <div class="form-group">
                 <label for="tanggal_awal">Start Date:</label>

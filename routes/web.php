@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HutangController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PembelianController;
@@ -167,9 +168,18 @@ Route::middleware('auth')->group(function () {
 	Route::get('penerimaan/delete/{id}', [PenerimaanController::class, 'delete'])->name('penerimaan.delete');
 
 	//Route untuk Pengeluaran
+	Route::get('pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran');
+	Route::post('pengeluaran', [PengeluaranController::class, 'store'])->name('pengeluaran.store');
+	Route::put('pengeluaran/update/{id}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
+	Route::get('pengeluaran/delete/{id}', [PengeluaranController::class, 'delete'])->name('pengeluaran.delete');
 
 	//Route untuk Piutang
+	Route::post('piutang-pdf', [PiutangController::class, 'generate_pdf'])->name('piutang.pdf');
 	Route::get('piutang', [PiutangController::class, 'index'])->name('piutang');
+
+	//Route untuk Hutang
+	Route::post('hutang-pdf', [HutangController::class, 'generate_pdf'])->name('hutang.pdf');
+	Route::get('hutang', [HutangController::class, 'index'])->name('hutang');
 
 	//Logout lalu redirect ke halaman login
 	Route::get('logout', [AuthController::class, 'logout'])->name('logout');
