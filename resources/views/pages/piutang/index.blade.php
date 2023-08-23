@@ -70,9 +70,9 @@
                       <td>Rp.{{ $data->bayar }}</td>
                       <td class="text-center">
                         <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#prosesPiutang{{ $i }}">
+                          <a href="{{ route('penjualan.detail', $data->id) }}" class="btn btn-sm btn-outline-primary">
                             <i class="ni ni-ruler-pencil mr-2"></i>Proses Piutang
-                          </button>
+                          </a>
                         </div>
                       </td>
                     </tr>
@@ -106,15 +106,6 @@
                                 <label for="bayarl">Bayar <span class="text-danger">*</span></label>
                                 <input type="text" id="bayar" name="bayar" value="{{ $data->bayar }}" placeholder="Rp." class="form-control">
                               </div>
-                              {{-- <div class="form-group">
-                                <label for="akun">Akun <span class="text-danger">*</span></label>
-                                <select class="form-control" id="akun" name="akun" required>
-                                    <option value="" selected disabled>Pilih Akun</option>
-                                    @foreach($akun as $id => $value)
-                                      <option value="{{ $id }}" @if($data->id_akun == $id) selected @endif>{{ $value }}</option>
-                                    @endforeach
-                                </select>
-                              </div> --}}
                               <div class="row justify-content-center">
                                 <div class="col text-center">
                                   <button type="submit" class="btn btn-success" onclick="return confirm('Update Piutang?')">Update</button>

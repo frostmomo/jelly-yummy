@@ -29,6 +29,7 @@
         
         .content {
             margin: 20px;
+
         }
         
         table {
@@ -41,11 +42,11 @@
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-
+        
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        
+
         .footer {
             text-align: center;
             font-size: 12px;
@@ -65,8 +66,8 @@
     <div class="header">
         <img src="{{ storage_path('app/public/trb.png') }}">
         <h1>CV. Tirta Rahayu</h1>
-        <div class="title">Piutang</div>
-        <div class="description">Laporan Piutang Tanggal {{ date('d M Y', strtotime($startDay)) }} Sampai {{ date('d M Y', strtotime($endDay)) }} </div>
+        <div class="title">Penerimaan</div>
+        <div class="description">Laporan Penerimaan Tanggal {{ date('d M Y', strtotime($startDay)) }} Sampai {{ date('d M Y', strtotime($endDay)) }} </div>
     </div>
     
     <div class="footer">
@@ -78,36 +79,42 @@
             <thead>
                 <tr>
                     <th>Tanggal</th>
-                    <th>Nama Customer</th>
-                    <th>Nama Salesman</th>
-                    <th>Piutang</th>
+                    <th>Dibuat Oleh</th>
+                    <th>Uraian</th>
+                    <th>Keterangan</th>
+                    <th>Kode Akun</th>
+                    <th>Subtotal</th>
+                    <th>Tipe Transaksi</th>
                 </tr>
             </thead>
             <tbody>
                 @php
-                    $totalBayar = 0;
+                    $total = 0;
                 @endphp
     
-                @forelse($piutang as $item)
+                @forelse($penerimaan as $item)
                 <tr>
                     <td>{{ date('d M Y', strtotime($item->created_at)) }}</td>
-                    <td>{{ $item->nama_customer }}</td>
-                    <td>{{ $item->nama_salesman }}</td>
-                    <td>Rp.{{ $item->bayar }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->uraian }}</td>
+                    <td>{{ $item->keterangan }}</td>
+                    <td>{{ $item->kode_akun }}</td>
+                    <td>Rp.{{ $item->subtotal }}</td>
+                    <td>{{ $item->tipe_transaksi }}</td>
                 </tr>
                 @php
-                    $totalBayar += $item->bayar;
+                    $total += $item->subtotal; 
                 @endphp
                 @empty
                 <tr>
-                    <td colspan="4">No data available</td>
+                    <td colspan="7">No data available</td>
                 </tr>
                 @endforelse
-
-                @if(count($piutang) > 0)
+    
+                @if(count($penerimaan) > 0)
                 <tr>
-                    <td colspan="3"></td>
-                    <td>Total Piutang: Rp. {{ number_format($totalBayar, 2) }}</td>
+                    <td colspan="6"></td>
+                    <td>Total : Rp. {{ number_format($total, 2) }}</td>
                 </tr>
                 @endif
             </tbody>

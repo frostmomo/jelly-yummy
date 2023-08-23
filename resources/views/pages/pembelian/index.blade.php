@@ -31,12 +31,12 @@ $activePage = "Pembelian";
               <form action="{{ route('pembelian.pdf') }}" method="post">
                 @csrf
                 <div class="form-group">
-                  <label for="bulan_awal">Start Month:</label>
-                  <input type="date" id="bulan_awal" name="bulan_awal" class="form-control">
+                  <label for="tanggal_awal">Start Month:</label>
+                  <input type="date" id="tanggal_awal" name="tanggal_awal" class="form-control">
                 </div>
                 <div class="form-group">
-                  <label for="bulan_akhir">End Month:</label>
-                  <input type="date" id="bulan_akhir" name="bulan_akhir" class="form-control">
+                  <label for="tanggal_akhir">End Month:</label>
+                  <input type="date" id="tanggal_akhir" name="tanggal_akhir" class="form-control">
                 </div>
                 <div class="row justify-content-center">
                   <div class="col">
@@ -78,7 +78,7 @@ $activePage = "Pembelian";
               <!-- Replace with dynamic data using a loop -->
               @forelse($pembelian as $datapembelian)
                 <tr class="text-center">
-                  <td>{{ $datapembelian->created_at }}</td>
+                  <td>{{ date('d M Y', strtotime($datapembelian->created_at)) }}</td>
                   <td>{{ $datapembelian->name }}</td>
                   <td>{{ $datapembelian->nama_supplier }}</td>
                   <td>{{ $datapembelian->total_item }}</td>
@@ -90,7 +90,7 @@ $activePage = "Pembelian";
                       <a href="{{ route('pembelian.detail', $datapembelian->id) }}" class="btn btn-sm btn-outline-primary" onclick="detailEntry()">
                         <i class="fas fa-info-circle mr-2"></i> Detail
                       </a>
-                      <a href="" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data kategori produk jual ini?');">
+                      <a href="{{ route('pembelian.delete', $datapembelian->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data pembelian ini?');">
                         <i class="ni ni-fat-remove mr-2"></i> Delete </button>
                       </a>
                     </div>
@@ -107,7 +107,7 @@ $activePage = "Pembelian";
             </tbody>
           </table>
         </div>
-        <div class="card-footer py-4">
+        {{-- <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
               <li class="page-item disabled">
@@ -134,7 +134,7 @@ $activePage = "Pembelian";
               </li>
             </ul>
           </nav>
-        </div>
+        </div> --}}
       </div>
     </div>
   </div>

@@ -17,20 +17,32 @@ class PiutangController extends Controller
         $startOfDay = Carbon::parse($startDay)->startOfDay();
         $endOfDay = Carbon::parse($endDay)->endOfDay();
 
+        // $piutang = Piutang::join('penjualan', 'penjualan.id', '=', 'piutang.id_penjualan')
+        //     ->join('customer', 'customer.id', '=', 'penjualan.id_customer')
+        //     ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
+        //     ->where('piutang.created_at', [$startOfDay, $endOfDay])
+        //     ->orderBy('piutang.created_at')
+        //     ->select(
+        //         'customer.nama_customer',
+        //         'salesman.nama_salesman',
+        //         'piutang.bayar',
+        //         'piutang.created_at',
+        //     )
+        //     ->get();
         $piutang = Piutang::join('penjualan', 'penjualan.id', '=', 'piutang.id_penjualan')
-            ->join('users', 'users.id', '=', 'penjualan.id_user')
             ->join('customer', 'customer.id', '=', 'penjualan.id_customer')
             ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
-            ->where('piutang.created_at', [$startOfDay, $endOfDay])
+            ->whereBetween('piutang.created_at', [$startDay, $endDay])
+            ->where('piutang.bayar', '!=', 0)
+            ->orderBy('piutang.created_at')
             ->select(
-                'users.name',
                 'customer.nama_customer',
                 'salesman.nama_salesman',
                 'piutang.bayar',
                 'piutang.created_at',
             )
             ->get();
-
+        // dd($piutang);
         $pdf = PDF::loadView('pages.piutang.pdf', compact('piutang', 'startDay', 'endDay'));
 
         return $pdf->download('TirtaRahayuLaporanPiutang-' . date('d M Y', strtotime($startDay)) . ' - ' . date('d M Y', strtotime($endDay)) . '.pdf');
@@ -44,6 +56,7 @@ class PiutangController extends Controller
             ->join('salesman', 'salesman.id', '=', 'penjualan.id_salesman')
             ->where('piutang.bayar', '!=', 0)
             ->select(
+                'penjualan.id',
                 'users.name',
                 'customer.nama_customer',
                 'salesman.nama_salesman',

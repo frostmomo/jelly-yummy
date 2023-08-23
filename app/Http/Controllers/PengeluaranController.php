@@ -2,14 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use Carbon\Carbon;
 use App\Models\Akun;
 use App\Models\Pengeluaran;
-use App\Models\PengeluaranDetail;
 use Illuminate\Http\Request;
+use App\Models\PengeluaranDetail;
 use Illuminate\Support\Facades\Auth;
 
 class PengeluaranController extends Controller
 {
+    public function generate_pdf(Request $request)
+    {
+        $startDay = $request->input('tanggal_awal');
+        $endDay = $request->input('tanggal_akhir');
+        
+        $startOfDay = Carbon::parse($startDay)->startOfDay();
+        $endOfDay = Carbon::parse($endDay)->endOfDay();
+
+        $pengeluaran = Pengeluaran::join('users', 'users.id', '=', 'pengeluaran.id_user')
+            ->join('pengeluaran_detail', 'pengeluaran_detail.id_pengeluaran', '=', 'pengeluaran_detail.id_pengeluaran')
+            ->join('akun', 'akun.id', '=', 'pengeluaran_detail.id_akun')
+            ->whereBetween('pengeluaran.created_at', [$startOfDay, $endOfDay])
+            ->orderBy('pengeluaran.created_at')
+            ->get([
+                'pengeluaran.uraian', 
+                'pengeluaran_detail.keterangan', 
+                'pengeluaran_detail.tipe_transaksi', 
+                'pengeluaran.subtotal',
+                'pengeluaran.created_at', 
+                'akun.kode_akun',
+                'users.name',
+            ]);
+
+        $pdf = PDF::loadView('pages.pengeluaran.pdf', compact('pengeluaran', 'startDay', 'endDay'));
+
+        return $pdf->download('TirtaRahayuLaporanPengeluaran-' . date('d M Y', strtotime($startDay)) . ' - ' . date('d M Y', strtotime($endDay)) . '.pdf');
+    }
+    
     public function index()
     {
         $pengeluaran = Pengeluaran::join('users', 'users.id', '=', 'pengeluaran.id_user')

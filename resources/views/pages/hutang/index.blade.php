@@ -70,9 +70,9 @@
                       <td>Rp.{{ $data->subtotal - $data->bayar }}</td>
                       <td class="text-center">
                         <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#prosesHutang{{ $i }}">
+                          <a href="{{ route('pembelian.detail', $data->id) }}" class="btn btn-sm btn-outline-primary">
                             <i class="ni ni-ruler-pencil mr-2"></i>Proses Hutang
-                          </button>
+                          </a>
                         </div>
                       </td>
                     </tr>

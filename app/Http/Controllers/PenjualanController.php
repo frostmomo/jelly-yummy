@@ -39,7 +39,7 @@ class PenjualanController extends Controller
                 'penjualan.created_at',
                 'users.name',
                 'customer.nama_customer',
-                'salesman.nama_salesman'
+                'salesman.nama_salesman',
             )
             ->get();
 
@@ -99,12 +99,17 @@ class PenjualanController extends Controller
         $request->validate([
             'id_customer' => 'required',
             'id_salesman' => 'required',
-            'qty_1' => 'nullable|numeric',
-            'qty_2' => 'nullable|numeric',
-            'qty_3' => 'nullable|numeric',
+            'produk_jual' => 'required|numeric',
+            'qty' => 'required|numeric',
             'diskon' => 'nullable|numeric',
             'tunai' => 'required',
         ]);
+
+        $produkjual = ProdukJual::find($request->produk_jual);
+
+        if (($produkjual->stok - $request->qty) < 0) {
+            return redirect('penjualan.create')->with('failed', 'Stok barang tidak mencukupi');
+        }
 
         $penjualan = new Penjualan;
         $penjualan->id_user = Auth::user()->id;
@@ -112,56 +117,14 @@ class PenjualanController extends Controller
         $penjualan->id_salesman = $request->id_salesman;
         $penjualan->save();
 
-        if (!is_null($request->qty_1)) {
-            $produkjual_1 = ProdukJual::find($request->id_produk_1);
-
-            if (($produkjual_1->stok - $request->qty_1) < 0) {
-                return redirect('penjualan.create')->with('failed', 'Stok barang tidak mencukupi');
-            }
-
-            $penjualanDetail = new PenjualanDetail;
-            $penjualanDetail->id_penjualan = $penjualan->id;
-            $penjualanDetail->id_produk_jual = $request->id_produk_1;
-            $penjualanDetail->qty = $request->qty_1;
-            $produkjual_1->stok = $produkjual_1->stok - $request->qty_1;
-            $penjualanDetail->total = $request->qty_1 * $produkjual_1->harga_jual;
-            $produkjual_1->update();
-            $penjualanDetail->save();
-        }
-
-        if (!is_null($request->qty_2)) {
-            $produkjual_2 = ProdukJual::find($request->id_produk_2);
-
-            if (($produkjual_2->stok - $request->qty_2) < 0) {
-                return redirect('penjualan.create')->with('failed', 'Stok barang tidak mencukupi');
-            }
-
-            $penjualanDetail = new PenjualanDetail;
-            $penjualanDetail->id_penjualan = $penjualan->id;
-            $penjualanDetail->id_produk_jual = $request->id_produk_2;
-            $penjualanDetail->qty = $request->qty_2;
-            $produkjual_2->stok = $produkjual_2->stok - $request->qty_2;
-            $penjualanDetail->total = $request->qty_2 * $produkjual_2->harga_jual;
-            $produkjual_2->update();
-            $penjualanDetail->save();
-        }
-
-        if (!is_null($request->qty_3)) {
-            $produkjual_3 = ProdukJual::find($request->id_produk_3);
-
-            if (($produkjual_3->stok - $request->qty_3) < 0) {
-                return redirect('penjualan/create')->with('failed', 'Stok barang tidak mencukupi');
-            }
-
-            $penjualanDetail = new PenjualanDetail;
-            $penjualanDetail->id_penjualan = $penjualan->id;
-            $penjualanDetail->id_produk_jual = $request->id_produk_3;
-            $penjualanDetail->qty = $request->qty_3;
-            $produkjual_3->stok = $produkjual_3->stok - $request->qty_3;
-            $penjualanDetail->total = $request->qty_3 * $produkjual_3->harga_jual;
-            $produkjual_3->update();
-            $penjualanDetail->save();
-        }
+        $penjualanDetail = new PenjualanDetail;
+        $penjualanDetail->id_penjualan = $penjualan->id;
+        $penjualanDetail->id_produk_jual = $request->produk_jual;
+        $penjualanDetail->qty = $request->qty;
+        $produkjual->stok = $produkjual->stok - $request->qty;
+        $penjualanDetail->total = $request->qty * $produkjual->harga_jual;
+        $produkjual->update();
+        $penjualanDetail->save();
 
         $penjualan->total_item = PenjualanDetail::where('id_penjualan', '=', $penjualan->id)->count();
         $penjualan->diskon = $request->diskon;
@@ -554,5 +517,20 @@ class PenjualanController extends Controller
         $penjualan->update();
 
         return redirect()->back()->with('success', 'Retur penjualan berhasil ditambahkan');
+    }
+
+    public function delete($id)
+    {
+        $penjualandetail = PenjualanDetail::where('id_penjualan', '=', $id)->get();
+
+        foreach ($penjualandetail as $datapenjualandetail) {
+            $produkjual = ProdukJual::find($datapenjualandetail->id_produk_jual);
+            $produkjual->stok = $produkjual->stok - $datapenjualandetail->qty;
+            $produkjual->update();
+        }
+
+        Penjualan::find($id)->delete();
+
+        return redirect('penjualan')->with('success', 'Data penjualan berhasil dihapus');
     }
 }

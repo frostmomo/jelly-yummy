@@ -81,6 +81,7 @@
                     <th>Tanggal</th>
                     <th>Dibuat Oleh</th>
                     <th>Customer</th>
+                    <th>Salesman</th>
                     <th>Total Item</th>
                     <th>Discount</th>
                     <th>Subtotal</th>
@@ -96,12 +97,13 @@
                     <td>{{ date('d M Y', strtotime($item->created_at)) }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->nama_customer }}</td>
+                    <td>{{ $item->nama_salesman }}</td>
                     <td>{{ $item->total_item }}</td>
                     <td>{{ $item->diskon }}%</td>
                     <td>Rp.{{ $item->subtotal }}</td>
                 </tr>
                 @php
-                    $totalSubtotal += $item->subtotal; 
+                    $total += $item->subtotal; 
                 @endphp
                 @empty
                 <tr>
@@ -111,7 +113,7 @@
     
                 @if(count($penjualan) > 0)
                 <tr>
-                    <td colspan="5"></td>
+                    <td colspan="6"></td>
                     <td>Total : Rp. {{ number_format($total, 2) }}</td>
                 </tr>
                 @endif

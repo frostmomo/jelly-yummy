@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
         <div class="d-flex justify-content-end">
-            <a href="#" class="btn btn-primary">Buat Jurnal</a>
+            {{-- <a href="#" class="btn btn-primary">Buat Jurnal</a> --}}
             <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#createJournalModal">Cetak Laporan Jurnal</button>
         </div>
       </div>
@@ -29,7 +29,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form action="#" method="post">
+              <form action="{{ route('jurnal.pdf') }}" method="post">
                 @csrf
                 <div class="form-group">
                   <label for="tanggal_awal">Start Date:</label>
@@ -66,49 +66,34 @@
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
               <tr>
-                <th scope="col">No</th>
-                <th scope="col">Deskripsi</th>
-                <th scope="col">Jenis</th>
-                <th scope="col">Nominal</th>
                 <th scope="col">Tanggal</th>
-                <th scope="col">Detail</th>
-                <th scope="col">Action</th>
+                <th scope="col">Kode Akun</th>
+                <th scope="col">Uraian</th>
+                <th scope="col">Keterangan</th>
+                <th scope="col">Debit</th>
+                <th scope="col">Kredit</th>
               </tr>
             </thead>
             <tbody>
               {{-- For loop here --}}
+              @foreach($keuangan as $datakeuangan)
               <tr>
-                <td>J-01</td>
-                <td>Dummy</td>
-                <td>Pengeluaran</td>
-                <td>1000</td>
-                <td>12/02/2020 11:00</td>
-                <td>Detailnya gatau gmn</td>
-                <td class="text-center">
-                  <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
-                      <i class="ni ni-ruler-pencil mr-2"></i> Edit </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
-                      <i class="ni ni-fat-remove mr-2"></i> Delete </button>
-                  </div>
-                </td>
+                <td>{{ date('d M Y', strtotime($datakeuangan['created_at'])) }}</td>
+                <td>{{ $datakeuangan['kode_akun'] }}</td>
+                <td>{{ $datakeuangan['uraian'] }}</td>
+                <td>{{ $datakeuangan['keterangan'] }}</td>
+                @if($datakeuangan['tipe_transaksi'] == 'Debit')
+                  <td>{{ $datakeuangan['subtotal'] }}</td>
+                @else
+                  <td>Rp.0</td>
+                @endif
+                @if($datakeuangan['tipe_transaksi'] == 'Kredit')
+                  <td>{{ $datakeuangan['subtotal'] }}</td>
+                @else
+                  <td>Rp.0</td>
+                @endif
               </tr>
-              <tr>
-                <td>J-01</td>
-                <td>Dummy</td>
-                <td>Pengeluaran</td>
-                <td>1000</td>
-                <td>12/02/2020 11:00</td>
-                <td>Detailnya gatau gmn</td>
-                <td class="text-center">
-                  <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="editEntry()">
-                      <i class="ni ni-ruler-pencil mr-2"></i> Edit </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteEntry()">
-                      <i class="ni ni-fat-remove mr-2"></i> Delete </button>
-                  </div>
-                </td>
-              </tr>
+              @endforeach
             </tbody>
           </table>
         </div>

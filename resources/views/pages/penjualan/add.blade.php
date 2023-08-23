@@ -59,8 +59,21 @@
                                 @endforeach
                             </select>
                         </div>
-                        @php $i = 1 @endphp
-                        @foreach($produkjual as $dataprodukjual)
+                        <div class="form-group">
+                            <label for="produk_jual">Produk Beli <span class="text-danger">*</span></label>
+                            <select class="form-control" id="produk_jual" name="produk_jual" required>
+                                <option value="" selected disabled>Pilih Produk Beli</option>
+                                @foreach($produkjual as $dataprodukjual)
+                                    <option value="{{ $dataprodukjual->id }}">{{ $dataprodukjual->nama_produk_jual }} ({{ $dataprodukjual->kategori_jual }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="qty">Jumlah <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="qty" name="qty" placeholder="Masukkan hanya angka">
+                        </div>
+                        {{-- @php $i = 1 @endphp --}}
+                        {{-- @foreach($produkjual as $dataprodukjual)
                         <div class="form-group">
                             <label for="id_salesman">Produk Jual {{ $i }}</span></label>
                                 <div class="card">
@@ -94,7 +107,7 @@
                                 <input type="text" class="form-control" id="id_produk_{{ $i }}" name="id_produk_{{ $i }}" value="{{ $dataprodukjual->id }}" hidden>
                             </div>
                             @php $i++ @endphp
-                        @endforeach
+                        @endforeach --}}
                         <div class="form-group">
                             <label for="diskon">Diskon % <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="diskon" name="diskon" placeholder="Masukkan hanya angka">

@@ -21,15 +21,22 @@ class PembelianController extends Controller
     {
         $startDay = $request->input('tanggal_awal');
         $endDay = $request->input('tanggal_akhir');
-
+        
         $startOfDay = Carbon::parse($startDay)->startOfDay();
         $endOfDay = Carbon::parse($endDay)->endOfDay();
 
         $pembelian = Pembelian::join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
+            ->join('users', 'users.id', '=', 'pembelian.id_user')
             ->whereBetween('pembelian.created_at', [$startOfDay, $endOfDay])
             ->get([
-                'pembelian.id', 'pembelian.total_item', 'pembelian.subtotal', 'pembelian.diskon',
-                'pembelian.bayar', 'pembelian.created_at', 'supplier.nama_supplier',
+                'pembelian.id', 
+                'pembelian.total_item', 
+                'pembelian.subtotal', 
+                'pembelian.diskon',
+                'pembelian.bayar', 
+                'pembelian.created_at', 
+                'supplier.nama_supplier',
+                'users.name',
             ]);
 
         $pdf = PDF::loadView('pages.pembelian.pdf', compact('pembelian', 'startDay', 'endDay'));

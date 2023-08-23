@@ -41,6 +41,7 @@ class HutangController extends Controller
             ->join('supplier', 'supplier.id', '=', 'pembelian.id_supplier')
             ->where('pembelian.bayar', '!=', 0)
             ->select(
+                'pembelian.id',
                 'users.name',
                 'supplier.nama_supplier',
                 'pembelian.subtotal',

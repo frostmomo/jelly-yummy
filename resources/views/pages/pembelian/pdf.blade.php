@@ -64,8 +64,9 @@
 <body>
     <div class="header">
         <img src="{{ storage_path('app/public/trb.png') }}">
+        <h1>CV. Tirta Rahayu</h1>
         <div class="title">Pembelian</div>
-        <div class="description">Report pembelian per {{$startDay}} .</div>
+        <div class="description">Laporan Pembelian Tanggal {{ date('d M Y', strtotime($startDay)) }} Sampai {{ date('d M Y', strtotime($endDay)) }} </div>
     </div>
     
     <div class="footer">
@@ -77,9 +78,11 @@
             <thead>
                 <tr>
                     <th>Tanggal</th>
+                    <th>Dibuat Oleh</th>
+                    <th>Supplier</th>
                     <th>Total Item</th>
-                    <th>Subtotal</th>
                     <th>Diskon</th>
+                    <th>Subtotal</th>
                     <th>Bayar</th>
                 </tr>
             </thead>
@@ -90,11 +93,13 @@
     
                 @forelse($pembelian as $item)
                 <tr>
-                    <td>{{ $item->created_at }}</td>
+                    <td>{{ date('d M Y', strtotime($item->created_at)) }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->supplier }}</td>
                     <td>{{ $item->total_item }}</td>
-                    <td>{{ $item->subtotal }}</td>
-                    <td>{{ $item->diskon }}</td>
-                    <td>{{ $item->bayar }}</td>
+                    <td>{{ $item->diskon }}%</td>
+                    <td>Rp.{{ $item->subtotal }}</td>
+                    <td>Rp.{{ $item->bayar }}</td>
                 </tr>
                 @php
                     $totalBayar += $item->bayar;
@@ -107,7 +112,7 @@
 
                 @if(count($pembelian) > 0)
                 <tr>
-                    <td colspan="4"></td>
+                    <td colspan="6"></td>
                     <td>Total Bayar: Rp. {{ number_format($totalBayar, 2) }}</td>
                 </tr>
                 @endif

@@ -77,7 +77,7 @@ $activePage = "Penjualan";
             <tbody class="list">
               @forelse($penjualan as $datapenjualan)
                 <tr class="text-center">
-                  <td>{{ $datapenjualan->created_at }}</td>
+                  <td>{{ date('d M Y', strtotime($datapenjualan->created_at)) }}</td>
                   <td>{{ $datapenjualan->name }}</td>
                   <td>{{ $datapenjualan->nama_customer }}</td>
                   <td>{{ $datapenjualan->nama_salesman }}</td>
@@ -89,7 +89,7 @@ $activePage = "Penjualan";
                       <a href="{{ route('penjualan.detail', $datapenjualan->id) }}" class="btn btn-sm btn-outline-primary" onclick="detailEntry()">
                         <i class="fas fa-info-circle mr-2"></i> Detail
                       </a>
-                      <a href="" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data kategori produk jual ini?');">
+                      <a href="{{ route('penjualan.delete', $datapenjualan->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus data penjualan ini?');">
                         <i class="ni ni-fat-remove mr-2"></i> Delete </button>
                       </a>
                     </div>
@@ -106,13 +106,13 @@ $activePage = "Penjualan";
             </tbody>
           </table>
         </div>
-        <div class="card-footer py-4">
+        {{-- <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
               {{-- {{ $penjualan->links() }} --}}
-          </ul>
-          </nav>
-        </div>
+          {{-- </ul>
+          </nav> --}}
+        {{-- </div> --}}
       </div>
     </div>
   </div>
