@@ -21,8 +21,10 @@ class PenjualanController extends Controller
 {
     public function generate_pdf(Request $request)
     {
-        $startDay = $request->input('tanggal_awal');
+        $startDay = date('Y-m-d H:i:s', strtotime($request->input('tanggal_awal')));
         $endDay = $request->input('tanggal_akhir');
+
+        dd($startDay);
 
         $startOfDay = Carbon::parse($startDay)->startOfDay();
         $endOfDay = Carbon::parse($endDay)->endOfDay();

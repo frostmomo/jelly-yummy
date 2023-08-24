@@ -43,7 +43,7 @@ class ProdukJualController extends Controller
         $request->validate([
             'kategori_jual' => 'required',
             'nama_produk_jual' => 'required|max:255',
-            'kode_produk_jual' => 'required|unique:produk_jual|max:3',
+            'kode_produk_jual' => 'required|unique:produk_jual',
             'harga_produksi' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'stok' => 'required|numeric',

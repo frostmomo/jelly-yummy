@@ -15,6 +15,25 @@
 <br>
 
 <div class="container-fluid mt--7">
+    @if ($message = Session::get('success'))
+          <div class="alert alert-success" id="success-message">
+            <p>{{ $message }}</p>
+          </div>
+    @endif
+    @if ($message = Session::get('failed'))
+          <div class="alert alert-danger" id="failed-message">
+            <p>{{ $message }}</p>
+          </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger" id="alert-message">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div><br>
+    @endif
     <div class="row" style="padding-top: 88px">
         <div class="col">
             <div class="card shadow">

@@ -52,7 +52,7 @@ class PenerimaanController extends Controller
                 'penerimaan.subtotal', 
                 'penerimaan_detail.keterangan',
                 'penerimaan_detail.id_akun',
-                'akun.nama_akun',
+                'akun.kode_akun',
                 'users.name',
             )->get();
         

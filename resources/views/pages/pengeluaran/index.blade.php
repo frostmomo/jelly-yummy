@@ -88,7 +88,7 @@
                     <th scope="col">Dibuat Oleh</th>
                     <th scope="col">Uraian</th>
                     <th scope="col">Keterangan</th>
-                    <th scope="col">Akun</th>
+                    <th scope="col">Kode Akun</th>
                     <th scope="col">Subtotal</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -101,7 +101,7 @@
                       <td>{{ $data->name }}</td>
                       <td>{{ $data->uraian }}</td>
                       <td>{{ $data->keterangan }}</td>
-                      <td>{{ $data->nama_akun }}</td>
+                      <td>{{ $data->kode_akun }}</td>
                       <td>Rp.{{ $data->subtotal }}</td>
                       <td class="text-center">
                         <div class="btn-group">

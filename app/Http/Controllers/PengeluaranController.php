@@ -51,7 +51,7 @@ class PengeluaranController extends Controller
                 'pengeluaran.subtotal',
                 'pengeluaran_detail.keterangan',
                 'pengeluaran_detail.id_akun',
-                'akun.nama_akun',
+                'akun.kode_akun',
                 'users.name',
             )->get();
 

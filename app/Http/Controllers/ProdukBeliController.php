@@ -30,8 +30,7 @@ class ProdukBeliController extends Controller
     public function create()
     {
         $kategoribeli = KategoriBeli::pluck('kategori_beli', 'id');
-        return view(
-            'pages.produk_beli.add',
+        return view('pages.produk_beli.add',
             ['kategoribeli' => $kategoribeli],
         );
     }
@@ -41,7 +40,7 @@ class ProdukBeliController extends Controller
         $request->validate([
             'kategori_beli' => 'required',
             'nama_produk_beli' => 'required|max:255',
-            'kode_produk_beli' => 'required|unique:produk_beli|max:3',
+            'kode_produk_beli' => 'required|unique:produk_beli',
             'harga_beli' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);

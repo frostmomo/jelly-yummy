@@ -14,12 +14,12 @@
     <div class="header-body">
         <!-- Card stats -->
         <div class="row">
-          <div class="col-xl-12 col-lg-6" style="padding-bottom: 20px">
-            <div class="d-flex justify-content-end">
+          <div class="col-xl-12 col-lg-6" style="padding-bottom: 60px">
+            {{-- <div class="d-flex justify-content-end">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cetakLaporanHutang">
                  Cetak Hutang
               </button>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>
